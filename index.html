@@ -3,177 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 2026 - Sistema Integral</title>
+    <title>Jorge Finanzas 2026 - Control Total</title>
     <style>
-        :root { --blue-header: #dae8fc; --blue-border: #6c8ebf; --gray-excel: #f5f5f5; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e5e7eb; margin: 0; padding: 10px; font-size: 12px; }
-        .excel-container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media(min-width: 768px) { .excel-container { grid-template-columns: 1fr 1.2fr; } }
+        :root { --primary: #1a2a6c; --accent: #b21f1f; --success: #27ae60; --excel-blue: #dae8fc; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; color: #333; }
         
-        .section { background: white; border: 1px solid #ccc; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        .header { background: var(--blue-header); border-bottom: 2px solid var(--blue-border); padding: 8px; font-weight: bold; text-align: center; text-transform: uppercase; }
+        /* Navegación por Pestañas */
+        .nav-tabs { position: fixed; bottom: 0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .tab-item { flex: 1; text-align: center; padding: 15px 5px; font-size: 0.75em; cursor: pointer; color: #888; font-weight: bold; }
+        .tab-item.active { color: var(--primary); border-top: 3px solid var(--primary); background: #f9f9f9; }
+
+        .container { padding: 15px; display: none; max-width: 800px; margin: auto; }
+        .container.active { display: block; }
+
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
+        .card-header { background: var(--excel-blue); margin: -15px -15px 15px -15px; padding: 10px; font-weight: bold; border-radius: 8px 8px 0 0; font-size: 0.9em; text-align: center; }
         
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th { background: #f2f2f2; border: 1px solid #ddd; padding: 6px; text-align: left; font-size: 0.9em; }
-        td { border: 1px solid #ddd; padding: 6px; }
-        .val { text-align: right; font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        th { text-align: left; background: #f8f9fa; padding: 10px; border-bottom: 2px solid #dee2e6; }
+        td { padding: 10px; border-bottom: 1px solid #f1f1f1; }
+        .val { text-align: right; font-weight: bold; }
+
+        /* Inputs Modernos */
+        .input-group { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef; margin-top: 10px; }
+        .input-group h4 { margin: 0 0 10px 0; font-size: 0.85em; color: var(--primary); text-transform: uppercase; }
+        input, select, button { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        input[type="date"] { cursor: pointer; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
         
-        /* Formularios de entrada */
-        .input-row { background: #f9fafb; padding: 10px; border-top: 1px solid #ddd; display: flex; flex-wrap: wrap; gap: 5px; }
-        input { padding: 5px; border: 1px solid #ccc; border-radius: 3px; flex: 1; min-width: 80px; }
-        button { background: #4a90e2; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #357abd; }
-        
-        .total-line { background: #fff2cc; font-weight: bold; }
-        .diff-neg { color: #d0021b; }
-        .diff-pos { color: #0f9d58; }
+        .total-row { background: #fff2cc; font-weight: bold; }
+        .badge-ahorro { color: var(--success); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="excel-container">
-    
-    <div class="col">
-        <div class="section">
-            <div class="header">Balance General</div>
-            <table>
-                <tr><td>Presupuesto Mensual</td><td class="val">$5.750.000</td></tr>
-                <tr><td>Real Mensual</td><td class="val">$2.106.000</td></tr>
-                <tr class="total-line"><td>Diferencia</td><td class="val diff-neg">-$3.644.000</td></tr>
-            </table>
-        </div>
+<div id="tab1" class="container active">
+    <div class="card">
+        <div class="card-header">BALANCE GENERAL</div>
+        <table>
+            <tr><td>Presupuesto Mensual</td><td class="val">$5.750.000</td></tr>
+            <tr><td>Real Mensual</td><td class="val" style="color: var(--accent);">$2.106.000</td></tr>
+            <tr class="total-row"><td>Diferencia</td><td class="val">-$3.644.000</td></tr>
+        </table>
+    </div>
 
-        <div class="section">
-            <div class="header">Disponible</div>
-            <table id="tab-disponibles">
-                <tr><th>Cuenta</th><th>Jorge</th><th>Leidy</th></tr>
-                <tr><td>Efectivo</td><td class="val">$320.000</td><td class="val">$0</td></tr>
-                <tr><td>Nequi</td><td class="val">$123.000</td><td class="val">$0</td></tr>
-                <tr><td>Uber / Didi</td><td class="val">$409.000</td><td class="val">$0</td></tr>
-            </table>
-            <div class="input-row">
-                <input type="text" id="disp-nom" placeholder="Cuenta">
-                <input type="number" id="disp-j" placeholder="Jorge $">
-                <input type="number" id="disp-l" placeholder="Leidy $">
-                <button onclick="addFila('tab-disponibles', ['disp-nom', 'disp-j', 'disp-l'])">+</button>
-            </div>
+    <div class="card">
+        <div class="card-header">DISPONIBLES</div>
+        <table id="t-disponibles">
+            <tr><th>Cuenta</th><th>Jorge</th><th>Leidy</th></tr>
+            <tr><td>Efectivo</td><td class="val">$320.000</td><td class="val">$0</td></tr>
+            <tr><td>Nequi</td><td class="val">$123.000</td><td class="val">$0</td></tr>
+        </table>
+        <div class="input-group">
+            <h4>Nuevo Ingreso / Cuenta</h4>
+            <input type="text" id="in-disp-nom" placeholder="Nombre (Ej: Daviplata)">
+            <input type="number" id="in-disp-j" placeholder="Monto Jorge $">
+            <input type="number" id="in-disp-l" placeholder="Monto Leidy $">
+            <button onclick="addGeneric('t-disponibles', ['in-disp-nom', 'in-disp-j', 'in-disp-l'], true)">Añadir a Disponible</button>
         </div>
+    </div>
+</div>
 
-        <div class="section">
-            <div class="header">Préstamos</div>
-            <table id="tab-prestamos">
-                <tr><th>Entidad</th><th>Valor</th><th>Fecha</th></tr>
-                <tr><td>Mundo Mujer</td><td class="val">$5.000.000</td><td>30/03/2026</td></tr>
-            </table>
-            <div class="input-row">
-                <input type="text" id="pres-nom" placeholder="Entidad">
-                <input type="number" id="pres-val" placeholder="Valor $">
-                <input type="text" id="pres-fec" placeholder="Fecha">
-                <button onclick="addFila('tab-prestamos', ['pres-nom', 'pres-val', 'pres-fec'])">+</button>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="header">Cuentas por Pagar / Mantenimiento</div>
-            <table id="tab-pagar">
-                <tr><th>Descripción</th><th>Valor</th><th>Fecha</th></tr>
-                <tr><td>Cauchos Puertas Carro</td><td class="val">$160.000</td><td>-</td></tr>
-                <tr><td>Arreglo Farola Carro</td><td class="val">$17.000</td><td>-</td></tr>
-                <tr><td>Impuesto Apartamento</td><td class="val">$280.000</td><td>24/04/2026</td></tr>
-            </table>
-            <div class="input-row">
-                <input type="text" id="pag-nom" placeholder="Descripción">
-                <input type="number" id="pag-val" placeholder="Valor $">
-                <input type="text" id="pag-fec" placeholder="Fecha">
-                <button onclick="addFila('tab-pagar', ['pag-nom', 'pag-val', 'pag-fec'])">+</button>
-            </div>
+<div id="tab2" class="container">
+    <div class="card">
+        <div class="card-header">GASTO MENSUAL DETALLADO</div>
+        <table id="t-mensual">
+            <tr><th>Concepto</th><th>Vence</th><th>Monto</th></tr>
+            <tr><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$1.165.000</td></tr>
+        </table>
+        <div class="input-group">
+            <h4>Registrar Gasto Mensual</h4>
+            <input type="text" id="in-men-nom" placeholder="Concepto">
+            <input type="date" id="in-men-fec">
+            <input type="number" id="in-men-val" placeholder="Monto $">
+            <button onclick="addGeneric('t-mensual', ['in-men-nom', 'in-men-fec', 'in-men-val'], true)">Guardar Gasto</button>
         </div>
     </div>
 
-    <div class="col">
-        <div class="section">
-            <div class="header">Seguimiento Diario Abril</div>
-            <table id="tab-diario">
-                <tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Gas</th><th>Ahorro</th></tr>
-                <tr><td>06/04/2026</td><td class="val">$150.000</td><td class="val">$174.000</td><td class="val">$39.000</td><td class="val">$23.000</td></tr>
-                <tr><td>07/04/2026</td><td class="val">$250.000</td><td class="val">$191.000</td><td class="val">$28.000</td><td class="val">$17.000</td></tr>
-            </table>
-            <div class="input-row">
-                <input type="text" id="dia-fec" placeholder="Fecha (DD/MM)">
-                <input type="number" id="dia-ppto" placeholder="Ppto">
-                <input type="number" id="dia-real" placeholder="Real">
-                <input type="number" id="dia-gas" placeholder="Gas">
-                <button onclick="addFilaDiaria()">Registrar Día</button>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="header">Detalle Gasto Mensual</div>
-            <table id="tab-mensual">
-                <tr><th>Concepto</th><th>Vencimiento</th><th>Valor</th></tr>
-                <tr><td>Cuota Carro</td><td>16-02-26</td><td class="val">$1.165.000</td></tr>
-                <tr><td>Tarjeta Nu</td><td>01-02-26</td><td class="val">$1.000.000</td></tr>
-                <tr><td>Mundo Mujer</td><td>02-02-26</td><td class="val">$330.000</td></tr>
-                <tr><td>Administración</td><td>30-03-26</td><td class="val">$220.000</td></tr>
-            </table>
-            <div class="input-row">
-                <input type="text" id="men-nom" placeholder="Concepto">
-                <input type="text" id="men-fec" placeholder="Vence">
-                <input type="number" id="men-val" placeholder="Valor $">
-                <button onclick="addFila('tab-mensual', ['men-nom', 'men-fec', 'men-val'])">+</button>
-            </div>
+    <div class="card">
+        <div class="card-header">CUENTAS POR PAGAR / MANTENIMIENTO</div>
+        <table id="t-pagar">
+            <tr><th>Descripción</th><th>Monto</th><th>Fecha</th></tr>
+            <tr><td>Impuesto Apto</td><td class="val">$280.000</td><td>2026-04-24</td></tr>
+        </table>
+        <div class="input-group">
+            <h4>Nuevo Pendiente</h4>
+            <input type="text" id="in-pag-nom" placeholder="Descripción">
+            <input type="number" id="in-pag-val" placeholder="Monto $">
+            <input type="date" id="in-pag-fec">
+            <button onclick="addGeneric('t-pagar', ['in-pag-nom', 'in-pag-val', 'in-pag-fec'], true)">Registrar</button>
         </div>
     </div>
+</div>
 
+<div id="tab3" class="container">
+    <div class="card">
+        <div class="card-header">SEGUIMIENTO DIARIO ABRIL</div>
+        <table id="t-diario">
+            <tr><th>Fecha</th><th>Real</th><th>Gas</th><th>Ahorro</th></tr>
+            <tr><td>2026-04-06</td><td class="val">$174.000</td><td class="val">$39.000</td><td class="val badge-ahorro">$23.000</td></tr>
+        </table>
+        <div class="input-group">
+            <h4>Control del Día</h4>
+            <input type="date" id="in-dia-fec">
+            <input type="number" id="in-dia-ppto" placeholder="Presupuesto del día $">
+            <input type="number" id="in-dia-real" placeholder="Gasto real del día $">
+            <input type="number" id="in-dia-gas" placeholder="Gasto Gas $">
+            <button onclick="addDiario()">Finalizar Día</button>
+        </div>
+    </div>
+</div>
+
+<div class="nav-tabs">
+    <div class="tab-item active" onclick="openTab(1)">📊 Balance</div>
+    <div class="tab-item" onclick="openTab(2)">💸 Gastos</div>
+    <div class="tab-item" onclick="openTab(3)">📅 Diario</div>
 </div>
 
 <script>
-    function formatMoney(v) {
-        return '$' + Number(v).toLocaleString('es-CO');
+    function openTab(n) {
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab' + n).classList.add('active');
+        event.currentTarget.classList.add('active');
     }
 
-    function addFila(tableId, inputIds) {
-        const table = document.getElementById(tableId);
-        const values = inputIds.map(id => document.getElementById(id).value);
-        
-        if(values.some(v => v === "")) return alert("Llena todos los campos");
+    function fmt(v) { return '$' + Number(v).toLocaleString('es-CO'); }
 
+    function addGeneric(tableId, inputIds, hasMoney) {
+        const table = document.getElementById(tableId);
         const row = table.insertRow(-1);
-        values.forEach((val, index) => {
-            const cell = row.insertCell(index);
-            // Si es un número (segundo o tercer campo generalmente), darle formato moneda
-            if(!isNaN(val) && val !== "" && index > 0) {
-                cell.innerHTML = formatMoney(val);
+        inputIds.forEach((id, idx) => {
+            const val = document.getElementById(id).value;
+            const cell = row.insertCell(idx);
+            if(hasMoney && !isNaN(val) && val !== "" && idx > 0) {
+                cell.innerHTML = fmt(val);
                 cell.className = "val";
             } else {
-                cell.innerHTML = val;
+                cell.innerHTML = val || "-";
             }
+            document.getElementById(id).value = "";
         });
-        
-        inputIds.forEach(id => document.getElementById(id).value = "");
     }
 
-    function addFilaDiaria() {
-        const fec = document.getElementById('dia-fec').value;
-        const ppto = document.getElementById('dia-ppto').value;
-        const real = document.getElementById('dia-real').value;
-        const gas = document.getElementById('dia-gas').value;
+    function addDiario() {
+        const fec = document.getElementById('in-dia-fec').value;
+        const ppto = document.getElementById('in-dia-ppto').value;
+        const real = document.getElementById('in-dia-real').value;
+        const gas = document.getElementById('in-dia-gas').value;
         
-        if(!fec || !ppto || !real || !gas) return alert("Completa los datos del día");
+        if(!fec || !ppto || !real) return alert("Llena los campos básicos");
 
-        const ahorro = Number(ppto) - Number(real); // Lógica de tu Excel
-        const table = document.getElementById('tab-diario');
+        const ahorro = Number(ppto) - Number(real);
+        const table = document.getElementById('t-diario');
         const row = table.insertRow(-1);
         
         row.insertCell(0).innerHTML = fec;
-        row.insertCell(1).innerHTML = formatMoney(ppto);
-        row.insertCell(2).innerHTML = formatMoney(real);
-        row.insertCell(3).innerHTML = formatMoney(gas);
-        row.insertCell(4).innerHTML = formatMoney(ahorro);
+        row.insertCell(1).innerHTML = fmt(real); row.cells[1].className = "val";
+        row.insertCell(2).innerHTML = fmt(gas); row.cells[2].className = "val";
+        row.insertCell(3).innerHTML = fmt(ahorro); row.cells[3].className = "val badge-ahorro";
         
-        row.querySelectorAll('td').forEach((td, i) => { if(i>0) td.className="val"; });
-
-        ['dia-fec', 'dia-ppto', 'dia-real', 'dia-gas'].forEach(id => document.getElementById(id).value = "");
+        ['in-dia-fec', 'in-dia-ppto', 'in-dia-real', 'in-dia-gas'].forEach(id => document.getElementById(id).value = "");
     }
 </script>
 
