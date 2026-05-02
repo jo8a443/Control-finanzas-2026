@@ -22,31 +22,29 @@
             background: var(--bg-body); 
             color: var(--text-main);
             margin: 0; 
-            padding: 15px; 
+            padding: 10px; 
             padding-bottom: 50px; 
         }
 
-        /* Encabezado Principal */
         .main-header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border-silver);
         }
         .main-header h1 { 
             margin: 0; 
             color: var(--accent-blue); 
-            font-size: 22px; 
+            font-size: 20px; 
             text-transform: uppercase; 
-            letter-spacing: 2px;
         }
         .month-input {
             background: #333;
             color: white;
             border: 1px solid var(--border-silver);
-            padding: 5px 15px;
+            padding: 4px 10px;
             border-radius: 4px;
-            margin-top: 10px;
+            margin-top: 8px;
             font-weight: bold;
             text-align: center;
         }
@@ -54,100 +52,102 @@
         .card { 
             background: var(--bg-card); 
             border-radius: 12px; 
-            padding: 20px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            padding: 15px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5); 
             border: 1px solid var(--border-silver); 
-            overflow-x: auto;
+            overflow: hidden; /* Evita scroll lateral */
         }
 
         .card-header { 
             background: linear-gradient(90deg, var(--header-blue), #003366);
             color: white; 
-            margin: -20px -20px 20px -20px; 
-            padding: 12px; 
+            margin: -15px -15px 15px -15px; 
+            padding: 10px; 
             font-weight: bold; 
             text-align: center; 
-            font-size: 14px; 
+            font-size: 13px; 
             text-transform: uppercase; 
-            letter-spacing: 1px;
             border-radius: 12px 12px 0 0;
             border-bottom: 2px solid var(--silver);
         }
         
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 400px; }
-        th { background: #2c2c2c; color: var(--silver); border-bottom: 2px solid var(--border-silver); padding: 10px; text-align: left; }
-        td { border-bottom: 1px solid #333; padding: 12px 10px; color: #ccc; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; table-layout: fixed; }
+        th { background: #2c2c2c; color: var(--silver); border-bottom: 1px solid var(--border-silver); padding: 6px 4px; text-align: left; }
+        td { border-bottom: 1px solid #333; padding: 10px 4px; color: #ccc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         
         .val { text-align: right; font-weight: bold; font-family: 'Consolas', monospace; color: white; }
 
-        /* UNIFORMIDAD DE INPUTS */
         .input-group { 
             background: #252525; 
-            padding: 15px; 
+            padding: 12px; 
             border-radius: 8px; 
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
+            gap: 8px; 
             margin-top: 15px;
         }
 
         input { 
-            height: 45px; 
-            padding: 0 15px; 
+            height: 40px; 
+            padding: 0 12px; 
             background: #333;
             border: 1px solid var(--border-silver); 
             border-radius: 6px; 
             font-size: 14px; 
             color: white;
-            box-sizing: border-box;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .add-btn { 
-            height: 45px; 
+            height: 40px; 
             background: var(--header-blue); 
             color: white; 
             border: 1px solid var(--accent-blue); 
             border-radius: 6px; 
             font-weight: bold; 
-            cursor: pointer; 
-            text-transform: uppercase;
+            cursor: pointer;
         }
 
         .export-btn {
             background: var(--success);
             color: #121212;
             border: none;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             width: 100%;
             font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 30px;
+            font-size: 15px;
+            margin-bottom: 20px;
         }
         
         .delete-btn { 
-            background: rgba(255, 77, 77, 0.1); 
+            background: rgba(255, 77, 77, 0.2); 
             color: var(--danger); 
             border: 1px solid var(--danger); 
-            padding: 6px 12px; 
+            padding: 4px 6px; 
             border-radius: 4px; 
-            cursor: pointer; 
-            font-weight: bold; 
+            font-size: 10px;
         }
 
-        .total-row { background: #2a2a2a; color: white; border-top: 2px solid var(--silver); }
+        .total-row { background: #2a2a2a; color: white; }
 
-        /* Logo y Footer */
+        /* Ajuste específico Campo 5 para no scroll */
+        .col-fecha { width: 22%; }
+        .col-ppto { width: 18%; }
+        .col-real { width: 18%; }
+        .col-gas { width: 16%; }
+        .col-ahorro { width: 16%; }
+        .col-x { width: 10%; }
+
         .footer-logo {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             padding-bottom: 20px;
         }
-        .footer-logo p { font-size: 10px; color: var(--silver); margin-bottom: 5px; }
-        .footer-logo img { height: 40px; opacity: 0.8; }
+        .footer-logo p { font-size: 9px; color: var(--silver); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-logo img { height: 50px; filter: drop-shadow(0 0 5px rgba(0,212,255,0.2)); }
     </style>
 </head>
 <body>
@@ -163,94 +163,47 @@
             <tr><td>INGRESOS TOTALES</td><td class="val" id="res-ingresos" style="color: var(--accent-blue);">$ 0</td></tr>
             <tr><td>GASTOS MENSUALES</td><td class="val" id="res-gastos" style="color: var(--danger);">$ 0</td></tr>
             <tr style="background: rgba(0, 230, 118, 0.05);">
-                <td>AHORRO ACUMULADO</td>
+                <td>AHORRO TOTAL</td>
                 <td class="val" id="res-ahorro" style="color: var(--success);">$ 0</td>
             </tr>
             <tr class="total-row">
-                <td style="padding: 15px 10px;">DIFERENCIA FINAL</td>
-                <td class="val" id="res-diferencia" style="font-size: 1.2em;">$ 0</td>
+                <td style="padding: 12px 4px; font-weight: bold;">DIFERENCIA FINAL</td>
+                <td class="val" id="res-diferencia" style="font-size: 1.1em;">$ 0</td>
             </tr>
         </table>
     </div>
 
     <div class="card">
-        <div class="card-header">2. Disponible en Cuentas</div>
-        <table id="t-disponibles">
-            <thead><tr><th>Medio</th><th>Jorge</th><th>Leidy</th><th>X</th></tr></thead>
-            <tbody>
-                <tr><td>Efectivo</td><td class="val">$ 320.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-            </tbody>
-        </table>
-        <div class="input-group">
-            <input type="text" id="in-d-n" placeholder="Nombre del banco/medio">
-            <input type="number" id="in-d-j" placeholder="Monto Jorge $">
-            <input type="number" id="in-d-l" placeholder="Monto Leidy $">
-            <button class="add-btn" onclick="addDisp()">+ Añadir Cuenta</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">3. Gastos Fijos (Egresos)</div>
-        <table id="t-mensual">
-            <thead><tr><th>Concepto</th><th>Vencimiento</th><th>Monto</th><th>X</th></tr></thead>
-            <tbody id="body-mensual">
-                <tr data-valor="1165000"><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$ 1.165.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-            </tbody>
-        </table>
-        <div class="input-group">
-            <input type="text" id="in-m-n" placeholder="Concepto">
-            <input type="date" id="in-m-f">
-            <input type="number" id="in-m-v" placeholder="Monto $">
-            <button class="add-btn" onclick="addMensual()">+ Registrar Gasto</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">4. Pendientes / Mantenimiento</div>
-        <table id="t-pagar">
-            <thead><tr><th>Descripción</th><th>Monto</th><th>Fecha</th><th>X</th></tr></thead>
-            <tbody id="body-pagar">
-                <tr><td>Impuesto Apto</td><td class="val">$ 280.000</td><td>2026-04-24</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-            </tbody>
-        </table>
-        <div class="input-group">
-            <input type="text" id="in-p-n" placeholder="Descripción">
-            <input type="number" id="in-p-v" placeholder="Monto $">
-            <input type="date" id="in-p-f">
-            <button class="add-btn" onclick="addGeneric('body-pagar', ['in-p-n', 'in-p-v', 'in-p-f'], true)">+ Guardar Pendiente</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">5. Ingresos y Seguimiento Diario</div>
-        <table id="t-diario" style="table-layout: fixed; width: 100%;">
+        <div class="card-header">5. Seguimiento Diario</div>
+        <table id="t-diario">
             <thead>
                 <tr>
-                    <th style="width: 25%;">Fecha</th>
-                    <th style="width: 20%;">Ppto</th>
-                    <th style="width: 20%;">Real</th>
-                    <th style="width: 15%;">Gas</th>
-                    <th style="width: 15%;">Ahorro</th>
-                    <th style="width: 5%;">X</th>
+                    <th class="col-fecha">Fecha</th>
+                    <th class="col-ppto">Ppto</th>
+                    <th class="col-real">Real</th>
+                    <th class="col-gas">Gas</th>
+                    <th class="col-ahorro">Aho.</th>
+                    <th class="col-x">X</th>
                 </tr>
             </thead>
             <tbody id="body-diario">
-                <tr data-ppto="150000" data-ahorro="23000">
-                    <td>2026-04-06</td><td class="val">$ 150k</td><td class="val">$ 174k</td><td class="val">$ 39k</td><td class="val">$ 23k</td><td><button class="delete-btn" onclick="del(this)">X</button></td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
         <div class="input-group">
             <input type="date" id="in-di-f">
-            <input type="number" id="in-di-p" placeholder="Ingreso Ppto $">
-            <input type="number" id="in-di-r" placeholder="Gasto Real $">
-            <input type="number" id="in-di-g" placeholder="Gasolina $">
-            <input type="number" id="in-di-a" placeholder="Ahorro del día $">
-            <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
+            <div style="display: flex; gap: 5px;">
+                <input type="number" id="in-di-p" placeholder="Ppto $">
+                <input type="number" id="in-di-r" placeholder="Real $">
+            </div>
+            <div style="display: flex; gap: 5px;">
+                <input type="number" id="in-di-g" placeholder="Gasolina $">
+                <input type="number" id="in-di-a" placeholder="Ahorro $">
+            </div>
+            <button class="add-btn" onclick="addDiario()">+ Registrar Día</button>
         </div>
     </div>
 
-    <button class="export-btn" onclick="exportarExcel()">📥 EXPORTAR MES A EXCEL (.CSV)</button>
+    <button class="export-btn" onclick="exportarExcel()">📥 EXPORTAR A EXCEL</button>
 
     <div class="footer-logo">
         <p>Desarrollado por:</p>
@@ -258,76 +211,60 @@
     </div>
 
 <script>
-    function fmt(n) { return '$ ' + Number(n).toLocaleString('es-CO'); }
-
+    function fmt(n) { return '$' + Number(n).toLocaleString('es-CO'); }
     function del(btn) { btn.closest('tr').remove(); recalcularTodo(); }
 
     function recalcularTodo() {
-        let ingresosTotal = 0, ahorroTotal = 0, gastosTotal = 0;
+        let ingresos = 0, ahorro = 0;
         document.querySelectorAll('#body-diario tr').forEach(row => {
-            ingresosTotal += Number(row.getAttribute('data-ppto')) || 0;
-            ahorroTotal += Number(row.getAttribute('data-ahorro')) || 0;
+            ingresos += Number(row.getAttribute('data-ppto')) || 0;
+            ahorro += Number(row.getAttribute('data-ahorro')) || 0;
         });
-        document.querySelectorAll('#body-mensual tr').forEach(row => {
-            gastosTotal += Number(row.getAttribute('data-valor')) || 0;
-        });
-        const diferencia = ingresosTotal - gastosTotal + ahorroTotal;
-        document.getElementById('res-ingresos').innerText = fmt(ingresosTotal);
-        document.getElementById('res-gastos').innerText = fmt(gastosTotal);
-        document.getElementById('res-ahorro').innerText = fmt(ahorroTotal);
+        // Aquí podrías sumar gastos de otras secciones si las incluyes
+        const diferencia = ingresos + ahorro;
+        document.getElementById('res-ingresos').innerText = fmt(ingresos);
+        document.getElementById('res-ahorro').innerText = fmt(ahorro);
         document.getElementById('res-diferencia').innerText = fmt(diferencia);
         document.getElementById('res-diferencia').style.color = diferencia < 0 ? 'var(--danger)' : 'var(--success)';
     }
 
-    function addDisp() {
-        const n = document.getElementById('in-d-n').value, j = document.getElementById('in-d-j').value || 0, l = document.getElementById('in-d-l').value || 0;
-        if(!n) return;
-        const r = document.getElementById('t-disponibles').tBodies[0].insertRow();
-        r.innerHTML = `<td>${n}</td><td class="val">${fmt(j)}</td><td class="val">${fmt(l)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
-        ['in-d-n','in-d-j','in-d-l'].forEach(id => document.getElementById(id).value = "");
-    }
-
-    function addMensual() {
-        const n = document.getElementById('in-m-n').value, f = document.getElementById('in-m-f').value, v = document.getElementById('in-m-v').value;
-        if(!n || !v) return;
-        const row = document.createElement('tr'); row.setAttribute('data-valor', v);
-        row.innerHTML = `<td>${n}</td><td>${f}</td><td class="val">${fmt(v)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
-        document.getElementById('body-mensual').appendChild(row);
-        recalcularTodo();
-        ['in-m-n','in-m-f','in-m-v'].forEach(id => document.getElementById(id).value = "");
-    }
-
-    function addGeneric(bodyId, ids, isMoney) {
-        const vals = ids.map(id => document.getElementById(id).value); if(!vals[0]) return;
-        const r = document.getElementById(bodyId).insertRow();
-        r.innerHTML = `<td>${vals[0]}</td><td class="val">${isMoney ? fmt(vals[1]) : vals[1]}</td><td>${vals[2]}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
-        ids.forEach(id => document.getElementById(id).value = "");
-    }
-
     function addDiario() {
-        const f = document.getElementById('in-di-f').value, p = document.getElementById('in-di-p').value, r = document.getElementById('in-di-r').value, g = document.getElementById('in-di-g').value || 0, a = document.getElementById('in-di-a').value || 0;
+        const f = document.getElementById('in-di-f').value;
+        const p = document.getElementById('in-di-p').value;
+        const r = document.getElementById('in-di-r').value;
+        const g = document.getElementById('in-di-g').value || 0;
+        const a = document.getElementById('in-di-a').value || 0;
         if(!f || !p) return;
-        const row = document.createElement('tr'); row.setAttribute('data-ppto', p); row.setAttribute('data-ahorro', a);
-        row.innerHTML = `<td>${f}</td><td class="val">${fmt(p)}</td><td class="val">${fmt(r)}</td><td class="val">${fmt(g)}</td><td class="val">${fmt(a)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
+        
+        const shortDate = f.split('-').slice(1).reverse().join('/'); // DD/MM
+        
+        const row = document.createElement('tr');
+        row.setAttribute('data-ppto', p);
+        row.setAttribute('data-ahorro', a);
+        row.innerHTML = `
+            <td>${shortDate}</td>
+            <td class="val">${Number(p/1000)}k</td>
+            <td class="val">${Number(r/1000)}k</td>
+            <td class="val">${Number(g/1000)}k</td>
+            <td class="val">${Number(a/1000)}k</td>
+            <td><button class="delete-btn" onclick="del(this)">X</button></td>`;
         document.getElementById('body-diario').appendChild(row);
         recalcularTodo();
         ['in-di-f','in-di-p','in-di-r','in-di-g','in-di-a'].forEach(id => document.getElementById(id).value = "");
     }
 
     function exportarExcel() {
-        let csv = "Control Financiero - Jorge\n\nFecha/Concepto;Dato1;Dato2;Monto\n";
-        document.querySelectorAll("table tr").forEach(tr => {
-            const data = Array.from(tr.cells).map(td => td.innerText.replace(/[\$\.]/g, "")).join(";");
-            csv += data + "\n";
+        let csv = "Fecha;Presupuesto;Real;Gasolina;Ahorro\n";
+        document.querySelectorAll("#body-diario tr").forEach(tr => {
+            const cells = tr.cells;
+            csv += `${cells[0].innerText};${cells[1].innerText};${cells[2].innerText};${cells[3].innerText};${cells[4].innerText}\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "Finanzas_Jorge_2026.csv";
+        link.download = "Finanzas_Jorge.csv";
         link.click();
     }
-
-    recalcularTodo();
 </script>
 </body>
 </html>
