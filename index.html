@@ -3,197 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas Elite</title>
+    <title>Jorge Finanzas 360</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #1a2a6c; --accent: #b21f1f; --success: #27ae60; --warning: #f39c12; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; }
+        :root { --primary: #1a2a6c; --secondary: #b21f1f; --success: #27ae60; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #333; }
+        .section-title { background: var(--primary); color: white; padding: 10px; border-radius: 8px 8px 0 0; margin-top: 20px; font-size: 1.1em; display: flex; justify-content: space-between; }
+        .card { background: white; padding: 15px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px; }
         
-        /* Dashboard Visual */
-        .header-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .stat-card b { display: block; font-size: 1.2em; color: var(--primary); }
-        .stat-card small { color: #888; text-transform: uppercase; font-size: 0.7em; }
+        /* Gráficas integradas */
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        canvas { max-width: 100%; height: 140px !important; }
 
-        .card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h2 { font-size: 1.1em; margin: 0 0 15px 0; display: flex; justify-content: space-between; align-items: center; }
+        /* Estilo de Tablas */
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 10px; }
+        th { background: #eee; padding: 8px; text-align: left; border-bottom: 2px solid #ddd; }
+        td { padding: 8px; border-bottom: 1px solid #f0f0f0; }
+        .row-total { background: #f9f9f9; font-weight: bold; }
         
-        /* Estilos de inputs superiores al Excel */
-        .input-group { background: #f1f3f4; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        input, select, button { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; }
-        button.primary { background: var(--primary); color: white; border: none; font-weight: bold; }
-        
-        /* Tabla Pro */
-        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f1f1; align-items: center; }
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75em; font-weight: bold; cursor: pointer; }
-        .badge-pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-        .badge-paid { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-
-        canvas { max-height: 180px; margin-bottom: 10px; }
-        .tab-btn { background: #eee; color: #555; border: none; padding: 8px; font-size: 0.8em; border-radius: 5px; }
+        /* Formularios y Botones */
+        .input-box { background: #eef2f3; padding: 15px; border-radius: 10px; margin-top: 10px; }
+        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .btn-add { background: var(--success); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .btn-pay { background: var(--secondary); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8em; }
+        .paid { background: #ccc !important; text-decoration: line-through; }
     </style>
 </head>
 <body>
 
-<div class="header-stats">
-    <div class="stat-card">
-        <small>Presupuesto</small>
-        <b id="totalPpto">$5.750.000</b>
-    </div>
-    <div class="stat-card">
-        <small>Real Gastado</small>
-        <b id="totalReal" style="color: var(--accent);">$0</b>
-    </div>
-</div>
-
+<div class="section-title">BALANCE GENERAL 2026</div>
 <div class="card">
-    <h2>Gráfica de Gastos</h2>
-    <canvas id="mainChart"></canvas>
+    <div class="dashboard">
+        <canvas id="chartPresupuesto"></canvas>
+        <canvas id="chartSaldos"></canvas>
+    </div>
+    <table>
+        <tr><td>Presupuesto Inicial</td><td class="row-total">$5.750.000</td></tr>
+        <tr><td>Gastos Realizados</td><td id="txtRealTotal" style="color:red">$0</td></tr>
+        <tr><td>Saldo Disponible</td><td id="txtDisponible" style="color:green; font-weight:bold">$0</td></tr>
+    </table>
 </div>
 
+<div class="section-title">DISPONIBLES (CUENTAS)</div>
+<div class="card" id="listaCuentas">
+    </div>
+
+<div class="section-title">SEGUIMIENTO DIARIO <span>Abril</span></div>
 <div class="card">
-    <h2 style="color: var(--accent);">Gasto No Especificado / Diario</h2>
-    <div class="input-group">
-        <input type="text" id="descGasto" placeholder="¿En qué gastaste hoy?">
-        <input type="number" id="montoGasto" placeholder="Monto $">
-        <select id="cuentaOrigen">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Nequi">Nequi</option>
-            <option value="Uber/Didi">Uber/Didi</option>
-        </select>
-        <button class="primary" onclick="registrarGastoExtra()">Registrar en Historial</button>
+    <div style="overflow-x:auto;">
+        <table id="tablaDiaria">
+            <thead>
+                <tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Gas</th><th>Ahorro</th></tr>
+            </thead>
+            <tbody id="cuerpoDiario"></tbody>
+        </table>
+    </div>
+    <div class="input-box">
+        <small>Registrar gasto del día:</small>
+        <input type="date" id="d-fecha">
+        <input type="number" id="d-ppto" placeholder="Presupuesto Diario">
+        <input type="number" id="d-real" placeholder="Gasto Real">
+        <button class="btn-add" onclick="agregarDia()">+ Agregar al Historial</button>
     </div>
 </div>
 
+<div class="section-title">GASTOS Y SERVICIOS</div>
 <div class="card">
-    <h2>Mis Bolsillos (Saldos)</h2>
-    <div id="cuentasList"></div>
-</div>
-
-<div class="card">
-    <h2>Gastos Fijos Mensuales</h2>
-    <div id="serviciosList"></div>
-</div>
-
-<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:white; padding:25px; border-radius:20px; width:80%;">
-        <h3>Confirmar Pago</h3>
-        <p id="modalInfo"></p>
-        <div id="modalButtons"></div>
-        <button onclick="document.getElementById('modal').style.display='none'" style="background:#888; color:white; margin-top:10px">Cancelar</button>
-    </div>
+    <table id="tablaServicios">
+        <thead>
+            <tr><th>Descripción</th><th>Monto</th><th>Acción</th></tr>
+        </thead>
+        <tbody id="cuerpoServicios"></tbody>
+    </table>
 </div>
 
 <script>
-    // DATA CARGADA DESDE TUS FOTOS
+    // DATA CARGADA DEL EXCEL
     const inicial = {
-        ppto: 5750000,
-        real: 0,
-        cuentas: { "Efectivo": 320000, "Nequi": 123000, "Uber/Didi": 409000 },
+        cuentas: { "Efectivo": 320000, "Nequi": 123000, "Daviplata": 50000, "Uber/Didi": 409000, "Caja Social": 10000 },
         servicios: [
             { n: "Cuota Carro", v: 1165000, p: false },
             { n: "Tarjeta Nu", v: 1000000, p: false },
             { n: "Mundo Mujer", v: 330000, p: false },
             { n: "Administración", v: 220000, p: false },
-            { n: "Luz", v: 138700, p: false },
-            { n: "Agua", v: 95000, p: false }
+            { n: "Internet Leidy", v: 95000, p: false },
+            { n: "Luz / Agua", v: 233700, p: false }
         ],
-        extraHistory: []
+        diario: [
+            { f: '2026-04-06', p: 150000, r: 174000, g: 39000, a: 23000 },
+            { f: '2026-04-07', p: 250000, r: 191000, g: 28000, a: 17000 }
+        ],
+        pptoMensual: 5750000,
+        realTotal: 0
     };
 
-    let db = JSON.parse(localStorage.getItem('jorge_finance_v5')) || inicial;
-    let myChart;
-
-    function initChart() {
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Ejecutado', 'Disponible'],
-                datasets: [{
-                    data: [db.real, db.ppto - db.real],
-                    backgroundColor: ['#b21f1f', '#27ae60'],
-                    borderWidth: 0
-                }]
-            },
-            options: { cutout: '70%', plugins: { legend: { position: 'bottom' } } }
-        });
-    }
+    let data = JSON.parse(localStorage.getItem('jorge_pro_db')) || inicial;
+    let chart1, chart2;
 
     function render() {
-        document.getElementById('totalReal').innerText = `$${db.real.toLocaleString()}`;
-        
-        // Render Cuentas
-        const cList = document.getElementById('cuentasList');
-        cList.innerHTML = '';
-        for (let c in db.cuentas) {
-            cList.innerHTML += `<div class="row"><span>${c}</span><span style="font-weight:bold">$${db.cuentas[c].toLocaleString()}</span></div>`;
+        // Totales
+        document.getElementById('txtRealTotal').innerText = `$${data.realTotal.toLocaleString()}`;
+        document.getElementById('txtDisponible').innerText = `$${(data.pptoMensual - data.realTotal).toLocaleString()}`;
+
+        // Cuentas
+        const divC = document.getElementById('listaCuentas');
+        divC.innerHTML = '';
+        for (let c in data.cuentas) {
+            divC.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0">
+                <span>${c}</span><b>$${data.cuentas[c].toLocaleString()}</b>
+            </div>`;
         }
 
-        // Render Servicios
-        const sList = document.getElementById('serviciosList');
-        sList.innerHTML = '';
-        db.servicios.forEach((s, i) => {
-            sList.innerHTML += `
-                <div class="row">
-                    <span>${s.n} <br><small style="color:gray">$${s.v.toLocaleString()}</small></span>
-                    <span class="badge ${s.p ? 'badge-paid' : 'badge-pending'}" onclick="abrirPago(${i})">
-                        ${s.p ? 'PAGADO ✓' : 'PENDIENTE'}
-                    </span>
-                </div>`;
+        // Diario
+        const cuerpoD = document.getElementById('cuerpoDiario');
+        cuerpoD.innerHTML = '';
+        data.diario.forEach(d => {
+            cuerpoD.innerHTML += `<tr>
+                <td>${d.f}</td><td>$${d.p}</td><td>$${d.r}</td><td>$${d.g}</td><td style="color:green">$${d.a}</td>
+            </tr>`;
         });
 
-        if(myChart) {
-            myChart.data.datasets[0].data = [db.real, db.ppto - db.real];
-            myChart.update();
-        }
-        localStorage.setItem('jorge_finance_v5', JSON.stringify(db));
+        // Servicios
+        const cuerpoS = document.getElementById('cuerpoServicios');
+        cuerpoS.innerHTML = '';
+        data.servicios.forEach((s, i) => {
+            cuerpoS.innerHTML += `<tr>
+                <td>${s.n}</td><td>$${s.v.toLocaleString()}</td>
+                <td><button class="btn-pay ${s.p?'paid':''}" onclick="pagarServicio(${i})">${s.p?'OK':'Pagar'}</button></td>
+            </tr>`;
+        });
+
+        actualizarGraficas();
+        localStorage.setItem('jorge_pro_db', JSON.stringify(data));
     }
 
-    function registrarGastoExtra() {
-        const desc = document.getElementById('descGasto').value;
-        const monto = parseInt(document.getElementById('montoGasto').value);
-        const cuenta = document.getElementById('cuentaOrigen').value;
-
-        if(desc && monto && db.cuentas[cuenta] >= monto) {
-            db.cuentas[cuenta] -= monto;
-            db.real += monto;
-            db.extraHistory.push({desc, monto, fecha: new Date()});
+    function pagarServicio(i) {
+        if(data.servicios[i].p) return;
+        const monto = data.servicios[i].v;
+        // Simulación: Paga desde Efectivo
+        if(data.cuentas["Efectivo"] >= monto) {
+            data.cuentas["Efectivo"] -= monto;
+            data.realTotal += monto;
+            data.servicios[i].p = true;
             render();
-            document.getElementById('descGasto').value = '';
-            document.getElementById('montoGasto').value = '';
-        } else { alert("Verifica el monto o el saldo disponible"); }
+        } else { alert("Saldo insuficiente en Efectivo"); }
     }
 
-    let serviceToPay = null;
-    function abrirPago(idx) {
-        if(db.servicios[idx].p) return;
-        serviceToPay = idx;
-        const m = document.getElementById('modal');
-        const mInfo = document.getElementById('modalInfo');
-        const mBtns = document.getElementById('modalButtons');
-        
-        mInfo.innerText = `Pagar ${db.servicios[idx].n} por $${db.servicios[idx].v.toLocaleString()}`;
-        mBtns.innerHTML = '';
-        for(let c in db.cuentas) {
-            mBtns.innerHTML += `<button class="primary" onclick="confirmarPagoServicio('${c}')">Pagar con ${c}</button>`;
-        }
-        m.style.display = 'flex';
-    }
-
-    function confirmarPagoServicio(cuenta) {
-        const monto = db.servicios[serviceToPay].v;
-        if(db.cuentas[cuenta] >= monto) {
-            db.cuentas[cuenta] -= monto;
-            db.real += monto;
-            db.servicios[serviceToPay].p = true;
-            document.getElementById('modal').style.display = 'none';
+    function agregarDia() {
+        const p = parseInt(document.getElementById('d-ppto').value);
+        const r = parseInt(document.getElementById('d-real').value);
+        const f = document.getElementById('d-fecha').value;
+        if(f && p && r) {
+            data.diario.push({ f, p, r, g:0, a: (p-r) });
+            data.realTotal += r;
             render();
-        } else { alert("Saldo insuficiente en " + cuenta); }
+        }
     }
 
-    window.onload = () => { initChart(); render(); };
+    function actualizarGraficas() {
+        const ctx1 = document.getElementById('chartPresupuesto').getContext('2d');
+        const ctx2 = document.getElementById('chartSaldos').getContext('2d');
+        if(chart1) chart1.destroy();
+        if(chart2) chart2.destroy();
+
+        chart1 = new Chart(ctx1, {
+            type: 'doughnut',
+            data: { labels: ['Gastado', 'Libre'], datasets: [{ data: [data.realTotal, data.pptoMensual-data.realTotal], backgroundColor: ['#b21f1f', '#27ae60'] }] },
+            options: { plugins: { title: { display: true, text: 'Presupuesto' } } }
+        });
+
+        chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: { labels: Object.keys(data.cuentas), datasets: [{ label: 'Saldos', data: Object.values(data.cuentas), backgroundColor: '#3498db' }] },
+            options: { plugins: { title: { display: true, text: 'Cuentas' } } }
+        });
+    }
+
+    window.onload = render;
 </script>
-
 </body>
 </html>
