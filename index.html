@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 2026 - Vista Única</title>
+    <title>Jorge Finanzas 2026 - Sistema Inteligente</title>
     <style>
-        :root { --primary: #1a2a6c; --excel-blue: #dae8fc; --bg: #f4f7f6; --danger: #e74c3c; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+        :root { --primary: #1a2a6c; --excel-blue: #dae8fc; --bg: #f4f7f6; --danger: #e74c3c; --success: #27ae60; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; padding-bottom: 50px; }
         
         .card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ccc; }
         .card-header { background: #333; color: white; margin: -15px -15px 15px -15px; padding: 10px; font-weight: bold; text-align: center; font-size: 0.9em; text-transform: uppercase; }
@@ -18,12 +18,11 @@
         
         .input-group { background: #f1f3f5; padding: 12px; border-radius: 0 0 8px 8px; border: 1px solid #ddd; border-top: none; display: grid; gap: 8px; margin-bottom: 10px; }
         input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
-        .add-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
+        .add-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
         
-        .delete-btn { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .delete-btn { background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .total-row { background: #d9e1f2; font-weight: bold; }
-        
-        h2 { font-size: 1.2em; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; margin-top: 30px; }
+        .highlight-row { background: #fff2cc; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -31,23 +30,26 @@
     <div class="card">
         <div class="card-header">1. Balance General</div>
         <table>
-            <tr><td>PRESUPUESTO MENSUAL</td><td class="val">$ 5.750.000</td></tr>
-            <tr><td>REAL MENSUAL</td><td class="val">$ 2.106.000</td></tr>
-            <tr><td>DIFERENCIA</td><td class="val" style="color:red">-$ 3.644.000</td></tr>
-            <tr class="total-row"><td>SALDO DE EFECTIVO</td><td class="val">$ 5.750.000</td></tr>
+            <tr><td>PRESUPUESTO INICIAL</td><td class="val">$ 5.750.000</td></tr>
+            <tr><td>GASTO REAL (Mensual + Diario)</td><td class="val" id="res-gasto-total">$ 0</td></tr>
+            <tr class="highlight-row">
+                <td>AHORRO (Ingreso Manual)</td>
+                <td class="val"><input type="number" id="ahorro-manual" value="0" oninput="recalcularTodo()" style="width: 100px; text-align: right; font-weight: bold; border: 1px dashed #333;"></td>
+            </tr>
+            <tr class="total-row">
+                <td>DIFERENCIA FINAL</td>
+                <td class="val" id="res-diferencia">$ 0</td>
+            </tr>
         </table>
     </div>
 
     <div class="card">
         <div class="card-header">2. Disponible (Cuentas)</div>
         <table id="t-disponibles">
-            <thead>
-                <tr><th>Medio</th><th>Jorge</th><th>Leidy</th><th>X</th></tr>
-            </thead>
+            <thead><tr><th>Medio</th><th>Jorge</th><th>Leidy</th><th>X</th></tr></thead>
             <tbody>
                 <tr><td>Efectivo</td><td class="val">$ 320.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
                 <tr><td>Nequi</td><td class="val">$ 123.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-                <tr><td>Uber / Didi</td><td class="val">$ 409.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
@@ -62,73 +64,90 @@
         <div class="card-header">3. Gasto Mensual (Facturas)</div>
         <table id="t-mensual">
             <thead><tr><th>Concepto</th><th>Vence</th><th>Monto</th><th>X</th></tr></thead>
-            <tbody>
-                <tr><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$ 1.165.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
+            <tbody id="body-mensual">
+                <tr data-valor="1165000"><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$ 1.165.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
             <input type="text" id="in-m-n" placeholder="Concepto">
             <input type="date" id="in-m-f">
             <input type="number" id="in-m-v" placeholder="Monto $">
-            <button class="add-btn" onclick="addGeneric('t-mensual', ['in-m-n', 'in-m-f', 'in-m-v'])">+ Guardar Gasto</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">4. Cuentas por Pagar / Otros</div>
-        <table id="t-pagar">
-            <thead><tr><th>Descripción</th><th>Monto</th><th>Fecha</th><th>X</th></tr></thead>
-            <tbody>
-                <tr><td>Impuesto Apto</td><td class="val">$ 280.000</td><td>2026-04-24</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-            </tbody>
-        </table>
-        <div class="input-group">
-            <input type="text" id="in-p-n" placeholder="Descripción">
-            <input type="number" id="in-p-v" placeholder="Monto $">
-            <input type="date" id="in-p-f">
-            <button class="add-btn" onclick="addGeneric('t-pagar', ['in-p-n', 'in-p-v', 'in-p-f'])">+ Registrar Pago</button>
+            <button class="add-btn" onclick="addMensual()">+ Guardar Gasto</button>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">5. Seguimiento Diario</div>
         <table id="t-diario">
-            <thead><tr><th>Fecha</th><th>Real</th><th>Gas</th><th>Ahorro</th><th>X</th></tr></thead>
-            <tbody>
-                <tr><td>2026-04-06</td><td class="val">$ 174.000</td><td class="val">$ 39.000</td><td class="val" style="color:green">$ 23.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
+            <thead><tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Gas</th><th>X</th></tr></thead>
+            <tbody id="body-diario">
+                <tr data-valor="174000"><td>2026-04-06</td><td class="val">$ 150.000</td><td class="val">$ 174.000</td><td class="val">$ 39.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
             <input type="date" id="in-di-f">
-            <input type="number" id="in-di-p" placeholder="Ppto diario $">
-            <input type="number" id="in-di-r" placeholder="Gasto real $">
+            <input type="number" id="in-di-p" placeholder="Presupuesto diario $">
+            <input type="number" id="in-di-r" placeholder="Gasto real diario $">
             <input type="number" id="in-di-g" placeholder="Gas $">
             <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
         </div>
     </div>
 
 <script>
+    const pptoInicial = 5750000;
+
     function fmt(n) { return '$ ' + Number(n).toLocaleString('es-CO'); }
-    function del(btn) { btn.closest('tr').remove(); }
+
+    function del(btn) { 
+        btn.closest('tr').remove(); 
+        recalcularTodo();
+    }
+
+    function recalcularTodo() {
+        let sumaMensual = 0;
+        document.querySelectorAll('#body-mensual tr').forEach(row => {
+            sumaMensual += Number(row.getAttribute('data-valor')) || 0;
+        });
+
+        let sumaDiario = 0;
+        document.querySelectorAll('#body-diario tr').forEach(row => {
+            sumaDiario += Number(row.getAttribute('data-valor')) || 0;
+        });
+
+        const ahorro = Number(document.getElementById('ahorro-manual').value) || 0;
+        const totalGastos = sumaMensual + sumaDiario;
+        const diferencia = pptoInicial - totalGastos + ahorro;
+
+        document.getElementById('res-gasto-total').innerText = fmt(totalGastos);
+        document.getElementById('res-diferencia').innerText = fmt(diferencia);
+        
+        const resDif = document.getElementById('res-diferencia');
+        resDif.style.color = diferencia < 0 ? 'var(--danger)' : 'var(--success)';
+    }
 
     function addDisp() {
         const n = document.getElementById('in-d-n').value;
         const j = document.getElementById('in-d-j').value || 0;
         const l = document.getElementById('in-d-l').value || 0;
         if(!n) return;
-        const table = document.getElementById('t-disponibles').getElementsByTagName('tbody')[0];
+        const table = document.getElementById('t-disponibles').tBodies[0];
         const row = table.insertRow();
         row.innerHTML = `<td>${n}</td><td class="val">${fmt(j)}</td><td class="val">${fmt(l)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
         ['in-d-n','in-d-j','in-d-l'].forEach(id => document.getElementById(id).value = "");
     }
 
-    function addGeneric(tId, iIds) {
-        const vals = iIds.map(id => document.getElementById(id).value);
-        if(vals[0] === "" || vals[2] === "") return;
-        const table = document.getElementById(tId).getElementsByTagName('tbody')[0];
-        const row = table.insertRow();
-        row.innerHTML = `<td>${vals[0]}</td><td>${vals[1]}</td><td class="val">${fmt(vals[2])}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
-        iIds.forEach(id => document.getElementById(id).value = "");
+    function addMensual() {
+        const n = document.getElementById('in-m-n').value;
+        const f = document.getElementById('in-m-f').value;
+        const v = document.getElementById('in-m-v').value;
+        if(!n || !v) return;
+        const table = document.getElementById('body-mensual');
+        const row = document.createElement('tr');
+        row.setAttribute('data-valor', v);
+        row.innerHTML = `<td>${n}</td><td>${f}</td><td class="val">${fmt(v)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
+        table.appendChild(row);
+        recalcularTodo();
+        ['in-m-n','in-m-f','in-m-v'].forEach(id => document.getElementById(id).value = "");
     }
 
     function addDiario() {
@@ -136,13 +155,18 @@
         const p = document.getElementById('in-di-p').value;
         const r = document.getElementById('in-di-r').value;
         const g = document.getElementById('in-di-g').value || 0;
-        if(!f || !p || !r) return;
-        const a = Number(p) - Number(r);
-        const table = document.getElementById('t-diario').getElementsByTagName('tbody')[0];
-        const row = table.insertRow();
-        row.innerHTML = `<td>${f}</td><td class="val">${fmt(r)}</td><td class="val">${fmt(g)}</td><td class="val" style="color:green">${fmt(a)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
+        if(!f || !r) return;
+        const table = document.getElementById('body-diario');
+        const row = document.createElement('tr');
+        row.setAttribute('data-valor', r);
+        row.innerHTML = `<td>${f}</td><td class="val">${fmt(p)}</td><td class="val">${fmt(r)}</td><td class="val">${fmt(g)}</td><td><button class="delete-btn" onclick="del(this)">X</button></td>`;
+        table.appendChild(row);
+        recalcularTodo();
         ['in-di-f','in-di-p','in-di-r','in-di-g'].forEach(id => document.getElementById(id).value = "");
     }
+
+    // Ejecutar al cargar para inicializar el balance
+    recalcularTodo();
 </script>
 </body>
 </html>
