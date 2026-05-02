@@ -3,41 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 2026 - Control Total</title>
+    <title>Jorge Finanzas 2026 - Vista Única</title>
     <style>
         :root { --primary: #1a2a6c; --excel-blue: #dae8fc; --bg: #f4f7f6; --danger: #e74c3c; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
         
-        /* Navegación Inferior Estilo App */
-        .nav-tabs { position: fixed; bottom: 0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .tab-item { flex: 1; text-align: center; padding: 15px 5px; font-size: 0.8em; cursor: pointer; color: #888; font-weight: bold; }
-        .tab-item.active { color: var(--primary); border-top: 3px solid var(--primary); background: #f9f9f9; }
-
-        .container { padding: 15px; display: none; max-width: 800px; margin: auto; }
-        .container.active { display: block; }
-
-        .card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ccc; }
-        .card-header { background: #333; color: white; margin: -15px -15px 15px -15px; padding: 10px; font-weight: bold; text-align: center; font-size: 0.9em; }
+        .card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ccc; }
+        .card-header { background: #333; color: white; margin: -15px -15px 15px -15px; padding: 10px; font-weight: bold; text-align: center; font-size: 0.9em; text-transform: uppercase; }
         
-        table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; background: white; }
         th { background: var(--excel-blue); border: 1px solid #6c8ebf; padding: 8px; text-align: left; }
         td { border: 1px solid #ddd; padding: 8px; }
         .val { text-align: right; font-weight: bold; font-family: monospace; }
         
-        /* Formularios de entrada */
-        .input-group { background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin-top: 10px; display: grid; gap: 8px; }
-        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        .add-btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .input-group { background: #f1f3f5; padding: 12px; border-radius: 0 0 8px 8px; border: 1px solid #ddd; border-top: none; display: grid; gap: 8px; margin-bottom: 10px; }
+        input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        .add-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
         
-        .delete-btn { background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .delete-btn { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .total-row { background: #d9e1f2; font-weight: bold; }
+        
+        h2 { font-size: 1.2em; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-<div id="tab1" class="container active">
     <div class="card">
-        <div class="card-header">BALANCE GENERAL</div>
+        <div class="card-header">1. Balance General</div>
         <table>
             <tr><td>PRESUPUESTO MENSUAL</td><td class="val">$ 5.750.000</td></tr>
             <tr><td>REAL MENSUAL</td><td class="val">$ 2.106.000</td></tr>
@@ -47,53 +39,46 @@
     </div>
 
     <div class="card">
-        <div class="card-header">DISPONIBLE</div>
+        <div class="card-header">2. Disponible (Cuentas)</div>
         <table id="t-disponibles">
             <thead>
                 <tr><th>Medio</th><th>Jorge</th><th>Leidy</th><th>X</th></tr>
             </thead>
             <tbody>
-                <tr><td>Av villas/Lulo Bank</td><td class="val">$ 0</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
                 <tr><td>Efectivo</td><td class="val">$ 320.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
                 <tr><td>Nequi</td><td class="val">$ 123.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-                <tr><td>Daviplata</td><td class="val">$ 0</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-                <tr><td>Uber</td><td class="val">$ 304.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-                <tr><td>Didi</td><td class="val">$ 105.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
+                <tr><td>Uber / Didi</td><td class="val">$ 409.000</td><td class="val">$ 0</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
             <input type="text" id="in-d-n" placeholder="Nombre medio">
             <input type="number" id="in-d-j" placeholder="Valor Jorge $">
             <input type="number" id="in-d-l" placeholder="Valor Leidy $">
-            <button class="add-btn" onclick="addDisp()">Añadir Medio</button>
+            <button class="add-btn" onclick="addDisp()">+ Añadir Medio</button>
         </div>
     </div>
-</div>
 
-<div id="tab2" class="container">
     <div class="card">
-        <div class="card-header">GASTO MENSUAL DETALLADO</div>
+        <div class="card-header">3. Gasto Mensual (Facturas)</div>
         <table id="t-mensual">
             <thead><tr><th>Concepto</th><th>Vence</th><th>Monto</th><th>X</th></tr></thead>
             <tbody>
                 <tr><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$ 1.165.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
-                <tr><td>Tarjeta Nu</td><td>2026-02-01</td><td class="val">$ 1.000.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
-            <input type="text" id="in-m-n" placeholder="Concepto (Ej: Luz)">
+            <input type="text" id="in-m-n" placeholder="Concepto">
             <input type="date" id="in-m-f">
             <input type="number" id="in-m-v" placeholder="Monto $">
-            <button class="add-btn" onclick="addGeneric('t-mensual', ['in-m-n', 'in-m-f', 'in-m-v'])">Guardar Gasto</button>
+            <button class="add-btn" onclick="addGeneric('t-mensual', ['in-m-n', 'in-m-f', 'in-m-v'])">+ Guardar Gasto</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">CUENTAS POR PAGAR / MANTENIMIENTO</div>
+        <div class="card-header">4. Cuentas por Pagar / Otros</div>
         <table id="t-pagar">
             <thead><tr><th>Descripción</th><th>Monto</th><th>Fecha</th><th>X</th></tr></thead>
             <tbody>
-                <tr><td>Cauchos Puertas</td><td class="val">$ 160.000</td><td>-</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
                 <tr><td>Impuesto Apto</td><td class="val">$ 280.000</td><td>2026-04-24</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
@@ -101,14 +86,12 @@
             <input type="text" id="in-p-n" placeholder="Descripción">
             <input type="number" id="in-p-v" placeholder="Monto $">
             <input type="date" id="in-p-f">
-            <button class="add-btn" onclick="addGeneric('t-pagar', ['in-p-n', 'in-p-v', 'in-p-f'])">Registrar</button>
+            <button class="add-btn" onclick="addGeneric('t-pagar', ['in-p-n', 'in-p-v', 'in-p-f'])">+ Registrar Pago</button>
         </div>
     </div>
-</div>
 
-<div id="tab3" class="container">
     <div class="card">
-        <div class="card-header">SEGUIMIENTO DIARIO ABRIL</div>
+        <div class="card-header">5. Seguimiento Diario</div>
         <table id="t-diario">
             <thead><tr><th>Fecha</th><th>Real</th><th>Gas</th><th>Ahorro</th><th>X</th></tr></thead>
             <tbody>
@@ -120,33 +103,14 @@
             <input type="number" id="in-di-p" placeholder="Ppto diario $">
             <input type="number" id="in-di-r" placeholder="Gasto real $">
             <input type="number" id="in-di-g" placeholder="Gas $">
-            <button class="add-btn" onclick="addDiario()">Finalizar Día</button>
+            <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
         </div>
     </div>
-</div>
-
-<div class="nav-tabs">
-    <div class="tab-item active" onclick="tab(1)">📊 Balance</div>
-    <div class="tab-item" onclick="tab(2)">💸 Gastos</div>
-    <div class="tab-item" onclick="tab(3)">📅 Diario</div>
-</div>
 
 <script>
-    // Navegación entre pestañas
-    function tab(n) {
-        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab'+n).classList.add('active');
-        event.currentTarget.classList.add('active');
-    }
-
-    // Formato de moneda
     function fmt(n) { return '$ ' + Number(n).toLocaleString('es-CO'); }
-
-    // Borrar fila
     function del(btn) { btn.closest('tr').remove(); }
 
-    // Añadir a Disponibles
     function addDisp() {
         const n = document.getElementById('in-d-n').value;
         const j = document.getElementById('in-d-j').value || 0;
@@ -158,7 +122,6 @@
         ['in-d-n','in-d-j','in-d-l'].forEach(id => document.getElementById(id).value = "");
     }
 
-    // Añadir a Gastos / Pagar
     function addGeneric(tId, iIds) {
         const vals = iIds.map(id => document.getElementById(id).value);
         if(vals[0] === "" || vals[2] === "") return;
@@ -168,7 +131,6 @@
         iIds.forEach(id => document.getElementById(id).value = "");
     }
 
-    // Añadir al Seguimiento Diario
     function addDiario() {
         const f = document.getElementById('in-di-f').value;
         const p = document.getElementById('in-di-p').value;
@@ -182,6 +144,5 @@
         ['in-di-f','in-di-p','in-di-r','in-di-g'].forEach(id => document.getElementById(id).value = "");
     }
 </script>
-
 </body>
 </html>
