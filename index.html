@@ -3,179 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 360</title>
+    <title>Finanzas Jorge Pro - Estructura Excel</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #1a2a6c; --secondary: #b21f1f; --success: #27ae60; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #333; }
-        .section-title { background: var(--primary); color: white; padding: 10px; border-radius: 8px 8px 0 0; margin-top: 20px; font-size: 1.1em; display: flex; justify-content: space-between; }
-        .card { background: white; padding: 15px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 10px; }
+        :root { --blue-excel: #2c3e50; --green-excel: #27ae60; --red-excel: #e74c3c; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; padding: 15px; font-size: 14px; color: #333; }
         
-        /* Gráficas integradas */
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        canvas { max-width: 100%; height: 140px !important; }
+        /* Contenedores Estilo Excel */
+        .section { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
+        .header { background: var(--blue-excel); color: white; padding: 12px; font-weight: bold; text-transform: uppercase; font-size: 0.9em; letter-spacing: 1px; }
+        
+        .content { padding: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        th { text-align: left; background: #f2f2f2; padding: 10px; border-bottom: 2px solid #ddd; font-size: 0.8em; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        
+        /* Gráficas */
+        .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        canvas { max-height: 160px; }
 
-        /* Estilo de Tablas */
-        table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 10px; }
-        th { background: #eee; padding: 8px; text-align: left; border-bottom: 2px solid #ddd; }
-        td { padding: 8px; border-bottom: 1px solid #f0f0f0; }
-        .row-total { background: #f9f9f9; font-weight: bold; }
+        /* Estilos de Celda Específicos */
+        .val-ppto { color: #555; }
+        .val-real { color: var(--red-excel); font-weight: bold; }
+        .val-ahorro { color: var(--green-excel); font-weight: bold; }
         
-        /* Formularios y Botones */
-        .input-box { background: #eef2f3; padding: 15px; border-radius: 10px; margin-top: 10px; }
-        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; }
-        .btn-add { background: var(--success); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .btn-pay { background: var(--secondary); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8em; }
-        .paid { background: #ccc !important; text-decoration: line-through; }
+        /* Formulario de Gastos Adicionales */
+        .add-form { background: #f1f4f9; padding: 15px; border-top: 1px solid #ddd; }
+        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { background: var(--blue-excel); color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:active { transform: scale(0.98); }
+        
+        .btn-pay { background: #eee; color: #333; border: 1px solid #ccc; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; }
+        .is-paid { background: var(--green-excel) !important; color: white !important; border: none; }
     </style>
 </head>
 <body>
 
-<div class="section-title">BALANCE GENERAL 2026</div>
-<div class="card">
-    <div class="dashboard">
-        <canvas id="chartPresupuesto"></canvas>
-        <canvas id="chartSaldos"></canvas>
+<div class="section">
+    <div class="header">Balance General e Ingresos</div>
+    <div class="content">
+        <div class="charts-row">
+            <canvas id="chartDona"></canvas>
+            <canvas id="chartBarras"></canvas>
+        </div>
+        <table>
+            <tr><td><b>Ingresos (Presupuesto)</b></td><td class="val-ahorro">$5,750,000</td></tr>
+            <tr><td><b>Gasto Real Ejecutado</b></td><td id="totalReal" class="val-real">$0</td></tr>
+            <tr><td><b>Saldo Disponible Final</b></td><td id="totalDisponible" style="font-weight: bold; font-size: 1.2em;">$0</td></tr>
+        </table>
     </div>
-    <table>
-        <tr><td>Presupuesto Inicial</td><td class="row-total">$5.750.000</td></tr>
-        <tr><td>Gastos Realizados</td><td id="txtRealTotal" style="color:red">$0</td></tr>
-        <tr><td>Saldo Disponible</td><td id="txtDisponible" style="color:green; font-weight:bold">$0</td></tr>
-    </table>
 </div>
 
-<div class="section-title">DISPONIBLES (CUENTAS)</div>
-<div class="card" id="listaCuentas">
-    </div>
+<div class="section">
+    <div class="header">Disponibles / Bolsillos</div>
+    <div class="content" id="listaCuentas">
+        </div>
+</div>
 
-<div class="section-title">SEGUIMIENTO DIARIO <span>Abril</span></div>
-<div class="card">
-    <div style="overflow-x:auto;">
-        <table id="tablaDiaria">
+<div class="section">
+    <div class="header">Seguimiento Diario (Gastos Día a Día)</div>
+    <div class="content" style="overflow-x: auto;">
+        <table>
             <thead>
-                <tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Gas</th><th>Ahorro</th></tr>
+                <tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Ahorro</th></tr>
             </thead>
             <tbody id="cuerpoDiario"></tbody>
         </table>
     </div>
-    <div class="input-box">
-        <small>Registrar gasto del día:</small>
-        <input type="date" id="d-fecha">
-        <input type="number" id="d-ppto" placeholder="Presupuesto Diario">
-        <input type="number" id="d-real" placeholder="Gasto Real">
-        <button class="btn-add" onclick="agregarDia()">+ Agregar al Historial</button>
+</div>
+
+<div class="section">
+    <div class="header">Gastos Fijos / Facturas Mensuales</div>
+    <div class="content">
+        <table id="tablaServicios">
+            <thead>
+                <tr><th>Descripción</th><th>Monto</th><th>Estado</th></tr>
+            </thead>
+            <tbody id="cuerpoServicios"></tbody>
+        </table>
     </div>
 </div>
 
-<div class="section-title">GASTOS Y SERVICIOS</div>
-<div class="card">
-    <table id="tablaServicios">
-        <thead>
-            <tr><th>Descripción</th><th>Monto</th><th>Acción</th></tr>
-        </thead>
-        <tbody id="cuerpoServicios"></tbody>
-    </table>
+<div class="section">
+    <div class="header">Gastos Adicionales / Extras</div>
+    <div class="content">
+        <table id="tablaExtras">
+            <thead>
+                <tr><th>Descripción</th><th>Monto</th><th>Estado</th></tr>
+            </thead>
+            <tbody id="cuerpoExtras"></tbody>
+        </table>
+    </div>
+    <div class="add-form">
+        <strong style="display:block; margin-bottom:10px;">Registrar Nuevo Gasto Extra</strong>
+        <input type="text" id="exDesc" placeholder="Descripción (Ej: Compra repuesto)">
+        <input type="number" id="exMonto" placeholder="Monto $">
+        <select id="exCuenta">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Nequi">Nequi</option>
+            <option value="Daviplata">Daviplata</option>
+        </select>
+        <button onclick="agregarExtra()">+ Guardar Gasto Adicional</button>
+    </div>
 </div>
 
 <script>
-    // DATA CARGADA DEL EXCEL
     const inicial = {
         cuentas: { "Efectivo": 320000, "Nequi": 123000, "Daviplata": 50000, "Uber/Didi": 409000, "Caja Social": 10000 },
         servicios: [
             { n: "Cuota Carro", v: 1165000, p: false },
-            { n: "Tarjeta Nu", v: 1000000, p: false },
-            { n: "Mundo Mujer", v: 330000, p: false },
             { n: "Administración", v: 220000, p: false },
-            { n: "Internet Leidy", v: 95000, p: false },
-            { n: "Luz / Agua", v: 233700, p: false }
+            { n: "Internet Leidy/Jorge", v: 95000, p: false },
+            { n: "Luz", v: 138700, p: false },
+            { n: "Agua", v: 95000, p: false },
+            { n: "Gas", v: 20000, p: false }
+        ],
+        extras: [
+            { n: "Cauchos Puertas", v: 160000, p: false },
+            { n: "Arreglo Farola", v: 17000, p: false },
+            { n: "Rectificación Rines", v: 400000, p: false }
         ],
         diario: [
-            { f: '2026-04-06', p: 150000, r: 174000, g: 39000, a: 23000 },
-            { f: '2026-04-07', p: 250000, r: 191000, g: 28000, a: 17000 }
+            { f: '06/04', p: 150000, r: 174000, a: 23000 },
+            { f: '07/04', p: 250000, r: 191000, a: 17000 }
         ],
-        pptoMensual: 5750000,
+        pptoTotal: 5750000,
         realTotal: 0
     };
 
-    let data = JSON.parse(localStorage.getItem('jorge_pro_db')) || inicial;
+    let data = JSON.parse(localStorage.getItem('jorge_v6_full')) || inicial;
     let chart1, chart2;
 
     function render() {
-        // Totales
-        document.getElementById('txtRealTotal').innerText = `$${data.realTotal.toLocaleString()}`;
-        document.getElementById('txtDisponible').innerText = `$${(data.pptoMensual - data.realTotal).toLocaleString()}`;
+        // Totales superiores
+        document.getElementById('totalReal').innerText = `$${data.realTotal.toLocaleString()}`;
+        document.getElementById('totalDisponible').innerText = `$${(data.pptoTotal - data.realTotal).toLocaleString()}`;
 
         // Cuentas
         const divC = document.getElementById('listaCuentas');
         divC.innerHTML = '';
         for (let c in data.cuentas) {
-            divC.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0">
-                <span>${c}</span><b>$${data.cuentas[c].toLocaleString()}</b>
+            divC.innerHTML += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;">
+                <span>${c}</span><b class="val-ahorro">$${data.cuentas[c].toLocaleString()}</b>
             </div>`;
         }
 
-        // Diario
+        // Tabla Diario
         const cuerpoD = document.getElementById('cuerpoDiario');
         cuerpoD.innerHTML = '';
         data.diario.forEach(d => {
-            cuerpoD.innerHTML += `<tr>
-                <td>${d.f}</td><td>$${d.p}</td><td>$${d.r}</td><td>$${d.g}</td><td style="color:green">$${d.a}</td>
-            </tr>`;
+            cuerpoD.innerHTML += `<tr><td>${d.f}</td><td>$${d.p.toLocaleString()}</td><td class="val-real">$${d.r.toLocaleString()}</td><td class="val-ahorro">$${d.a.toLocaleString()}</td></tr>`;
         });
 
-        // Servicios
-        const cuerpoS = document.getElementById('cuerpoServicios');
-        cuerpoS.innerHTML = '';
-        data.servicios.forEach((s, i) => {
-            cuerpoS.innerHTML += `<tr>
-                <td>${s.n}</td><td>$${s.v.toLocaleString()}</td>
-                <td><button class="btn-pay ${s.p?'paid':''}" onclick="pagarServicio(${i})">${s.p?'OK':'Pagar'}</button></td>
-            </tr>`;
-        });
+        // Tabla Servicios (Fijos)
+        renderTabla('cuerpoServicios', data.servicios);
+        // Tabla Extras (Mantenimientos/Adicionales)
+        renderTabla('cuerpoExtras', data.extras);
 
         actualizarGraficas();
-        localStorage.setItem('jorge_pro_db', JSON.stringify(data));
+        localStorage.setItem('jorge_v6_full', JSON.stringify(data));
     }
 
-    function pagarServicio(i) {
-        if(data.servicios[i].p) return;
-        const monto = data.servicios[i].v;
-        // Simulación: Paga desde Efectivo
+    function renderTabla(id, lista) {
+        const cuerpo = document.getElementById(id);
+        cuerpo.innerHTML = '';
+        lista.forEach((item, i) => {
+            cuerpo.innerHTML += `<tr>
+                <td>${item.n}</td>
+                <td class="val-ppto">$${item.v.toLocaleString()}</td>
+                <td><button class="btn-pay ${item.p?'is-paid':''}" onclick="procesarPago('${id}', ${i})">${item.p?'PAGADO':'PAGAR'}</button></td>
+            </tr>`;
+        });
+    }
+
+    function procesarPago(tipo, idx) {
+        const lista = (tipo === 'cuerpoServicios') ? data.servicios : data.extras;
+        if(lista[idx].p) return;
+        
+        const monto = lista[idx].v;
+        // Paga por defecto de Efectivo o Nequi si hay saldo
         if(data.cuentas["Efectivo"] >= monto) {
             data.cuentas["Efectivo"] -= monto;
             data.realTotal += monto;
-            data.servicios[i].p = true;
+            lista[idx].p = true;
             render();
-        } else { alert("Saldo insuficiente en Efectivo"); }
+        } else { alert("Saldo insuficiente en Efectivo para este pago."); }
     }
 
-    function agregarDia() {
-        const p = parseInt(document.getElementById('d-ppto').value);
-        const r = parseInt(document.getElementById('d-real').value);
-        const f = document.getElementById('d-fecha').value;
-        if(f && p && r) {
-            data.diario.push({ f, p, r, g:0, a: (p-r) });
-            data.realTotal += r;
+    function agregarExtra() {
+        const d = document.getElementById('exDesc').value;
+        const v = parseInt(document.getElementById('exMonto').value);
+        const c = document.getElementById('exCuenta').value;
+        if(d && v && data.cuentas[c] >= v) {
+            data.cuentas[c] -= v;
+            data.realTotal += v;
+            data.extras.push({ n: d, v: v, p: true });
             render();
-        }
+            document.getElementById('exDesc').value = '';
+            document.getElementById('exMonto').value = '';
+        } else { alert("Verifica los datos o el saldo de la cuenta elegida."); }
     }
 
     function actualizarGraficas() {
-        const ctx1 = document.getElementById('chartPresupuesto').getContext('2d');
-        const ctx2 = document.getElementById('chartSaldos').getContext('2d');
-        if(chart1) chart1.destroy();
-        if(chart2) chart2.destroy();
+        const ctx1 = document.getElementById('chartDona').getContext('2d');
+        const ctx2 = document.getElementById('chartBarras').getContext('2d');
+        if(chart1) chart1.destroy(); if(chart2) chart2.destroy();
 
         chart1 = new Chart(ctx1, {
             type: 'doughnut',
-            data: { labels: ['Gastado', 'Libre'], datasets: [{ data: [data.realTotal, data.pptoMensual-data.realTotal], backgroundColor: ['#b21f1f', '#27ae60'] }] },
-            options: { plugins: { title: { display: true, text: 'Presupuesto' } } }
+            data: { labels: ['Gastado', 'Libre'], datasets: [{ data: [data.realTotal, data.pptoTotal-data.realTotal], backgroundColor: ['#e74c3c', '#2ecc71'] }] },
+            options: { plugins: { legend: { display: false }, title: { display: true, text: '% Gasto' } } }
         });
 
         chart2 = new Chart(ctx2, {
             type: 'bar',
             data: { labels: Object.keys(data.cuentas), datasets: [{ label: 'Saldos', data: Object.values(data.cuentas), backgroundColor: '#3498db' }] },
-            options: { plugins: { title: { display: true, text: 'Cuentas' } } }
+            options: { plugins: { legend: { display: false }, title: { display: true, text: 'Disponibles' } } }
         });
     }
 
