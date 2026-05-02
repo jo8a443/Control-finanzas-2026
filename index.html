@@ -3,47 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 2026 - Control Independiente</title>
+    <title>Jorge Finanzas 2026 - Dark Silver Premium</title>
     <style>
-        :root { --primary: #1a2a6c; --excel-blue: #dae8fc; --bg: #f4f7f6; --danger: #e74c3c; --success: #27ae60; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; padding-bottom: 50px; }
+        :root { 
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --header-blue: #1a2a6c;
+            --silver: #b0b0b0;
+            --text-main: #e0e0e0;
+            --accent-blue: #00d4ff;
+            --danger: #ff4d4d;
+            --success: #00e676;
+            --border-silver: #444;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            background: var(--bg-body); 
+            color: var(--text-main);
+            margin: 0; 
+            padding: 15px; 
+            padding-bottom: 50px; 
+        }
         
-        .card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ccc; }
-        .card-header { background: #333; color: white; margin: -15px -15px 15px -15px; padding: 10px; font-weight: bold; text-align: center; font-size: 0.9em; text-transform: uppercase; }
+        .card { 
+            background: var(--bg-card); 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 1px solid var(--border-silver); 
+        }
+
+        .card-header { 
+            background: linear-gradient(90deg, var(--header-blue), #003366);
+            color: white; 
+            margin: -20px -20px 20px -20px; 
+            padding: 12px; 
+            font-weight: bold; 
+            text-align: center; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 2px solid var(--silver);
+        }
         
-        table { width: 100%; border-collapse: collapse; font-size: 0.85em; background: white; }
-        th { background: var(--excel-blue); border: 1px solid #6c8ebf; padding: 8px; text-align: left; }
-        td { border: 1px solid #ddd; padding: 8px; }
-        .val { text-align: right; font-weight: bold; font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; background: transparent; }
+        th { background: #2c2c2c; color: var(--silver); border-bottom: 2px solid var(--border-silver); padding: 10px; text-align: left; }
+        td { border-bottom: 1px solid #333; padding: 12px 10px; color: #ccc; }
         
-        .input-group { background: #f1f3f5; padding: 12px; border-radius: 0 0 8px 8px; border: 1px solid #ddd; border-top: none; display: grid; gap: 8px; margin-bottom: 10px; }
-        input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
-        .add-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .val { text-align: right; font-weight: bold; font-family: 'Consolas', monospace; color: white; }
+
+        /* UNIFORMIDAD DE INPUTS */
+        .input-group { 
+            background: #252525; 
+            padding: 15px; 
+            border-radius: 8px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-top: 15px;
+        }
+
+        input { 
+            height: 45px; /* Tamaño uniforme */
+            padding: 0 15px; 
+            background: #333;
+            border: 1px solid var(--border-silver); 
+            border-radius: 6px; 
+            font-size: 14px; 
+            color: white;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        input:focus { outline: none; border-color: var(--accent-blue); background: #3d3d3d; }
+
+        .add-btn { 
+            height: 45px; /* Tamaño uniforme */
+            background: var(--header-blue); 
+            color: white; 
+            border: 1px solid var(--accent-blue); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .add-btn:active { transform: scale(0.98); background: var(--accent-blue); }
         
-        .delete-btn { background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .total-row { background: #d9e1f2; font-weight: bold; }
+        .delete-btn { 
+            background: rgba(255, 77, 77, 0.1); 
+            color: var(--danger); 
+            border: 1px solid var(--danger); 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+        }
+
+        .total-row { background: #2a2a2a; color: white; border-top: 2px solid var(--silver); }
+        .resumen-label { color: var(--silver); font-weight: normal; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="card-header">1. Balance General</div>
+        <div class="card-header">1. Resumen Ejecutivo</div>
         <table>
-            <tr><td>INGRESOS TOTALES (Ppto Campo 5)</td><td class="val" id="res-ingresos" style="color: var(--success);">$ 0</td></tr>
-            <tr><td>GASTOS MENSUALES (Campo 3)</td><td class="val" id="res-gastos" style="color: var(--danger);">$ 0</td></tr>
-            <tr style="background: #fff2cc;">
-                <td>AHORRO ACUMULADO (Campo 5)</td>
-                <td class="val" id="res-ahorro">$ 0</td>
+            <tr><td class="resumen-label">INGRESOS TOTALES</td><td class="val" id="res-ingresos" style="color: var(--accent-blue); font-size: 1.1em;">$ 0</td></tr>
+            <tr><td class="resumen-label">GASTOS MENSUALES</td><td class="val" id="res-gastos" style="color: var(--danger);">$ 0</td></tr>
+            <tr style="background: rgba(0, 230, 118, 0.05);">
+                <td class="resumen-label">AHORRO ACUMULADO</td>
+                <td class="val" id="res-ahorro" style="color: var(--success);">$ 0</td>
             </tr>
             <tr class="total-row">
-                <td>DIFERENCIA (Ingresos - Gastos + Ahorro)</td>
-                <td class="val" id="res-diferencia">$ 0</td>
+                <td style="padding: 15px 10px;">DIFERENCIA FINAL</td>
+                <td class="val" id="res-diferencia" style="font-size: 1.2em;">$ 0</td>
             </tr>
         </table>
     </div>
 
     <div class="card">
-        <div class="card-header">2. Disponible (Cuentas)</div>
+        <div class="card-header">2. Disponible en Cuentas</div>
         <table id="t-disponibles">
             <thead><tr><th>Medio</th><th>Jorge</th><th>Leidy</th><th>X</th></tr></thead>
             <tbody>
@@ -51,31 +135,31 @@
             </tbody>
         </table>
         <div class="input-group">
-            <input type="text" id="in-d-n" placeholder="Nombre medio">
-            <input type="number" id="in-d-j" placeholder="Valor Jorge $">
-            <input type="number" id="in-d-l" placeholder="Valor Leidy $">
-            <button class="add-btn" onclick="addDisp()">+ Añadir Medio</button>
+            <input type="text" id="in-d-n" placeholder="Nombre del banco/medio">
+            <input type="number" id="in-d-j" placeholder="Monto Jorge $">
+            <input type="number" id="in-d-l" placeholder="Monto Leidy $">
+            <button class="add-btn" onclick="addDisp()">+ Añadir Cuenta</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">3. Gasto Mensual (Egresos)</div>
+        <div class="card-header">3. Gastos Fijos (Egresos)</div>
         <table id="t-mensual">
-            <thead><tr><th>Concepto</th><th>Vence</th><th>Monto</th><th>X</th></tr></thead>
+            <thead><tr><th>Concepto</th><th>Vencimiento</th><th>Monto</th><th>X</th></tr></thead>
             <tbody id="body-mensual">
                 <tr data-valor="1165000"><td>Cuota Carro</td><td>2026-02-16</td><td class="val">$ 1.165.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td></tr>
             </tbody>
         </table>
         <div class="input-group">
-            <input type="text" id="in-m-n" placeholder="Concepto">
+            <input type="text" id="in-m-n" placeholder="Concepto (Ej: Alquiler)">
             <input type="date" id="in-m-f">
             <input type="number" id="in-m-v" placeholder="Monto $">
-            <button class="add-btn" onclick="addMensual()">+ Guardar Gasto</button>
+            <button class="add-btn" onclick="addMensual()">+ Registrar Gasto</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">4. Cuentas por Pagar / Otros</div>
+        <div class="card-header">4. Pendientes / Mantenimiento</div>
         <table id="t-pagar">
             <thead><tr><th>Descripción</th><th>Monto</th><th>Fecha</th><th>X</th></tr></thead>
             <tbody id="body-pagar">
@@ -84,16 +168,16 @@
         </table>
         <div class="input-group">
             <input type="text" id="in-p-n" placeholder="Descripción">
-            <input type="number" id="in-p-v" placeholder="Monto $">
+            <input type="number" id="in-p-v" placeholder="Monto total $">
             <input type="date" id="in-p-f">
-            <button class="add-btn" onclick="addGeneric('body-pagar', ['in-p-n', 'in-p-v', 'in-p-f'], true)">+ Registrar</button>
+            <button class="add-btn" onclick="addGeneric('body-pagar', ['in-p-n', 'in-p-v', 'in-p-f'], true)">+ Guardar Pendiente</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">5. Seguimiento Diario (Ingresos)</div>
+        <div class="card-header">5. Ingresos y Seguimiento Diario</div>
         <table id="t-diario">
-            <thead><tr><th>Fecha</th><th>Ppto (Ingreso)</th><th>Real</th><th>Gas</th><th>Ahorro</th><th>X</th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Ppto</th><th>Real</th><th>Gas</th><th>Ahorro</th><th>X</th></tr></thead>
             <tbody id="body-diario">
                 <tr data-ppto="150000" data-ahorro="23000">
                     <td>2026-04-06</td><td class="val">$ 150.000</td><td class="val">$ 174.000</td><td class="val">$ 39.000</td><td class="val">$ 23.000</td><td><button class="delete-btn" onclick="del(this)">X</button></td>
@@ -102,11 +186,11 @@
         </table>
         <div class="input-group">
             <input type="date" id="in-di-f">
-            <input type="number" id="in-di-p" placeholder="Ppto (Ingreso) $">
-            <input type="number" id="in-di-r" placeholder="Real $">
-            <input type="number" id="in-di-g" placeholder="Gas $">
-            <input type="number" id="in-di-a" placeholder="Ahorro Manual $">
-            <button class="add-btn" onclick="addDiario()">+ Registrar Día</button>
+            <input type="number" id="in-di-p" placeholder="Presupuesto Ingresado $">
+            <input type="number" id="in-di-r" placeholder="Gasto Real del día $">
+            <input type="number" id="in-di-g" placeholder="Gasto Gasolina $">
+            <input type="number" id="in-di-a" placeholder="Ahorro del día $">
+            <button class="add-btn" onclick="addDiario()">+ Finalizar Registro</button>
         </div>
     </div>
 
@@ -119,7 +203,6 @@
     }
 
     function recalcularTodo() {
-        // Ingresos y Ahorro desde Campo 5
         let ingresosTotal = 0;
         let ahorroTotal = 0;
         document.querySelectorAll('#body-diario tr').forEach(row => {
@@ -127,7 +210,6 @@
             ahorroTotal += Number(row.getAttribute('data-ahorro')) || 0;
         });
 
-        // Gastos desde Campo 3
         let gastosTotal = 0;
         document.querySelectorAll('#body-mensual tr').forEach(row => {
             gastosTotal += Number(row.getAttribute('data-valor')) || 0;
@@ -139,7 +221,6 @@
         document.getElementById('res-gastos').innerText = fmt(gastosTotal);
         document.getElementById('res-ahorro').innerText = fmt(ahorroTotal);
         document.getElementById('res-diferencia').innerText = fmt(diferencia);
-        
         document.getElementById('res-diferencia').style.color = diferencia < 0 ? 'var(--danger)' : 'var(--success)';
     }
 
