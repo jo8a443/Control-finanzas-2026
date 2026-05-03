@@ -20,17 +20,17 @@
         .card { background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); border: 1px solid var(--border-silver); overflow: hidden; }
         .card-header { background: linear-gradient(90deg, var(--header-blue), #003366); color: white; margin: -12px -12px 12px -12px; padding: 10px; font-weight: bold; text-align: center; font-size: 11px; text-transform: uppercase; border-radius: 12px 12px 0 0; border-bottom: 2px solid var(--silver); }
         
-        table { width: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed; }
+        table { width: 100%; border-collapse: collapse; font-size: 9px; table-layout: fixed; }
         th { background: #2c2c2c; color: var(--silver); border-bottom: 1px solid var(--border-silver); padding: 6px 2px; text-align: left; }
         td { border-bottom: 1px solid #333; padding: 8px 2px; color: #ccc; overflow: hidden; text-overflow: ellipsis; }
         
         .val { text-align: right; font-weight: bold; font-family: 'Consolas', monospace; color: white; }
 
-        .status-btn { width: 100%; padding: 4px 0; border-radius: 4px; border: none; font-weight: bold; font-size: 8px; cursor: pointer; color: #000; text-transform: uppercase; }
+        .status-btn { width: 100%; padding: 4px 0; border-radius: 4px; border: none; font-weight: bold; font-size: 7px; cursor: pointer; color: #000; text-transform: uppercase; }
         .btn-paid { background: var(--success); }
         .btn-pending { background: var(--danger); }
 
-        .indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+        .indicator { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
         .ind-ok { background: var(--success); box-shadow: 0 0 8px var(--success); }
         .ind-bad { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
 
@@ -40,9 +40,8 @@
         
         .delete-btn-x { background:none; border:none; color:var(--danger); cursor:pointer; font-weight:bold; font-size: 12px; }
 
-        /* Ajustes Columnas Optimizado */
-        .col-4-f { width: 15%; } .col-4-con { width: 30%; } .col-4-mon { width: 22%; } .col-4-st { width: 23%; } .col-4-x { width: 10%; }
-        .col-5-f { width: 15%; } .col-5-p { width: 18%; } .col-5-r { width: 18%; } .col-5-g { width: 14%; } .col-5-a { width: 14%; } .col-5-st { width: 11%; } .col-5-x { width: 10%; }
+        /* Ajustes Columnas Campo 3 */
+        .col3-f { width: 14%; } .col3-con { width: 22%; } .col3-mon { width: 18%; } .col3-pag { width: 18%; } .col3-ok { width: 8%; } .col3-st { width: 12%; } .col3-x { width: 8%; }
 
         .footer-logo { text-align: center; margin-top: 30px; padding-bottom: 20px; }
         .footer-logo img { height: 45px; }
@@ -58,8 +57,8 @@
     <div class="card">
         <div class="card-header">1. Resumen Ejecutivo</div>
         <table>
-            <tr><td>INGRESOS TOTALES (Ppto)</td><td class="val" id="res-ingresos" style="color: var(--accent-blue);">$ 0</td></tr>
-            <tr><td>GASTOS TOTALES (Fijos+Pend)</td><td class="val" id="res-gastos" style="color: var(--danger);">$ 0</td></tr>
+            <tr><td>INGRESOS TOTALES</td><td class="val" id="res-ingresos" style="color: var(--accent-blue);">$ 0</td></tr>
+            <tr><td>GASTOS TOTALES (Monto Ppto)</td><td class="val" id="res-gastos" style="color: var(--danger);">$ 0</td></tr>
             <tr style="background: rgba(0, 230, 118, 0.05);"><td>AHORRO ACUMULADO</td><td class="val" id="res-ahorro" style="color: var(--success);">$ 0</td></tr>
             <tr style="background: #2a2a2a;"><td style="font-weight: bold;">DIFERENCIA FINAL</td><td class="val" id="res-diferencia" style="font-size: 1.1em;">$ 0</td></tr>
         </table>
@@ -68,51 +67,41 @@
     <div class="card">
         <div class="card-header">3. Gastos Fijos (Egresos)</div>
         <table>
-            <thead><tr><th class="col-4-f">Fecha</th><th class="col-4-con">Concepto</th><th class="col-4-mon">Monto</th><th class="col-4-st">Estado</th><th class="col-4-x">X</th></tr></thead>
+            <thead>
+                <tr>
+                    <th class="col3-f">Fecha</th>
+                    <th class="col3-con">Item</th>
+                    <th class="col3-mon">Monto</th>
+                    <th class="col3-pag">Real</th>
+                    <th class="col3-ok">Aho</th>
+                    <th class="col3-st">Estado</th>
+                    <th class="col3-x">X</th>
+                </tr>
+            </thead>
             <tbody id="body-mensual">
-                <tr data-valor="1165000"><td>16/04</td><td>Cuota Carro</td><td class="val">1.165k</td><td><button class="status-btn btn-pending" onclick="toggleStatus(this)">PENDIENTE</button></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td></tr>
-            </tbody>
+                </tbody>
         </table>
         <div class="input-group">
             <input type="date" id="in-m-f">
             <input type="text" id="in-m-n" placeholder="Concepto">
-            <input type="number" id="in-m-v" placeholder="Monto $">
+            <div style="display: flex; gap: 5px;">
+                <input type="number" id="in-m-v" placeholder="Monto Ppto $">
+                <input type="number" id="in-m-p" placeholder="Monto Real $">
+            </div>
             <button class="add-btn" onclick="addMensual()">+ Registrar Gasto</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">4. Pendientes / Otros</div>
-        <table>
-            <thead><tr><th class="col-4-f">Fecha</th><th class="col-4-con">Descripción</th><th class="col-4-mon">Monto</th><th class="col-4-st">Estado</th><th class="col-4-x">X</th></tr></thead>
-            <tbody id="body-pagar">
-                <tr data-valor="280000"><td>24/04</td><td>Impuesto Apto</td><td class="val">280k</td><td><button class="status-btn btn-pending" onclick="toggleStatus(this)">PENDIENTE</button></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td></tr>
-            </tbody>
-        </table>
-        <div class="input-group">
-            <input type="date" id="in-p-f">
-            <input type="text" id="in-p-n" placeholder="Descripción">
-            <input type="number" id="in-p-v" placeholder="Monto $">
-            <button class="add-btn" onclick="addPendiente()">+ Guardar Pendiente</button>
-        </div>
-    </div>
-
-    <div class="card">
         <div class="card-header">5. Seguimiento Diario</div>
-        <table>
-            <thead><tr><th class="col-5-f">Fecha</th><th class="col-5-p">Ppto</th><th class="col-5-r">Real</th><th class="col-5-g">Gas</th><th class="col-5-a">Aho.</th><th class="col-5-st">Vs.</th><th class="col-5-x">X</th></tr></thead>
-            <tbody id="body-diario">
-                </tbody>
+        <table id="t-diario-full">
+            <tbody id="body-diario"></tbody>
         </table>
         <div class="input-group">
             <input type="date" id="in-di-f">
             <div style="display: flex; gap: 5px;">
                 <input type="number" id="in-di-p" placeholder="Ppto $">
                 <input type="number" id="in-di-r" placeholder="Real $">
-            </div>
-            <div style="display: flex; gap: 5px;">
-                <input type="number" id="in-di-g" placeholder="Gas $">
-                <input type="number" id="in-di-a" placeholder="Aho $">
             </div>
             <button class="add-btn" onclick="addDiario()">+ Registrar Día</button>
         </div>
@@ -125,16 +114,11 @@
 
 <script>
     function fmt(n) { return '$' + Number(n).toLocaleString('es-CO'); }
-    function k(n) { return (n/1000).toFixed(0) + 'k'; }
+    function k(n) { return (Number(n)/1000).toFixed(0) + 'k'; }
     
     function toggleStatus(btn) {
-        if(btn.innerText === "PENDIENTE") {
-            btn.innerText = "PAGADO";
-            btn.className = "status-btn btn-paid";
-        } else {
-            btn.innerText = "PENDIENTE";
-            btn.className = "status-btn btn-pending";
-        }
+        btn.innerText = (btn.innerText === "PENDIENTE") ? "PAGADO" : "PENDIENTE";
+        btn.className = (btn.innerText === "PAGADO") ? "status-btn btn-paid" : "status-btn btn-pending";
     }
 
     function delRow(btn) { btn.closest('tr').remove(); recalcularTodo(); }
@@ -145,8 +129,9 @@
             ingresos += Number(r.getAttribute('data-ppto')) || 0;
             ahorro += Number(r.getAttribute('data-ahorro')) || 0;
         });
-        document.querySelectorAll('#body-mensual tr, #body-pagar tr').forEach(r => {
-            gastos += Number(r.getAttribute('data-valor')) || 0;
+        document.querySelectorAll('#body-mensual tr').forEach(r => {
+            // El resumen ejecutivo sigue basándose en el monto real pagado
+            gastos += Number(r.getAttribute('data-real')) || 0;
         });
         const dif = ingresos - gastos + ahorro;
         document.getElementById('res-ingresos').innerText = fmt(ingresos);
@@ -157,35 +142,42 @@
     }
 
     function addMensual() {
-        const f = document.getElementById('in-m-f').value, n = document.getElementById('in-m-n').value, v = document.getElementById('in-m-v').value;
+        const f = document.getElementById('in-m-f').value, n = document.getElementById('in-m-n').value, 
+              v = document.getElementById('in-m-v').value, p = document.getElementById('in-m-p').value || 0;
         if(!f || !n || !v) return;
+        
         const sd = f.split('-').slice(1).reverse().join('/');
+        
+        // Lógica corregida: 
+        // Verde si Real <= Monto (Ahorraste o pagaste justo lo esperado)
+        // Rojo si Real > Monto (Pagaste de más)
+        const indClass = Number(p) <= Number(v) ? 'ind-ok' : 'ind-bad';
+        
         const r = document.getElementById('body-mensual').insertRow();
         r.setAttribute('data-valor', v);
-        r.innerHTML = `<td>${sd}</td><td>${n}</td><td class="val">${k(v)}</td><td><button class="status-btn btn-pending" onclick="toggleStatus(this)">PENDIENTE</button></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td>`;
+        r.setAttribute('data-real', p);
+        r.innerHTML = `
+            <td>${sd}</td>
+            <td>${n}</td>
+            <td class="val">${k(v)}</td>
+            <td class="val">${k(p)}</td>
+            <td style="text-align:center"><span class="indicator ${indClass}"></span></td>
+            <td><button class="status-btn btn-pending" onclick="toggleStatus(this)">PENDIENTE</button></td>
+            <td><button class="delete-btn-x" onclick="delRow(this)">X</button></td>`;
         recalcularTodo();
-    }
-
-    function addPendiente() {
-        const f = document.getElementById('in-p-f').value, n = document.getElementById('in-p-n').value, v = document.getElementById('in-p-v').value;
-        if(!f || !n || !v) return;
-        const sd = f.split('-').slice(1).reverse().join('/');
-        const r = document.getElementById('body-pagar').insertRow();
-        r.setAttribute('data-valor', v);
-        r.innerHTML = `<td>${sd}</td><td>${n}</td><td class="val">${k(v)}</td><td><button class="status-btn btn-pending" onclick="toggleStatus(this)">PENDIENTE</button></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td>`;
-        recalcularTodo();
+        ['in-m-f','in-m-n','in-m-v','in-m-p'].forEach(id => document.getElementById(id).value = "");
     }
 
     function addDiario() {
-        const f = document.getElementById('in-di-f').value, p = document.getElementById('in-di-p').value, r = document.getElementById('in-di-r').value, g = document.getElementById('in-di-g').value || 0, a = document.getElementById('in-di-a').value || 0;
+        const f = document.getElementById('in-di-f').value, p = document.getElementById('in-di-p').value, r = document.getElementById('in-di-r').value;
         if(!f || !p || !r) return;
         const sd = f.split('-').slice(1).reverse().join('/');
         const row = document.getElementById('body-diario').insertRow();
-        // LOGICA INVERTIDA: Si el Real (Ingreso) >= Presupuesto (Meta) es Verde
         const indicator = Number(r) >= Number(p) ? 'ind-ok' : 'ind-bad';
-        row.setAttribute('data-ppto', p); row.setAttribute('data-ahorro', a);
-        row.innerHTML = `<td>${sd}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td class="val">${k(g)}</td><td class="val">${k(a)}</td><td style="text-align:center"><span class="indicator ${indicator}"></span></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td>`;
+        row.setAttribute('data-ppto', p);
+        row.innerHTML = `<td>${sd}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td class="val">0k</td><td class="val">0k</td><td style="text-align:center"><span class="indicator ${indicator}"></span></td><td><button class="delete-btn-x" onclick="delRow(this)">X</button></td>`;
         recalcularTodo();
+        ['in-di-f','in-di-p','in-di-r'].forEach(id => document.getElementById(id).value = "");
     }
 
     recalcularTodo();
