@@ -3,219 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jorge Finanzas 2026</title>
-    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/money-box.png">
-    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/192/money-box.png">
+    <title>Finanzas Pro Jorge</title>
     <style>
-        :root { --bg-body: #0f172a; --bg-card: #1e293b; --header-blue: #2563eb; --silver: #94a3b8; --text-main: #f1f5f9; --accent-blue: #38bdf8; --danger: #ef4444; --success: #22c55e; --border-silver: #334155; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; padding-bottom: 50px; }
-        .main-header { text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-silver); }
-        .main-header h1 { margin: 0; color: var(--accent-blue); font-size: 22px; text-transform: uppercase; }
-        .month-input { background: #334155; color: white; border: 1px solid var(--border-silver); padding: 6px 12px; border-radius: 8px; margin-top: 8px; font-weight: bold; text-align: center; width: 160px; }
-        .card { background: var(--bg-card); border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-silver); }
-        .card-header { background: var(--header-blue); color: white; margin: -15px -15px 15px -15px; padding: 12px; font-weight: bold; text-align: center; font-size: 12px; text-transform: uppercase; border-radius: 16px 16px 0 0; }
-        table { width: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed; }
-        th { color: var(--silver); border-bottom: 2px solid var(--border-silver); padding: 8px 2px; text-align: left; }
-        td { border-bottom: 1px solid #334155; padding: 10px 2px; color: #cbd5e1; word-wrap: break-word; vertical-align: middle; }
+        :root {
+            --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
+            --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+            --text: #f1f5f9; --text-dim: #94a3b8;
+        }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 80px; }
         
-        /* Ajuste para visualizar mejor Concepto y Fecha */
-        .desc-cell { line-height: 1.2; padding: 5px 2px !important; }
-        .date-sub { font-size: 8px; color: var(--accent-blue); display: block; margin-bottom: 2px; font-weight: bold; }
-        .item-name { font-size: 11px; color: white; font-weight: 500; display: block; }
+        .header { text-align: center; padding: 20px 0; border-bottom: 2px solid var(--card); margin-bottom: 20px; }
+        .header h1 { margin: 0; color: var(--accent); font-size: 24px; letter-spacing: 2px; }
+        .month-selector { background: var(--card); color: white; border: 1px solid var(--accent); padding: 8px 20px; border-radius: 20px; margin-top: 10px; font-weight: bold; }
 
-        .val { text-align: right; font-weight: bold; font-family: 'Courier New', monospace; color: white; }
-        .status-btn { width: 100%; padding: 6px 0; border-radius: 6px; border: none; font-weight: bold; font-size: 8px; cursor: pointer; color: white; }
-        .btn-paid { background: var(--success); } .btn-pending { background: var(--danger); }
-        .indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); }
-        .ind-ok { background: var(--success); box-shadow: 0 0 10px var(--success); }
-        .ind-bad { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        /* Dashboard de Resumen */
+        .resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .res-box { background: var(--card); padding: 15px; border-radius: 15px; border-left: 4px solid var(--accent); }
+        .res-box span { display: block; font-size: 11px; color: var(--text-dim); text-transform: uppercase; }
+        .res-box strong { font-size: 16px; color: #fff; font-family: 'Courier New'; }
+
+        /* Estilo de Tarjetas (Cards) */
+        .section-title { font-size: 14px; color: var(--accent); text-transform: uppercase; margin: 20px 0 10px 5px; font-weight: 800; display: flex; justify-content: space-between; }
         
-        .input-group { background: #0f172a; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        input { height: 42px; padding: 0 12px; background: #1e293b; border: 1px solid var(--border-silver); border-radius: 8px; font-size: 14px; color: white; width: 100%; box-sizing: border-box; }
-        .add-btn { height: 42px; background: var(--header-blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .item-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; position: relative; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .item-title { font-size: 16px; font-weight: bold; color: #fff; max-width: 70%; }
+        .item-date { font-size: 11px; color: var(--accent); background: rgba(56, 189, 248, 0.1); padding: 2px 8px; border-radius: 10px; }
         
-        .export-btn { background: var(--success); color: #000; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; font-size: 15px; margin-bottom: 10px; cursor: pointer; box-shadow: 0 4px 0 #166534; }
-        .save-btn { background: #6366f1; color: #fff; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; font-size: 15px; margin-bottom: 25px; cursor: pointer; box-shadow: 0 4px 0 #3730a3; }
-        .del-x { background: #ef444422; border: 1px solid #ef444444; color: var(--danger); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .footer-text { text-align: center; margin-top: 40px; padding: 25px 0; border-top: 1px solid var(--border-silver); }
+        .item-body { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .price-tag { line-height: 1.2; }
+        .price-tag label { display: block; font-size: 10px; color: var(--text-dim); }
+        .price-tag span { font-family: 'Courier New'; font-weight: bold; font-size: 14px; }
+
+        .btn-status { padding: 8px 15px; border-radius: 10px; border: none; font-weight: bold; font-size: 11px; color: white; min-width: 80px; }
+        .paid { background: var(--success); box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
+        .pend { background: var(--danger); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+
+        /* Formulario Flotante o Inputs */
+        .input-card { background: #1e293b; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px dashed var(--accent); }
+        input, select { width: 100%; height: 45px; background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: white; padding: 0 15px; margin-bottom: 10px; box-sizing: border-box; font-size: 14px; }
+        .btn-add { background: var(--accent); color: #000; font-weight: bold; border: none; width: 100%; height: 45px; border-radius: 10px; font-size: 14px; }
+
+        .del-btn { position: absolute; top: -5px; right: -5px; background: #475569; color: white; width: 22px; height: 22px; border-radius: 50%; border: none; font-size: 12px; }
+
+        /* Diario - Barra de Progreso */
+        .progress-container { width: 100%; background: #0f172a; height: 8px; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--success); transition: width 0.3s; }
+
+        .footer-btns { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); padding: 10px; display: flex; gap: 10px; border-top: 1px solid var(--card); }
+        .f-btn { flex: 1; height: 50px; border-radius: 12px; border: none; font-weight: bold; color: white; font-size: 12px; }
     </style>
 </head>
 <body>
-    <div class="main-header">
-        <h1>Control Financiero</h1>
-        <input type="text" class="month-input" id="mes-actual" value="MAYO 2026" oninput="saveAllSilent()">
+
+    <div class="header">
+        <h1>GESTOR FINANCIERO</h1>
+        <input type="text" id="mes-actual" class="month-selector" value="MAYO 2026" oninput="save()">
     </div>
 
-    <div class="card">
-        <div class="card-header">1. Resumen Ejecutivo</div>
-        <table>
-            <tr><td>INGRESOS TOTALES</td><td class="val" id="res-ing">$ 0</td></tr>
-            <tr><td>GASTOS REALES</td><td class="val" id="res-gas">$ 0</td></tr>
-            <tr style="background: rgba(34, 197, 94, 0.1);"><td>AHORRO TOTAL</td><td class="val" id="res-aho">$ 0</td></tr>
-            <tr style="background: rgba(255,255,255,0.05);"><td style="font-weight: bold;">SALDO FINAL</td><td class="val" id="res-dif">$ 0</td></tr>
-        </table>
-    </div>
-
-    <div class="card">
-        <div class="card-header">2. Disponible en Cuentas</div>
-        <table>
-            <thead><tr><th style="width:40%">Medio</th><th style="width:25%">Jorge</th><th style="width:25%">Leidy</th><th style="width:10%">X</th></tr></thead>
-            <tbody id="body-disp"></tbody>
-        </table>
-        <div class="input-group">
-            <input type="text" id="d-n" placeholder="Banco o Efectivo">
-            <div style="display:flex; gap:5px"><input type="number" id="d-j" placeholder="Jorge $"><input type="number" id="d-l" placeholder="Leidy $"></div>
-            <button class="add-btn" onclick="addDisp()">+ Guardar Saldo</button>
+    <div class="resumen-grid">
+        <div class="res-box" style="border-color: var(--success)">
+            <span>Ingresos</span>
+            <strong id="res-ing">$ 0</strong>
+        </div>
+        <div class="res-box" style="border-color: var(--danger)">
+            <span>Egresos</span>
+            <strong id="res-gas">$ 0</strong>
+        </div>
+        <div class="res-box" style="border-color: var(--warning)">
+            <span>Ahorro Extra</span>
+            <strong id="res-aho">$ 0</strong>
+        </div>
+        <div class="res-box" style="border-color: var(--accent)">
+            <span>Saldo Final</span>
+            <strong id="res-dif">$ 0</strong>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">3. Gastos Fijos (Egresos)</div>
-        <table>
-            <thead><tr><th style="width:40%">Fecha / Concepto</th><th style="width:20%">Ppto</th><th style="width:20%">Real</th><th style="width:15%">Est</th><th style="width:10%">X</th></tr></thead>
-            <tbody id="body-fix"></tbody>
-        </table>
-        <div class="input-group">
-            <input type="date" id="f-f">
-            <input type="text" id="f-n" placeholder="Concepto (ej: Arriendo)">
-            <div style="display:flex; gap:5px"><input type="number" id="f-v" placeholder="Ppto $"><input type="number" id="f-p" placeholder="Real $"></div>
-            <button class="add-btn" onclick="addGasto('body-fix', 'f')">+ Registrar Gasto</button>
+    <div class="section-title">2. Saldos Actuales <span>💸</span></div>
+    <div id="list-disp"></div>
+    <div class="input-card">
+        <input type="text" id="d-n" placeholder="Nombre (Nequi, Efectivo...)">
+        <div style="display:flex; gap:10px">
+            <input type="number" id="d-j" placeholder="Jorge $">
+            <input type="number" id="d-l" placeholder="Leidy $">
         </div>
+        <button class="btn-add" onclick="addDisp()">+ GUARDAR SALDO</button>
     </div>
 
-    <div class="card">
-        <div class="card-header">4. Pendientes / Otros</div>
-        <table>
-            <thead><tr><th style="width:40%">Fecha / Concepto</th><th style="width:20%">Ppto</th><th style="width:20%">Real</th><th style="width:15%">Est</th><th style="width:10%">X</th></tr></thead>
-            <tbody id="body-pen"></tbody>
-        </table>
-        <div class="input-group">
-            <input type="date" id="p-f">
-            <input type="text" id="p-n" placeholder="Descripción">
-            <div style="display:flex; gap:5px"><input type="number" id="p-v" placeholder="Ppto $"><input type="number" id="p-p" placeholder="Real $"></div>
-            <button class="add-btn" onclick="addGasto('body-pen', 'p')">+ Registrar Pendiente</button>
+    <div class="section-title">3 y 4. Gastos y Pendientes <span>📑</span></div>
+    <div id="list-gastos"></div>
+    <div class="input-card">
+        <input type="date" id="g-f">
+        <input type="text" id="g-n" placeholder="¿En qué gastaste?">
+        <div style="display:flex; gap:10px">
+            <input type="number" id="g-ppto" placeholder="Ppto $">
+            <input type="number" id="g-real" placeholder="Real $">
         </div>
+        <button class="btn-add" onclick="addGasto()">+ REGISTRAR GASTO</button>
     </div>
 
-    <div class="card">
-        <div class="card-header">5. Seguimiento Diario</div>
-        <table>
-            <thead><tr><th style="width:15%">Fecha</th><th style="width:18%">Meta</th><th style="width:18%">Ingr</th><th style="width:10%">Vs</th><th style="width:15%">Ahorro</th><th style="width:15%">Comb</th><th style="width:8%">X</th></tr></thead>
-            <tbody id="body-dia"></tbody>
-        </table>
-        <div class="input-group">
-            <input type="date" id="i-f">
-            <div style="display:flex; gap:5px"><input type="number" id="i-p" placeholder="Meta $"><input type="number" id="i-r" placeholder="Ingreso $"></div>
-            <div style="display:flex; gap:5px"><input type="number" id="i-a" placeholder="Ahorro $"><input type="number" id="i-c" placeholder="Combustible $"></div>
-            <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
+    <div class="section-title">5. Rendimiento Diario <span>🚀</span></div>
+    <div id="list-diario"></div>
+    <div class="input-card">
+        <input type="date" id="i-f">
+        <div style="display:flex; gap:10px">
+            <input type="number" id="i-meta" placeholder="Meta $">
+            <input type="number" id="i-ing" placeholder="Ingreso $">
         </div>
+        <div style="display:flex; gap:10px">
+            <input type="number" id="i-aho" placeholder="Ahorro $">
+            <input type="number" id="i-comb" placeholder="Combustible $">
+        </div>
+        <button class="btn-add" onclick="addDiario()">+ FINALIZAR DÍA</button>
     </div>
 
-    <button class="export-btn" onclick="exportarExcel()">📥 EXPORTAR COPIA (EXCEL)</button>
-    <button class="save-btn" onclick="saveAll()">💾 GUARDAR CAMBIOS EN DISPOSITIVO</button>
+    <div class="footer-btns">
+        <button class="f-btn" style="background: var(--success); color: #000" onclick="exportar()">EXCEL</button>
+        <button class="f-btn" style="background: #6366f1" onclick="save(true)">GUARDAR TODO</button>
+    </div>
 
 <script>
     const fmt = n => '$' + Number(n).toLocaleString('es-CO');
-    const k = n => (Number(n)/1000).toFixed(0) + 'k';
-
-    function saveAllSilent() {
+    
+    function save(msg = false) {
         const data = {
             mes: document.getElementById('mes-actual').value,
-            disp: Array.from(document.querySelectorAll('#body-disp tr')).map(tr => tr.dataset),
-            fix: Array.from(document.querySelectorAll('#body-fix tr')).map(tr => ({...tr.dataset, est: tr.querySelector('.status-btn').innerText})),
-            pen: Array.from(document.querySelectorAll('#body-pen tr')).map(tr => ({...tr.dataset, est: tr.querySelector('.status-btn').innerText})),
-            dia: Array.from(document.querySelectorAll('#body-dia tr')).map(tr => tr.dataset)
+            disp: Array.from(document.querySelectorAll('.card-disp')).map(c => c.dataset),
+            gastos: Array.from(document.querySelectorAll('.card-gasto')).map(c => ({...c.dataset, est: c.querySelector('.btn-status').innerText})),
+            diario: Array.from(document.querySelectorAll('.card-diario')).map(c => c.dataset)
         };
-        localStorage.setItem('jorge_finanzas_db', JSON.stringify(data));
+        localStorage.setItem('db_jorge_2026', JSON.stringify(data));
+        if(msg) alert("Datos asegurados localmente ✅");
     }
 
-    function saveAll() { saveAllSilent(); alert("¡Guardado!"); }
-
-    window.onload = function() {
-        const stored = localStorage.getItem('jorge_finanzas_db');
-        if (stored) {
-            const data = JSON.parse(stored);
-            document.getElementById('mes-actual').value = data.mes;
-            data.disp.forEach(d => {
-                const row = `<tr data-item="${d.item}" data-jorge="${d.jorge}" data-leidy="${d.leidy}"><td>${d.item}</td><td class="val">${k(d.jorge)}</td><td class="val">${k(d.leidy)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-                document.getElementById('body-disp').insertAdjacentHTML('beforeend', row);
-            });
-            data.fix.forEach(d => renderGasto('body-fix', d));
-            data.pen.forEach(d => renderGasto('body-pen', d));
-            data.dia.forEach(d => {
-                const ind = Number(d.ing) >= Number(d.meta) ? 'ind-ok' : 'ind-bad';
-                const row = `<tr data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-comb="${d.comb}"><td>${d.fecha}</td><td class="val">${k(d.meta)}</td><td class="val">${k(d.ing)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td class="val">${k(d.aho)}</td><td class="val">${k(d.comb)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-                document.getElementById('body-dia').insertAdjacentHTML('beforeend', row);
-            });
+    window.onload = () => {
+        const db = JSON.parse(localStorage.getItem('db_jorge_2026'));
+        if(db) {
+            document.getElementById('mes-actual').value = db.mes;
+            db.disp.forEach(d => renderDisp(d));
+            db.gastos.forEach(g => renderGasto(g));
+            db.diario.forEach(d => renderDiario(d));
             calc();
         }
     };
 
-    function renderGasto(id, d) {
-        const indColor = Number(d.real) <= Number(d.ppto) ? 'ind-ok' : 'ind-bad';
-        const btnClass = d.est === 'PAGO' ? 'btn-paid' : 'btn-pending';
-        const row = `<tr data-fecha="${d.fecha}" data-item="${d.item}" data-ppto="${d.ppto}" data-real="${d.real}">
-            <td class="desc-cell"><span class="date-sub">${d.fecha}</span><span class="item-name">${d.item}</span></td>
-            <td class="val">${k(d.ppto)}</td>
-            <td class="val">${k(d.real)}</td>
-            <td><button class="status-btn ${btnClass}" onclick="toggle(this)">${d.est}</button></td>
-            <td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-        document.getElementById(id).insertAdjacentHTML('beforeend', row);
-    }
-
-    function toggle(b) { b.innerText = (b.innerText === "PEND") ? "PAGO" : "PEND"; b.className = (b.innerText === "PAGO") ? "status-btn btn-paid" : "status-btn btn-pending"; saveAllSilent(); }
-    function del(b) { b.closest('tr').remove(); calc(); saveAllSilent(); }
-
-    function calc() {
-        let ing = 0, ahoTotal = 0, gas = 0;
-        document.querySelectorAll('#body-dia tr').forEach(r => { ing += Number(r.dataset.ing) || 0; ahoTotal += Number(r.dataset.aho) || 0; });
-        document.querySelectorAll('#body-fix tr, #body-pen tr').forEach(r => { gas += Number(r.dataset.real) || 0; });
-        document.getElementById('res-ing').innerText = fmt(ing);
-        document.getElementById('res-gas').innerText = fmt(gas);
-        document.getElementById('res-aho').innerText = fmt(ahoTotal);
-        const d = ing - gas + ahoTotal;
-        document.getElementById('res-dif').innerText = fmt(d);
-        document.getElementById('res-dif').style.color = d < 0 ? '#ef4444' : '#22c55e';
-    }
-
     function addDisp() {
         const n = document.getElementById('d-n').value, j = document.getElementById('d-j').value || 0, l = document.getElementById('d-l').value || 0;
         if(!n) return;
-        const row = `<tr data-item="${n}" data-jorge="${j}" data-leidy="${l}"><td>${n}</td><td class="val">${k(j)}</td><td class="val">${k(l)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-        document.getElementById('body-disp').insertAdjacentHTML('beforeend', row);
-        ['d-n','d-j','d-l'].forEach(i => document.getElementById(i).value="");
-        saveAllSilent();
+        renderDisp({item: n, jorge: j, leidy: l});
+        document.getElementById('d-n').value = ''; document.getElementById('d-j').value = ''; document.getElementById('d-l').value = '';
+        save();
     }
 
-    function addGasto(id, pfx) {
-        const f = document.getElementById(pfx+'-f').value, n = document.getElementById(pfx+'-n').value, v = document.getElementById(pfx+'-v').value, p = document.getElementById(pfx+'-p').value || 0;
-        if(!f || !n || !v) return;
-        renderGasto(id, {fecha: f.split('-').slice(1).reverse().join('/'), item: n, ppto: v, real: p, est: 'PEND'});
-        calc(); [pfx+'-f',pfx+'-n',pfx+'-v',pfx+'-p'].forEach(i => document.getElementById(i).value="");
-        saveAllSilent();
+    function renderDisp(d) {
+        const html = `
+        <div class="item-card card-disp" data-item="${d.item}" data-jorge="${d.jorge}" data-leidy="${d.leidy}">
+            <button class="del-btn" onclick="this.parentElement.remove();save();calc();">×</button>
+            <div class="item-header"><div class="item-title">${d.item}</div></div>
+            <div class="item-body">
+                <div class="price-tag"><label>Jorge</label><span>${fmt(d.jorge)}</span></div>
+                <div class="price-tag"><label>Leidy</label><span>${fmt(d.leidy)}</span></div>
+                <div class="price-tag" style="text-align:right"><label>Total</label><span style="color:var(--accent)">${fmt(Number(d.jorge)+Number(d.leidy))}</span></div>
+            </div>
+        </div>`;
+        document.getElementById('list-disp').insertAdjacentHTML('beforeend', html);
+    }
+
+    function addGasto() {
+        const f = document.getElementById('g-f').value, n = document.getElementById('g-n').value, p = document.getElementById('g-ppto').value, r = document.getElementById('g-real').value || 0;
+        if(!f || !n || !p) return;
+        renderGasto({fecha: f, item: n, ppto: p, real: r, est: 'PEND'});
+        save(); calc();
+    }
+
+    function renderGasto(g) {
+        const colorClass = g.est === 'PAGO' ? 'paid' : 'pend';
+        const dif = Number(g.ppto) - Number(g.real);
+        const html = `
+        <div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
+            <button class="del-btn" onclick="this.parentElement.remove();save();calc();">×</button>
+            <div class="item-header">
+                <div class="item-title">${g.item}</div>
+                <div class="item-date">${g.fecha.split('-').reverse().join('/')}</div>
+            </div>
+            <div class="item-body">
+                <div class="price-tag"><label>Presupuesto</label><span>${fmt(g.ppto)}</span></div>
+                <div class="price-tag"><label>Real</label><span>${fmt(g.real)}</span></div>
+                <button class="btn-status ${colorClass}" onclick="toggleG(this)">${g.est}</button>
+            </div>
+        </div>`;
+        document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
+    }
+
+    function toggleG(b) {
+        b.innerText = b.innerText === 'PEND' ? 'PAGO' : 'PEND';
+        b.className = `btn-status ${b.innerText === 'PAGO' ? 'paid' : 'pend'}`;
+        save(); calc();
     }
 
     function addDiario() {
-        const f = document.getElementById('i-f').value, c = document.getElementById('i-c').value || 0, p = document.getElementById('i-p').value, r = document.getElementById('i-r').value, a = document.getElementById('i-a').value || 0;
-        if(!f || !p || !r) return;
-        const dStr = f.split('-').slice(1).reverse().join('/');
-        const ind = Number(r) >= Number(p) ? 'ind-ok' : 'ind-bad';
-        const row = `<tr data-fecha="${dStr}" data-meta="${p}" data-ing="${r}" data-aho="${a}" data-comb="${c}"><td>${dStr}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td class="val">${k(a)}</td><td class="val">${k(c)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-        document.getElementById('body-dia').insertAdjacentHTML('beforeend', row);
-        calc(); ['i-f','i-c','i-p','i-r','i-a'].forEach(i => document.getElementById(i).value="");
-        saveAllSilent();
+        const f = document.getElementById('i-f').value, m = document.getElementById('i-meta').value, i = document.getElementById('i-ing').value, a = document.getElementById('i-aho').value || 0, c = document.getElementById('i-comb').value || 0;
+        if(!f || !m || !i) return;
+        renderDiario({fecha: f, meta: m, ing: i, aho: a, comb: c});
+        save(); calc();
     }
 
-    function exportarExcel() {
-        const mes = document.getElementById('mes-actual').value;
-        let csv = "\ufeffREPORTE DE FINANZAS - " + mes + "\n\nCUENTAS DISPONIBLES\nMEDIO,JORGE,LEIDY,TOTAL\n";
-        document.querySelectorAll("#body-disp tr").forEach(tr => { csv += `${tr.dataset.item},${tr.dataset.jorge},${tr.dataset.leidy},${Number(tr.dataset.jorge)+Number(tr.dataset.leidy)}\n`; });
-        csv += "\nGASTOS\nFECHA,CONCEPTO,PRESUPUESTO,REAL,DIF,ESTADO\n";
-        document.querySelectorAll("#body-fix tr, #body-pen tr").forEach(tr => { csv += `${tr.dataset.fecha},${tr.dataset.item},${tr.dataset.ppto},${tr.dataset.real},${Number(tr.dataset.ppto)-Number(tr.dataset.real)},${tr.querySelector('.status-btn').innerText}\n`; });
-        csv += "\nDIARIO\nFECHA,META,INGRESO,DIF,AHORRO,COMB\n";
-        document.querySelectorAll("#body-dia tr").forEach(tr => { csv += `${tr.dataset.fecha},${tr.dataset.meta},${tr.dataset.ing},${Number(tr.dataset.ing)-Number(tr.dataset.meta)},${tr.dataset.aho},${tr.dataset.comb}\n`; });
+    function renderDiario(d) {
+        const perc = Math.min((d.ing / d.meta) * 100, 100);
+        const html = `
+        <div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-comb="${d.comb}">
+            <button class="del-btn" onclick="this.parentElement.remove();save();calc();">×</button>
+            <div class="item-header">
+                <div class="item-title">Ingreso Diario</div>
+                <div class="item-date">${d.fecha.split('-').reverse().join('/')}</div>
+            </div>
+            <div class="item-body">
+                <div class="price-tag"><label>Meta</label><span>${fmt(d.meta)}</span></div>
+                <div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
+                <div class="price-tag"><label>Ahorro</label><span>${fmt(d.aho)}</span></div>
+            </div>
+            <div class="progress-container"><div class="progress-bar" style="width: ${perc}%"></div></div>
+        </div>`;
+        document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
+    }
+
+    function calc() {
+        let ing = 0, gas = 0, aho = 0;
+        document.querySelectorAll('.card-gasto').forEach(c => gas += Number(c.dataset.real));
+        document.querySelectorAll('.card-diario').forEach(c => {
+            ing += Number(c.dataset.ing);
+            aho += Number(c.dataset.aho);
+        });
+        document.getElementById('res-ing').innerText = fmt(ing);
+        document.getElementById('res-gas').innerText = fmt(gas);
+        document.getElementById('res-aho').innerText = fmt(aho);
+        const total = ing - gas + aho;
+        document.getElementById('res-dif').innerText = fmt(total);
+        document.getElementById('res-dif').style.color = total < 0 ? 'var(--danger)' : 'var(--success)';
+    }
+
+    function exportar() {
+        let csv = "\ufeffREPORTE FINANCIERO\n\n";
+        csv += "GASTOS\nConcepto,Fecha,Presupuesto,Real,Estado\n";
+        document.querySelectorAll('.card-gasto').forEach(c => {
+            csv += `${c.dataset.item},${c.dataset.fecha},${c.dataset.ppto},${c.dataset.real},${c.querySelector('.btn-status').innerText}\n`;
+        });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `Finanzas_${mes}.csv`; link.click();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Finanzas_Jorge.csv`;
+        link.click();
     }
 </script>
 </body>
