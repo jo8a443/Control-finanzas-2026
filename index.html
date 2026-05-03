@@ -4,44 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jorge Finanzas 2026</title>
+    
     <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/money-box.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/192/money-box.png">
+    
     <style>
         :root { 
             --bg-body: #0f172a; --bg-card: #1e293b; --header-blue: #2563eb;
             --silver: #94a3b8; --text-main: #f1f5f9; --accent-blue: #38bdf8;
             --danger: #ef4444; --success: #22c55e; --border-silver: #334155;
         }
+
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 10px; padding-bottom: 50px; }
+        
         .main-header { text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-silver); }
-        .main-header h1 { margin: 0; color: var(--accent-blue); font-size: 22px; text-transform: uppercase; }
-        .month-input { background: #334155; color: white; border: 1px solid var(--border-silver); padding: 6px 12px; border-radius: 8px; margin-top: 8px; font-weight: bold; text-align: center; }
+        .main-header h1 { margin: 0; color: var(--accent-blue); font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .month-input { background: #334155; color: white; border: 1px solid var(--border-silver); padding: 6px 12px; border-radius: 8px; margin-top: 8px; font-weight: bold; text-align: center; width: 160px; }
+        
         .card { background: var(--bg-card); border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-silver); }
         .card-header { background: var(--header-blue); color: white; margin: -15px -15px 15px -15px; padding: 12px; font-weight: bold; text-align: center; font-size: 12px; text-transform: uppercase; border-radius: 16px 16px 0 0; }
+        
         table { width: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed; }
         th { color: var(--silver); border-bottom: 2px solid var(--border-silver); padding: 8px 2px; text-align: left; }
         td { border-bottom: 1px solid #334155; padding: 10px 2px; color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; }
+        
         .val { text-align: right; font-weight: bold; font-family: 'Courier New', monospace; color: white; }
+        
         .status-btn { width: 100%; padding: 5px 0; border-radius: 6px; border: none; font-weight: bold; font-size: 8px; cursor: pointer; color: white; }
         .btn-paid { background: var(--success); } .btn-pending { background: var(--danger); }
+
         .indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); }
         .ind-ok { background: var(--success); box-shadow: 0 0 10px var(--success); }
         .ind-bad { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
         .input-group { background: #0f172a; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         input { height: 42px; padding: 0 12px; background: #1e293b; border: 1px solid var(--border-silver); border-radius: 8px; font-size: 14px; color: white; width: 100%; box-sizing: border-box; }
+        
         .add-btn { height: 42px; background: var(--header-blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .export-btn { background: var(--success); color: #000; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; font-size: 15px; margin-bottom: 25px; cursor: pointer; box-shadow: 0 4px 0 #166534; }
+        
+        .export-btn { background: var(--success); color: #000; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; font-size: 15px; margin-bottom: 10px; cursor: pointer; box-shadow: 0 4px 0 #166534; }
+        .save-btn { background: #6366f1; color: #fff; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; font-size: 15px; margin-bottom: 25px; cursor: pointer; box-shadow: 0 4px 0 #3730a3; }
+        
         .del-x { background: #ef444422; border: 1px solid #ef444444; color: var(--danger); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
         .footer-text { text-align: center; margin-top: 40px; padding: 25px 0; border-top: 1px solid var(--border-silver); }
         .footer-text h2 { color: var(--accent-blue); font-size: 16px; margin: 0; font-weight: 800; }
         .footer-text p { color: var(--silver); font-size: 11px; margin: 6px 0; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
+
     <div class="main-header">
         <h1>Control Financiero</h1>
-        <input type="text" class="month-input" id="mes-actual" value="MAYO 2026">
+        <input type="text" class="month-input" id="mes-actual" value="MAYO 2026" oninput="saveAllSilent()">
     </div>
+
     <div class="card">
         <div class="card-header">1. Resumen Ejecutivo</div>
         <table>
@@ -51,6 +69,7 @@
             <tr style="background: rgba(255,255,255,0.05);"><td style="font-weight: bold;">SALDO FINAL</td><td class="val" id="res-dif">$ 0</td></tr>
         </table>
     </div>
+
     <div class="card">
         <div class="card-header">2. Disponible en Cuentas</div>
         <table>
@@ -63,6 +82,7 @@
             <button class="add-btn" onclick="addDisp()">+ Guardar Saldo</button>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">3. Gastos Fijos (Egresos)</div>
         <table>
@@ -76,6 +96,7 @@
             <button class="add-btn" onclick="addGasto('body-fix', 'f')">+ Registrar Gasto</button>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">4. Pendientes / Otros</div>
         <table>
@@ -89,6 +110,7 @@
             <button class="add-btn" onclick="addGasto('body-pen', 'p')">+ Registrar Pendiente</button>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">5. Seguimiento Diario</div>
         <table>
@@ -102,18 +124,86 @@
             <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
         </div>
     </div>
-    <button class="export-btn" onclick="exportarExcel()">📥 EXPORTAR COPIA DE RESPALDO (EXCEL)</button>
+
+    <button class="export-btn" onclick="exportarExcel()">📥 EXPORTAR COPIA (EXCEL)</button>
+    <button class="save-btn" onclick="saveAll()">💾 GUARDAR CAMBIOS EN DISPOSITIVO</button>
+
     <div class="footer-text">
         <p>Desarrollado por:</p>
         <h2>Gestión & Crecimiento Co.</h2>
         <p>De la estrategia a los resultados</p>
     </div>
+
 <script>
-    // ... (Funciones addDisp, addGasto, addDiario y calc) ...
     const fmt = n => '$' + Number(n).toLocaleString('es-CO');
     const k = n => (Number(n)/1000).toFixed(0) + 'k';
-    function toggle(b) { b.innerText = (b.innerText === "PEND") ? "PAGO" : "PEND"; b.className = (b.innerText === "PAGO") ? "status-btn btn-paid" : "status-btn btn-pending"; }
-    function del(b) { b.closest('tr').remove(); calc(); }
+
+    // MEMORIA: Guardar datos
+    function saveAllSilent() {
+        const data = {
+            mes: document.getElementById('mes-actual').value,
+            disp: Array.from(document.querySelectorAll('#body-disp tr')).map(tr => tr.dataset),
+            fix: Array.from(document.querySelectorAll('#body-fix tr')).map(tr => ({...tr.dataset, est: tr.querySelector('.status-btn').innerText})),
+            pen: Array.from(document.querySelectorAll('#body-pen tr')).map(tr => ({...tr.dataset, est: tr.querySelector('.status-btn').innerText})),
+            dia: Array.from(document.querySelectorAll('#body-dia tr')).map(tr => tr.dataset)
+        };
+        localStorage.setItem('jorge_finanzas_db', JSON.stringify(data));
+    }
+
+    function saveAll() {
+        saveAllSilent();
+        alert("¡Datos guardados con éxito!");
+    }
+
+    // MEMORIA: Cargar datos al abrir
+    window.onload = function() {
+        const stored = localStorage.getItem('jorge_finanzas_db');
+        if (stored) {
+            const data = JSON.parse(stored);
+            document.getElementById('mes-actual').value = data.mes || "MAYO 2026";
+            
+            data.disp.forEach(d => {
+                const row = `<tr data-item="${d.item}" data-jorge="${d.jorge}" data-leidy="${d.leidy}">
+                    <td>${d.item}</td><td class="val">${k(d.jorge)}</td><td class="val">${k(d.leidy)}</td>
+                    <td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
+                document.getElementById('body-disp').insertAdjacentHTML('beforeend', row);
+            });
+
+            data.fix.forEach(d => renderGasto('body-fix', d));
+            data.pen.forEach(d => renderGasto('body-pen', d));
+
+            data.dia.forEach(d => {
+                const ind = Number(d.ing) >= Number(d.meta) ? 'ind-ok' : 'ind-bad';
+                const row = `<tr data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-comb="${d.comb}">
+                    <td>${d.fecha}</td><td class="val">${k(d.meta)}</td><td class="val">${k(d.ing)}</td>
+                    <td style="text-align:center"><span class="indicator ${ind}"></span></td>
+                    <td class="val">${k(d.aho)}</td><td class="val">${k(d.comb)}</td>
+                    <td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
+                document.getElementById('body-dia').insertAdjacentHTML('beforeend', row);
+            });
+            calc();
+        }
+    };
+
+    function renderGasto(id, d) {
+        const ind = Number(d.real) <= Number(d.ppto) ? 'ind-ok' : 'ind-bad';
+        const btnClass = d.est === 'PAGO' ? 'btn-paid' : 'btn-pending';
+        const row = `<tr data-fecha="${d.fecha}" data-item="${d.item}" data-ppto="${d.ppto}" data-real="${d.real}">
+            <td>${d.fecha}</td><td>${d.item}</td><td class="val">${k(d.ppto)}</td><td class="val">${k(d.real)}</td>
+            <td style="text-align:center"><span class="indicator ${ind}"></span></td>
+            <td><button class="status-btn ${btnClass}" onclick="toggle(this)">${d.est}</button></td>
+            <td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
+        document.getElementById(id).insertAdjacentHTML('beforeend', row);
+    }
+
+    function toggle(b) { 
+        b.innerText = (b.innerText === "PEND") ? "PAGO" : "PEND"; 
+        b.className = (b.innerText === "PAGO") ? "status-btn btn-paid" : "status-btn btn-pending"; 
+        saveAllSilent(); 
+    }
+
+    function del(b) { b.closest('tr').remove(); calc(); saveAllSilent(); }
+
     function calc() {
         let ing = 0, ahoTotal = 0, gas = 0;
         document.querySelectorAll('#body-dia tr').forEach(r => { 
@@ -127,34 +217,43 @@
         document.getElementById('res-gas').innerText = fmt(gas);
         document.getElementById('res-aho').innerText = fmt(ahoTotal);
         const d = ing - gas + ahoTotal;
-        document.getElementById('res-dif').innerText = fmt(d);
-        document.getElementById('res-dif').style.color = d < 0 ? '#ef4444' : '#22c55e';
+        const resDif = document.getElementById('res-dif');
+        resDif.innerText = fmt(d);
+        resDif.style.color = d < 0 ? '#ef4444' : '#22c55e';
     }
+
     function addDisp() {
         const n = document.getElementById('d-n').value, j = document.getElementById('d-j').value || 0, l = document.getElementById('d-l').value || 0;
         if(!n) return;
         const row = `<tr data-item="${n}" data-jorge="${j}" data-leidy="${l}"><td>${n}</td><td class="val">${k(j)}</td><td class="val">${k(l)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
         document.getElementById('body-disp').insertAdjacentHTML('beforeend', row);
         ['d-n','d-j','d-l'].forEach(i => document.getElementById(i).value="");
+        saveAllSilent();
     }
+
     function addGasto(id, pfx) {
         const f = document.getElementById(pfx+'-f').value, n = document.getElementById(pfx+'-n').value, v = document.getElementById(pfx+'-v').value, p = document.getElementById(pfx+'-p').value || 0;
         if(!f || !n || !v) return;
-        const ind = Number(p) <= Number(v) ? 'ind-ok' : 'ind-bad';
         const dateStr = f.split('-').slice(1).reverse().join('/');
-        const row = `<tr data-fecha="${dateStr}" data-item="${n}" data-ppto="${v}" data-real="${p}"><td>${dateStr}</td><td>${n}</td><td class="val">${k(v)}</td><td class="val">${k(p)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td><button class="status-btn btn-pending" onclick="toggle(this)">PEND</button></td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
-        document.getElementById(id).insertAdjacentHTML('beforeend', row);
+        renderGasto(id, {fecha: dateStr, item: n, ppto: v, real: p, est: 'PEND'});
         calc(); [pfx+'-f',pfx+'-n',pfx+'-v',pfx+'-p'].forEach(i => document.getElementById(i).value="");
+        saveAllSilent();
     }
+
     function addDiario() {
         const f = document.getElementById('i-f').value, c = document.getElementById('i-c').value || 0, p = document.getElementById('i-p').value, r = document.getElementById('i-r').value, a = document.getElementById('i-a').value || 0;
         if(!f || !p || !r) return;
-        const ind = Number(r) >= Number(p) ? 'ind-ok' : 'ind-bad';
         const dateStr = f.split('-').slice(1).reverse().join('/');
-        const row = `<tr data-fecha="${dateStr}" data-meta="${p}" data-ing="${r}" data-aho="${a}" data-comb="${c}"><td>${dateStr}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td class="val">${k(a)}</td><td class="val">${k(c)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
+        const row = `<tr data-fecha="${dateStr}" data-meta="${p}" data-ing="${r}" data-aho="${a}" data-comb="${c}">
+            <td>${dateStr}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td>
+            <td style="text-align:center"><span class="indicator ${ind}"></span></td>
+            <td class="val">${k(a)}</td><td class="val">${k(c)}</td>
+            <td><button class="del-x" onclick="del(this)">X</button></td></tr>`;
         document.getElementById('body-dia').insertAdjacentHTML('beforeend', row);
         calc(); ['i-f','i-c','i-p','i-r','i-a'].forEach(i => document.getElementById(i).value="");
+        saveAllSilent();
     }
+
     function exportarExcel() {
         const mes = document.getElementById('mes-actual').value;
         let csv = "\ufeff"; 
