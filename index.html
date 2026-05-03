@@ -92,13 +92,13 @@
     <div class="card">
         <div class="card-header">5. Seguimiento Diario</div>
         <table>
-            <thead><tr><th class="c-f">Fecha</th><th class="c-n">Combust.</th><th class="c-v">Meta</th><th class="c-p">Ingr</th><th class="c-i">Vs</th><th class="c-s">Aho</th><th class="c-x">X</th></tr></thead>
+            <thead><tr><th class="c-f">Fecha</th><th class="c-v">Meta</th><th class="c-p">Ingr</th><th class="c-i">Vs</th><th class="c-s">Aho</th><th class="c-p">Combust</th><th class="c-x">X</th></tr></thead>
             <tbody id="body-dia"></tbody>
         </table>
         <div class="input-group">
             <input type="date" id="i-f">
-            <div style="display:flex; gap:5px"><input type="number" id="i-c" placeholder="Gasolina $"><input type="number" id="i-p" placeholder="Meta $"></div>
-            <div style="display:flex; gap:5px"><input type="number" id="i-r" placeholder="Ingreso Real $"><input type="number" id="i-a" placeholder="Ahorro $"></div>
+            <div style="display:flex; gap:5px"><input type="number" id="i-p" placeholder="Meta $"><input type="number" id="i-r" placeholder="Ingreso Real $"></div>
+            <div style="display:flex; gap:5px"><input type="number" id="i-a" placeholder="Ahorro $"><input type="number" id="i-c" placeholder="Combustible $"></div>
             <button class="add-btn" onclick="addDiario()">+ Finalizar Día</button>
         </div>
     </div>
@@ -108,7 +108,7 @@
     <div class="footer-text">
         <p>Desarrollado por:</p>
         <h2>Gestión & Crecimiento Co.</h2>
-        <p>Asesoría que impulsa tu éxito</p>
+        <p>De la estrategia a los resultados</p>
     </div>
 
 <script>
@@ -142,7 +142,7 @@
         const f = document.getElementById('i-f').value, c = document.getElementById('i-c').value || 0, p = document.getElementById('i-p').value, r = document.getElementById('i-r').value, a = document.getElementById('i-a').value || 0;
         if(!f || !p || !r) return;
         const ind = Number(r) >= Number(p) ? 'ind-ok' : 'ind-bad';
-        document.getElementById('body-dia').insertAdjacentHTML('beforeend', `<tr data-ing="${r}" data-aho="${a}"><td>${f.split('-').slice(1).reverse().join('/')}</td><td class="val">${k(c)}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td class="val">${k(a)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`);
+        document.getElementById('body-dia').insertAdjacentHTML('beforeend', `<tr data-ing="${r}" data-aho="${a}"><td>${f.split('-').slice(1).reverse().join('/')}</td><td class="val">${k(p)}</td><td class="val">${k(r)}</td><td style="text-align:center"><span class="indicator ${ind}"></span></td><td class="val">${k(a)}</td><td class="val">${k(c)}</td><td><button class="del-x" onclick="del(this)">X</button></td></tr>`);
         calc(); ['i-f','i-c','i-p','i-r','i-a'].forEach(i => document.getElementById(i).value="");
     }
 
