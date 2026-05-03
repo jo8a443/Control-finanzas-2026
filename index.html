@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGF - Sistema de Gestión Financiera</title>
-    <link rel="apple-touch-icon" href="https://img.icons8.com/external-flat-icons-inmotus-design/192/external-Analysis-analysis-flat-icons-inmotus-design-12.png">
-    <link rel="icon" type="image/png" href="https://img.icons8.com/external-flat-icons-inmotus-design/192/external-Analysis-analysis-flat-icons-inmotus-design-12.png">
+    <title>Gestión & Crecimiento Co.</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     <style>
         :root {
             --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
@@ -14,65 +13,74 @@
         }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 90px; }
         
-        /* Header Profesional */
-        .header { text-align: center; padding: 25px 0; border-bottom: 1px solid var(--border); margin-bottom: 25px; }
-        .header img { width: 50px; margin-bottom: 10px; filter: drop-shadow(0 0 8px var(--accent)); }
-        .header h1 { margin: 0; color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; }
-        .month-selector { background: var(--card); color: var(--accent); border: 1px solid var(--accent); padding: 8px 20px; border-radius: 6px; margin-top: 12px; font-weight: bold; text-align: center; font-size: 13px; width: 180px; text-transform: uppercase; }
+        /* Header con Marca Propia */
+        .header { text-align: center; padding: 25px 0; border-bottom: 2px solid var(--accent); margin-bottom: 25px; background: rgba(30, 41, 59, 0.5); border-radius: 0 0 20px 20px; }
+        .logo-container { margin-bottom: 10px; }
+        .header img { width: 60px; filter: drop-shadow(0 0 10px var(--accent)); }
+        .header h1 { margin: 5px 0; color: #fff; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; }
+        .header p { margin: 0; font-size: 10px; color: var(--accent); letter-spacing: 3px; font-weight: 600; text-transform: uppercase; }
+        
+        .month-selector { background: var(--card); color: #fff; border: 1px solid var(--border); padding: 8px 20px; border-radius: 6px; margin-top: 15px; font-weight: bold; text-align: center; font-size: 13px; width: 200px; }
 
-        /* Dashboard Ejecutivo */
+        /* Dashboard */
         .resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .res-box { background: var(--card); padding: 14px; border-radius: 8px; border-top: 3px solid var(--accent); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
-        .res-full { grid-column: span 2; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-top: 3px solid #fff; }
-        .res-box span { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; font-weight: bold; }
+        .res-box { background: var(--card); padding: 14px; border-radius: 12px; border-left: 4px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .res-full { grid-column: span 2; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-left: 4px solid #fff; }
+        .res-box span { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: bold; }
         .res-box strong { font-size: 18px; color: #fff; font-family: 'Roboto Mono', monospace; }
 
-        .section-title { font-size: 12px; color: var(--text-dim); text-transform: uppercase; margin: 30px 0 15px 5px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .section-title { font-size: 12px; color: var(--accent); text-transform: uppercase; margin: 30px 0 15px 5px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
         .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
         
-        /* Cards de Datos */
-        .item-card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 14px; position: relative; border: 1px solid var(--border); }
+        /* Estilo Cards */
+        .item-card { background: var(--card); border-radius: 15px; padding: 16px; margin-bottom: 14px; position: relative; border: 1px solid var(--border); transition: 0.3s; }
         .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .item-title { font-size: 14px; font-weight: 700; color: #fff; }
-        .item-date { font-size: 10px; color: var(--accent); font-weight: 600; }
+        .item-title { font-size: 15px; font-weight: 700; color: #fff; }
+        .item-date { font-size: 10px; color: var(--accent); background: rgba(56, 189, 248, 0.1); padding: 3px 10px; border-radius: 20px; }
         
         .item-body { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--border); padding-top: 12px; }
         .price-tag label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 2px; }
         .price-tag span { font-family: 'Roboto Mono', monospace; font-weight: 600; font-size: 15px; }
 
-        .btn-status { padding: 6px 12px; border-radius: 4px; border: none; font-weight: 800; font-size: 9px; color: white; min-width: 70px; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
-        .paid { background: var(--success); }
-        .pend { background: var(--danger); }
+        .btn-status { padding: 8px 14px; border-radius: 6px; border: none; font-weight: 800; font-size: 9px; color: white; min-width: 80px; text-transform: uppercase; cursor: pointer; }
+        .paid { background: var(--success); box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+        .pend { background: var(--danger); box-shadow: 0 0 10px rgba(244, 63, 94, 0.2); }
 
-        /* Inputs Modernos */
-        .input-card { background: var(--card); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid var(--accent); }
-        input { width: 100%; height: 42px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: white; padding: 0 12px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px; }
+        /* Formulario */
+        .input-card { background: var(--card); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid var(--border); }
+        input { width: 100%; height: 45px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: white; padding: 0 15px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px; }
         input:focus { border-color: var(--accent); outline: none; }
-        .btn-add { background: var(--accent); color: #0f172a; font-weight: 800; border: none; width: 100%; height: 42px; border-radius: 6px; font-size: 12px; text-transform: uppercase; cursor: pointer; }
+        .btn-add { background: var(--accent); color: #0f172a; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 8px; font-size: 12px; text-transform: uppercase; cursor: pointer; }
 
-        .del-btn { position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; width: 22px; height: 22px; border-radius: 4px; border: none; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .del-btn { position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; width: 25px; height: 25px; border-radius: 50%; border: 3px solid var(--bg); font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .progress-container { width: 100%; background: var(--bg); height: 4px; border-radius: 2px; margin-top: 12px; }
-        .progress-bar { height: 100%; background: var(--success); border-radius: 2px; }
+        .progress-container { width: 100%; background: var(--bg); height: 5px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--success); transition: width 0.5s ease; }
 
-        /* Navegación Inferior */
-        .footer-btns { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); padding: 15px; display: flex; gap: 12px; border-top: 1px solid var(--border); box-sizing: border-box; }
-        .f-btn { flex: 1; height: 45px; border-radius: 6px; border: none; font-weight: 800; color: white; font-size: 11px; text-transform: uppercase; cursor: pointer; }
-        .footer-brand { text-align: center; padding: 25px; opacity: 0.3; font-size: 8px; letter-spacing: 2px; font-weight: bold; }
+        /* Footer Fijo */
+        .footer-btns { position: fixed; bottom: 0; left: 0; width: 100%; background: #1e293b; padding: 15px; display: flex; gap: 12px; border-top: 1px solid var(--accent); box-sizing: border-box; z-index: 1000; }
+        .f-btn { flex: 1; height: 48px; border-radius: 8px; border: none; font-weight: 800; color: white; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+        
+        .final-brand { text-align: center; padding: 30px 0; }
+        .final-brand h2 { font-size: 12px; margin: 0; color: var(--text-dim); letter-spacing: 2px; }
+        .final-brand p { font-size: 9px; color: var(--accent); margin-top: 5px; opacity: 0.7; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://img.icons8.com/external-flat-icons-inmotus-design/192/external-Analysis-analysis-flat-icons-inmotus-design-12.png" alt="Logo">
-        <h1>SISTEMA DE GESTIÓN</h1>
-        <input type="text" id="mes-actual" class="month-selector" value="MAYO 2026" oninput="save()">
+        <div class="logo-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/2845/2845862.png" alt="Logo">
+        </div>
+        <h1>GESTIÓN & CRECIMIENTO CO.</h1>
+        <p>SOLUCIONES FINANCIERAS INTELIGENTES</p>
+        <input type="text" id="mes-actual" class="month-selector" value="PERIODO MAYO 2026" oninput="save()">
     </div>
 
     <div class="resumen-grid">
         <div class="res-box res-full">
-            <span>DISPONIBILIDAD TOTAL EN ACTIVOS</span>
-            <strong id="res-cuentas" style="font-size: 22px; color: var(--accent)">$ 0</strong>
+            <span>TOTAL ACTIVOS DISPONIBLES</span>
+            <strong id="res-cuentas" style="font-size: 24px; color: var(--accent)">$ 0</strong>
         </div>
         <div class="res-box" style="border-color: var(--success)">
             <span>INGRESOS BRUTOS</span>
@@ -83,7 +91,7 @@
             <strong id="res-gas">$ 0</strong>
         </div>
         <div class="res-box" style="border-color: var(--warning)">
-            <span>FONDO DE RESERVA</span>
+            <span>RESERVA DE AHORRO</span>
             <strong id="res-aho">$ 0</strong>
         </div>
         <div class="res-box" style="border-color: #fff">
@@ -95,24 +103,24 @@
     <div class="section-title">1. Gestión de Capital</div>
     <div id="list-disp"></div>
     <div class="input-card">
-        <input type="text" id="d-n" placeholder="Cuenta o Activo">
-        <input type="number" id="d-v" placeholder="Saldo $">
-        <button class="btn-add" onclick="addDisp()">+ Añadir Activo</button>
+        <input type="text" id="d-n" placeholder="Nombre de Cuenta / Activo">
+        <input type="number" id="d-v" placeholder="Saldo Actual $">
+        <button class="btn-add" onclick="addDisp()">+ Añadir a Capital</button>
     </div>
 
-    <div class="section-title">2. Registro de Egresos</div>
+    <div class="section-title">2. Control de Egresos</div>
     <div id="list-gastos"></div>
     <div class="input-card">
         <input type="date" id="g-f">
-        <input type="text" id="g-n" placeholder="Concepto de operación">
+        <input type="text" id="g-n" placeholder="Descripción del Gasto">
         <div style="display:flex; gap:10px">
             <input type="number" id="g-p" placeholder="Ppto $">
             <input type="number" id="g-r" placeholder="Real $">
         </div>
-        <button class="btn-add" onclick="addGasto()">+ Registrar Movimiento</button>
+        <button class="btn-add" onclick="addGasto()">+ Registrar Egreso</button>
     </div>
 
-    <div class="section-title">3. Reporte de Rendimiento</div>
+    <div class="section-title">3. Rendimiento Diario</div>
     <div id="list-diario"></div>
     <div class="input-card">
         <input type="date" id="i-f">
@@ -121,17 +129,20 @@
             <input type="number" id="i-i" placeholder="Ingreso $">
         </div>
         <div style="display:flex; gap:10px">
-            <input type="number" id="i-a" placeholder="Reserva $">
-            <input type="number" id="i-c" placeholder="Gastos Op $">
+            <input type="number" id="i-a" placeholder="Ahorro $">
+            <input type="number" id="i-c" placeholder="Operativo $">
         </div>
-        <button class="btn-add" onclick="addDiario()">+ Cerrar Reporte Diario</button>
+        <button class="btn-add" onclick="addDiario()">+ Finalizar Jornada</button>
     </div>
 
-    <div class="footer-brand">ASSET MANAGEMENT SYSTEM V4.0</div>
+    <div class="final-brand">
+        <h2>GESTIÓN & CRECIMIENTO CO.</h2>
+        <p>Potenciando tu libertad financiera</p>
+    </div>
 
     <div class="footer-btns">
-        <button class="f-btn" style="background: #0f172a; border: 1px solid var(--border)" onclick="exportar()">Generar CSV</button>
-        <button class="f-btn" style="background: var(--success); color: #000" onclick="save(true)">Sincronizar</button>
+        <button class="f-btn" style="background: #334155;" onclick="exportar()">Reporte CSV</button>
+        <button class="f-btn" style="background: var(--accent); color: #0f172a" onclick="save(true)">Guardar Datos</button>
     </div>
 
 <script>
@@ -144,15 +155,15 @@
             gastos: Array.from(document.querySelectorAll('.card-gasto')).map(c => ({...c.dataset, est: c.querySelector('.btn-status').innerText})),
             diario: Array.from(document.querySelectorAll('.card-diario')).map(c => c.dataset)
         };
-        localStorage.setItem('db_enterprise_2026', JSON.stringify(data));
-        if(msg) alert("Base de datos actualizada localmente.");
+        localStorage.setItem('db_enterprise_final', JSON.stringify(data));
+        if(msg) alert("Base de datos sincronizada ✅");
         calc();
     }
 
     window.onload = () => {
-        const db = JSON.parse(localStorage.getItem('db_enterprise_2026'));
+        const db = JSON.parse(localStorage.getItem('db_enterprise_final'));
         if(db) {
-            document.getElementById('mes-actual').value = db.mes || "PERIODO 2026";
+            document.getElementById('mes-actual').value = db.mes || "PERIODO ACTUAL";
             db.disp.forEach(d => renderDisp(d));
             db.gastos.forEach(g => renderGasto(g));
             db.diario.forEach(d => renderDiario(d));
@@ -174,7 +185,7 @@
             <button class="del-btn" onclick="this.parentElement.remove();save();">×</button>
             <div class="item-header"><div class="item-title">${d.item}</div></div>
             <div class="item-body">
-                <div class="price-tag"><label>Fondos Disponibles</label><span style="color:var(--accent)">${fmt(d.valor)}</span></div>
+                <div class="price-tag"><label>Disponible</label><span style="color:var(--accent); font-size:17px">${fmt(d.valor)}</span></div>
             </div>
         </div>`;
         document.getElementById('list-disp').insertAdjacentHTML('beforeend', html);
@@ -198,8 +209,8 @@
                 <div class="item-date">${g.fecha.split('-').reverse().join('/')}</div>
             </div>
             <div class="item-body">
-                <div class="price-tag"><label>Proyectado</label><span>${fmt(g.ppto)}</span></div>
-                <div class="price-tag"><label>Ejecutado</label><span>${fmt(g.real)}</span></div>
+                <div class="price-tag"><label>Presupuesto</label><span>${fmt(g.ppto)}</span></div>
+                <div class="price-tag"><label>Real</label><span>${fmt(g.real)}</span></div>
                 <button class="btn-status ${cl}" onclick="toggleG(this)">${g.est}</button>
             </div>
         </div>`;
@@ -226,13 +237,13 @@
         <div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-comb="${d.comb}">
             <button class="del-btn" onclick="this.parentElement.remove();save();">×</button>
             <div class="item-header">
-                <div class="item-title">Balance Operativo</div>
+                <div class="item-title">Balance Diario</div>
                 <div class="item-date">${d.fecha.split('-').reverse().join('/')}</div>
             </div>
             <div class="item-body">
-                <div class="price-tag"><label>Objetivo</label><span>${fmt(d.meta)}</span></div>
-                <div class="price-tag"><label>Real</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
-                <div class="price-tag"><label>Reserva</label><span>${fmt(d.aho)}</span></div>
+                <div class="price-tag"><label>Meta</label><span>${fmt(d.meta)}</span></div>
+                <div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
+                <div class="price-tag"><label>Fondo Ahorro</label><span>${fmt(d.aho)}</span></div>
             </div>
             <div class="progress-container"><div class="progress-bar" style="width: ${perc}%"></div></div>
         </div>`;
@@ -258,13 +269,13 @@
 
     function exportar() {
         const mes = document.getElementById('mes-actual').value;
-        let csv = "\ufeffREPORTE FINANCIERO CORPORATIVO - " + mes + "\n\n";
-        csv += "1. ACTIVOS\nCuenta,Saldo\n";
+        let csv = "\ufeffREPORTE GESTION & CRECIMIENTO CO. - " + mes + "\n\n";
+        csv += "1. CAPITAL DISPONIBLE\nCuenta,Saldo\n";
         document.querySelectorAll('.card-disp').forEach(c => { csv += `${c.dataset.item},${c.dataset.valor}\n`; });
-        csv += "\n2. EGRESOS\nConcepto,Fecha,Proyectado,Ejecutado,Estado\n";
+        csv += "\n2. EGRESOS\nConcepto,Fecha,Presupuesto,Real,Estado\n";
         document.querySelectorAll('.card-gasto').forEach(c => { csv += `${c.dataset.item},${c.dataset.fecha},${c.dataset.ppto},${c.dataset.real},${c.querySelector('.btn-status').innerText}\n`; });
         const b = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = `Reporte_${mes}.csv`; a.click();
+        const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = `Reporte_Financiero.csv`; a.click();
     }
 </script>
 </body>
