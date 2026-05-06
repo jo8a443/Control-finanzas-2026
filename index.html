@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>G&C Executive Suite</title>
+    <title>G&C Suite Executive V6.1</title>
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     
@@ -16,7 +16,7 @@
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* Branding & Header */
+        /* Header */
         .header { 
             background: linear-gradient(180deg, #161d2f 0%, #0b0f1a 100%); 
             padding: 20px; text-align: center; border-bottom: 2px solid var(--accent);
@@ -30,143 +30,123 @@
         .active-tab { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Dashboard Ejecutivo - Tab 1 */
+        /* Dashboard Pestaña 1 */
         .exec-card { background: var(--card); border-radius: 24px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        .main-balance { text-align: center; margin-bottom: 30px; }
+        .main-balance { text-align: center; margin-bottom: 25px; }
         .main-balance span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
         .main-balance h2 { font-size: 32px; margin: 10px 0; font-family: 'Roboto Mono', monospace; color: var(--accent); }
 
-        /* Gráfico Estético (Donut) */
-        .chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; }
+        /* Gráfico Circular */
+        .chart-container { position: relative; width: 160px; height: 160px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
         .donut-chart { 
             width: 100%; height: 100%; border-radius: 50%; 
-            background: conic-gradient(var(--danger) 0% 0%, var(--success) 0% 0%, var(--warning) 0% 0%, #1e293b 0% 100%);
+            background: conic-gradient(#1e293b 0% 100%);
             display: flex; align-items: center; justify-content: center;
             transition: all 0.5s ease;
         }
         .donut-inner { width: 75%; height: 75%; background: var(--card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .donut-inner span { font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
         .donut-inner strong { font-size: 14px; color: #fff; }
 
-        /* Grid de Métricas */
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .metric-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 16px; border-left: 3px solid var(--border); }
-        .metric-item span { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; }
-        .metric-item strong { font-size: 14px; font-family: 'Roboto Mono', monospace; }
+        /* Métricas */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .metric-item { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 16px; border-left: 3px solid var(--border); }
+        .metric-item span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+        .metric-item strong { font-size: 13px; font-family: 'Roboto Mono', monospace; }
 
-        /* Capital / Fondos */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        .section-header h3 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin: 0; letter-spacing: 1px; }
+        /* Cards Generales */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .section-header h3 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin: 0; }
 
-        .fund-card { background: var(--card); border-radius: 16px; padding: 15px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .fund-info label { display: block; font-size: 12px; font-weight: bold; color: #fff; }
-        .fund-info small { color: var(--text-dim); font-size: 10px; }
-        .fund-value { font-family: 'Roboto Mono', monospace; color: var(--accent); font-weight: bold; }
+        .item-card { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid var(--border); position: relative; }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .price-tag label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; }
+        .price-tag span { font-weight: bold; font-family: 'Roboto Mono', monospace; }
 
-        /* Estilos Generales de Items */
-        .item-card { background: var(--card); border-radius: 16px; padding: 15px; margin-bottom: 12px; border: 1px solid var(--border); position: relative; }
-        .item-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
-        
         /* Inputs y Botones */
-        .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin: 20px 0; }
-        input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; }
+        .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin-top: 20px; }
+        input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; font-size: 14px; }
         .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 10px; margin-top: 15px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
-        
-        /* Navbar */
+        .btn-del { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 4px 8px; font-size: 10px; cursor: pointer; }
+
+        /* Navbar Inferior */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--accent); z-index: 1000; padding-bottom: 10px; }
         .nav-item { text-align: center; color: var(--text-dim); font-size: 8px; text-transform: uppercase; font-weight: 800; flex: 1; cursor: pointer; }
         .nav-item i { display: block; font-size: 22px; margin-bottom: 5px; }
         .nav-item.active { color: var(--accent); }
-
-        .btn-del { background: var(--danger); color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>GESTIÓN & CRECIMIENTO CO.</h1>
-        <div class="sub">EXECUTIVE DASHBOARD V6.0</div>
+        <div class="sub">FINANCIAL INTELLIGENCE V6.1</div>
     </div>
 
     <div id="tab1" class="tab-content active-tab">
         <div class="exec-card">
             <div class="main-balance">
-                <span>Diferencia Neta (Ingresos - Gastos)</span>
+                <span>Diferencia Neta (Utilidad/Mes)</span>
                 <h2 id="res-dif">$ 0</h2>
             </div>
-
             <div class="chart-container">
                 <div class="donut-chart" id="mainChart">
                     <div class="donut-inner">
-                        <span>Balance</span>
-                        <strong id="chart-perc">0%</strong>
+                        <strong id="chart-perc">0% Lib</strong>
                     </div>
                 </div>
             </div>
-
             <div class="metrics-grid">
                 <div class="metric-item" style="border-color: var(--success)">
-                    <span>Total Ingresos</span>
-                    <strong id="res-ing" style="color: var(--success)">$ 0</strong>
+                    <span>Ingresos</span><strong id="res-ing" style="color: var(--success)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: var(--danger)">
-                    <span>Total Egresos</span>
-                    <strong id="res-gas" style="color: var(--danger)">$ 0</strong>
+                    <span>Egresos</span><strong id="res-gas" style="color: var(--danger)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: var(--warning)">
-                    <span>Reserva Ahorro</span>
-                    <strong id="res-aho" style="color: var(--warning)">$ 0</strong>
+                    <span>Ahorro Extra</span><strong id="res-aho" style="color: var(--warning)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: #fff">
-                    <span>Efectivo Disponible</span>
-                    <strong id="res-cuentas">$ 0</strong>
+                    <span>Efectivo Disp.</span><strong id="res-cuentas">$ 0</strong>
                 </div>
             </div>
         </div>
-
-        <div class="section-header">
-            <h3>Gestión de Capital Disponible</h3>
-        </div>
+        <div class="section-header"><h3>Capital Disponible</h3></div>
         <div id="list-disp"></div>
-        
         <div class="input-card">
-            <input type="text" id="d-n" placeholder="Nombre de la Cuenta (Ej: Nequi, Caja)">
+            <input type="text" id="d-n" placeholder="Nombre (Ej: Nequi, Caja)">
             <input type="number" id="d-v" placeholder="Saldo Actual $">
-            <button class="btn-add" onclick="addDisp()">+ Registrar Capital</button>
+            <button class="btn-add" onclick="addDisp()">+ Guardar Saldo</button>
         </div>
     </div>
 
     <div id="tab2" class="tab-content">
-        <div class="section-header"><h3>Control de Egresos</h3></div>
+        <div class="section-header"><h3>Control de Egresos Inteligente</h3></div>
         <div id="list-gastos"></div>
-        
         <div class="input-card">
             <input type="date" id="g-f">
-            <input type="text" id="g-n" placeholder="Concepto">
+            <input type="text" id="g-n" placeholder="Concepto del Egreso">
             <div style="display:flex; gap:10px">
                 <input type="number" id="g-p" placeholder="Ppto $">
                 <input type="number" id="g-r" placeholder="Real $">
             </div>
-            <button class="btn-add" onclick="addGasto()">+ Registrar Gasto</button>
+            <button class="btn-add" onclick="addGasto()">+ Ejecutar Egreso</button>
         </div>
     </div>
 
     <div id="tab3" class="tab-content">
-        <div class="section-header"><h3>Registro Diario</h3></div>
+        <div class="section-header"><h3>Rendimiento de Jornada</h3></div>
         <div id="list-diario"></div>
-        
         <div class="input-card">
             <input type="date" id="i-f">
             <div style="display:flex; gap:10px">
                 <input type="number" id="i-m" placeholder="Meta $">
-                <input type="number" id="i-i" placeholder="Logrado $">
+                <input type="number" id="i-i" placeholder="Ingreso $">
             </div>
-            <input type="number" id="i-a" placeholder="Ahorro Extra $">
-            <button class="btn-add" onclick="addDiario()">+ Cerrar Jornada</button>
+            <input type="number" id="i-a" placeholder="Ahorro del Día $">
+            <button class="btn-add" onclick="addDiario()">+ Cerrar Día</button>
         </div>
-        <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Descargar CSV</button>
+        <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Exportar CSV</button>
     </div>
 
     <div class="nav-bar">
@@ -176,7 +156,7 @@
     </div>
 
     <script>
-        const KEY = 'DB_GC_V6_MASTER';
+        const KEY = 'DB_GC_PRO_MASTER_V6';
         const fmt = n => '$' + Number(n).toLocaleString('es-CO');
 
         function showTab(num, el) {
@@ -207,7 +187,6 @@
             }
         };
 
-        // --- FUNCIONES DE RENDERIZADO ---
         function addDisp() {
             const n = document.getElementById('d-n').value, v = document.getElementById('d-v').value;
             if(!n || !v) return;
@@ -217,34 +196,37 @@
         }
 
         function renderDisp(d) {
-            const html = `
-            <div class="fund-card card-disp" data-item="${d.item}" data-valor="${d.valor}">
-                <div class="fund-info"><label>${d.item}</label><small>Activo</small></div>
-                <div style="display:flex; align-items:center; gap:15px">
-                    <div class="fund-value">${fmt(d.valor)}</div>
-                    <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button>
-                </div>
-            </div>`;
+            const html = `<div class="item-card card-disp" data-item="${d.item}" data-valor="${d.valor}" style="display:flex; justify-content:space-between; align-items:center">
+                <div><span style="font-size:14px; font-weight:bold">${d.item}</span><br><small style="color:var(--text-dim)">Activo</small></div>
+                <div style="display:flex; align-items:center; gap:12px"><strong style="color:var(--accent)">${fmt(d.valor)}</strong>
+                <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div></div>`;
             document.getElementById('list-disp').insertAdjacentHTML('beforeend', html);
         }
 
         function addGasto() {
-            const f = document.getElementById('g-f').value, n = document.getElementById('g-n').value, p = document.getElementById('g-p').value, r = document.getElementById('g-r').value || 0;
-            if(!f || !n || !p) return;
+            const f = document.getElementById('g-f').value, n = document.getElementById('g-n').value, p = document.getElementById('g-p').value, r = document.getElementById('g-r').value;
+            if(!f || !n || !p || !r) return;
             renderGasto({fecha: f, item: n, ppto: p, real: r});
             document.getElementById('g-n').value = ''; document.getElementById('g-p').value = ''; document.getElementById('g-r').value = '';
             save();
         }
 
         function renderGasto(g) {
-            const html = `
-            <div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
-                <div class="item-header"><div>${g.item}</div><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div class="item-row">
-                    <div class="price-tag"><label>Real</label><span style="color:var(--danger)">${fmt(g.real)}</span></div>
-                    <div class="price-tag" style="text-align:right"><label>Fecha</label><span>${g.fecha}</span></div>
-                </div>
-            </div>`;
+            const ppto = Number(g.ppto), real = Number(g.real);
+            const porc = ppto > 0 ? Math.min((real / ppto) * 100, 100) : 0;
+            let col = 'var(--success)'; 
+            if(porc > 75) col = 'var(--warning)'; 
+            if(real > ppto) col = 'var(--danger)';
+
+            const html = `<div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
+                <div class="item-header"><div><span style="color:#fff">${g.item}</span><br><small style="color:var(--text-dim)">${g.fecha}</small></div>
+                <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div style="margin:10px 0"><div style="display:flex; justify-content:space-between; font-size:9px; margin-bottom:4px">
+                <span style="color:var(--text-dim)">Ejecución</span><span style="color:${col}; font-weight:bold">${porc.toFixed(0)}%</span></div>
+                <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden">
+                <div style="width:${porc}%; height:100%; background:${col}; transition:width 0.6s"></div></div></div>
+                <div class="item-row"><div class="price-tag"><label>Ppto</label><span>${fmt(ppto)}</span></div>
+                <div class="price-tag" style="text-align:right"><label>Real</label><span style="color:${real > ppto ? 'var(--danger)' : '#fff'}">${fmt(real)}</span></div></div></div>`;
             document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
         }
 
@@ -257,57 +239,44 @@
         }
 
         function renderDiario(d) {
-            const html = `
-            <div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}">
-                <div class="item-header"><div>Ingreso Diario</div><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div class="item-row">
-                    <div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
-                    <div class="price-tag" style="text-align:right"><label>Ahorro</label><span>${fmt(d.aho)}</span></div>
-                </div>
-            </div>`;
+            const html = `<div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}">
+                <div class="item-header"><div><span style="color:#fff">Jornada Laboral</span><br><small style="color:var(--text-dim)">${d.fecha}</small></div>
+                <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="item-row"><div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
+                <div class="price-tag" style="text-align:right"><label>Ahorro</label><span>${fmt(d.aho)}</span></div></div></div>`;
             document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
         }
 
         function calc() {
-            let ing = 0, gas = 0, aho = 0, cap = 0;
+            let ing = 0, gas = 0, ahoExtra = 0, cap = 0;
             document.querySelectorAll('.card-disp').forEach(c => cap += Number(c.dataset.valor));
             document.querySelectorAll('.card-gasto').forEach(c => gas += Number(c.dataset.real));
-            document.querySelectorAll('.card-diario').forEach(c => {
-                ing += Number(c.dataset.ing);
-                aho += Number(c.dataset.aho);
-            });
+            document.querySelectorAll('.card-diario').forEach(c => { ing += Number(c.dataset.ing); ahoExtra += Number(c.dataset.aho); });
 
-            const dif = ing - gas;
+            const util = ing - gas;
             document.getElementById('res-cuentas').innerText = fmt(cap);
             document.getElementById('res-ing').innerText = fmt(ing);
             document.getElementById('res-gas').innerText = fmt(gas);
-            document.getElementById('res-aho').innerText = fmt(aho);
-            document.getElementById('res-dif').innerText = fmt(dif);
-            document.getElementById('res-dif').style.color = dif < 0 ? 'var(--danger)' : 'var(--success)';
+            document.getElementById('res-aho').innerText = fmt(ahoExtra);
+            document.getElementById('res-dif').innerText = fmt(util);
+            document.getElementById('res-dif').style.color = util < 0 ? 'var(--danger)' : 'var(--success)';
 
-            // ACTUALIZAR GRÁFICO (Composición de Ingresos)
             if(ing > 0) {
-                const pGas = Math.min((gas / ing) * 100, 100);
-                const pAho = Math.min((aho / ing) * 100, 100);
-                const pResto = Math.max(0, 100 - pGas - pAho);
-                
-                document.getElementById('mainChart').style.background = `conic-gradient(
-                    var(--danger) 0% ${pGas}%, 
-                    var(--warning) ${pGas}% ${pGas + pAho}%, 
-                    var(--success) ${pGas + pAho}% 100%
-                )`;
-                document.getElementById('chart-perc').innerText = Math.round(pResto) + "% Lib";
+                const pGas = Math.min((gas/ing)*100, 100), pAho = Math.min((ahoExtra/ing)*100, 100);
+                const pLib = Math.max(0, 100 - pGas - pAho);
+                document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pGas}%, var(--warning) ${pGas}% ${pGas+pAho}%, var(--success) ${pGas+pAho}% 100%)`;
+                document.getElementById('chart-perc').innerText = Math.round(pLib) + "% Lib";
             }
         }
 
         function exportar() {
             const db = JSON.parse(localStorage.getItem(KEY));
-            let csv = "\ufeffREPORTE EJECUTIVO G&C\nSección;Item;Fecha;Valor\n";
+            let csv = "\ufeffREPORTE G&C\nSeccion;Concepto;Fecha;Valor\n";
             db.disp.forEach(d => csv += `Capital;${d.item};-;${d.valor}\n`);
             db.gastos.forEach(g => csv += `Egreso;${g.item};${g.fecha};${g.real}\n`);
-            db.diario.forEach(d => csv += `Ingreso;Jornada;${d.fecha};${d.ing}\n`);
+            db.diario.forEach(d => csv += `Ingreso;Venta;${d.fecha};${d.ing}\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `G&C_Reporte_Ejecutivo.csv`; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_Executive.csv`; a.click();
         }
     </script>
 </body>
