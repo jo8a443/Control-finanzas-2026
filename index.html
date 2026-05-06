@@ -3,164 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>G&C Suite - Gestión Profesional</title>
+    <title>G&C Executive Suite</title>
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     
     <style>
         :root {
-            --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
-            --success: #10b981; --danger: #f43f5e; --warning: #f59e0b;
-            --text: #f8fafc; --text-dim: #94a3b8; --border: #334155;
+            --bg: #0b0f1a; --card: #161d2f; --accent: #38bdf8;
+            --success: #10b981; --danger: #f43f5e; --warning: #fbbf24;
+            --text: #f8fafc; --text-dim: #94a3b8; --border: #2d3748;
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* Header Fijo */
+        /* Branding & Header */
         .header { 
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); 
+            background: linear-gradient(180deg, #161d2f 0%, #0b0f1a 100%); 
             padding: 20px; text-align: center; border-bottom: 2px solid var(--accent);
             position: sticky; top: 0; z-index: 100;
         }
-        .header h1 { margin: 0; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; }
-        .header .sub { font-size: 9px; color: var(--accent); letter-spacing: 2px; }
+        .header h1 { margin: 0; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; color: #fff; }
+        .header .sub { font-size: 9px; color: var(--accent); letter-spacing: 3px; font-weight: bold; }
 
-        /* Sistema de Pestañas */
-        .tab-content { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        /* Pestañas */
+        .tab-content { display: none; padding: 20px; animation: slideUp 0.4s ease-out; }
         .active-tab { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Dashboard Ejecutivo - Tab 1 */
+        .exec-card { background: var(--card); border-radius: 24px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .main-balance { text-align: center; margin-bottom: 30px; }
+        .main-balance span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+        .main-balance h2 { font-size: 32px; margin: 10px 0; font-family: 'Roboto Mono', monospace; color: var(--accent); }
 
-        /* Dashboard de Resumen */
-        .resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .res-box { background: var(--card); padding: 15px; border-radius: 12px; border-left: 4px solid var(--accent); }
-        .res-full { grid-column: span 2; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-left: 4px solid #fff; }
-        .res-box span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
-        .res-box strong { font-size: 18px; color: #fff; font-family: 'Roboto Mono', monospace; }
-
-        /* Cards de Items */
-        .section-title { font-size: 11px; color: var(--accent); text-transform: uppercase; margin: 20px 0 10px; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .item-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; position: relative; border: 1px solid var(--border); }
-        .item-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; font-size: 14px; }
-        .item-body { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--border); padding-top: 10px; }
-        .price-tag label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
-        .price-tag span { font-family: 'Roboto Mono', monospace; font-size: 14px; font-weight: bold; }
-
-        /* Formularios */
-        .input-card { background: var(--card); padding: 15px; border-radius: 15px; border: 1px dashed var(--accent); margin-top: 20px; }
-        input, select { 
-            width: 100%; height: 40px; margin-top: 8px; border-radius: 8px; 
-            border: 1px solid var(--border); background: var(--bg); color: white; padding: 0 10px; box-sizing: border-box;
+        /* Gráfico Estético (Donut) */
+        .chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; }
+        .donut-chart { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            background: conic-gradient(var(--danger) 0% 0%, var(--success) 0% 0%, var(--warning) 0% 0%, #1e293b 0% 100%);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease;
         }
-        .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 40px; border-radius: 8px; margin-top: 15px; font-size: 11px; text-transform: uppercase; }
-        .del-btn { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; width: 22px; height: 22px; border-radius: 50%; border: none; font-weight: bold; }
+        .donut-inner { width: 75%; height: 75%; background: var(--card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .donut-inner span { font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
+        .donut-inner strong { font-size: 14px; color: #fff; }
 
-        /* Barra de Navegación Inferior */
-        .nav-bar { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
-            background: #1e293b; display: flex; justify-content: space-around;
-            align-items: center; border-top: 2px solid var(--accent); z-index: 1000;
-        }
-        .nav-item { text-align: center; color: var(--text-dim); font-size: 9px; text-transform: uppercase; font-weight: bold; text-decoration: none; flex: 1; padding: 10px 0; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 4px; }
+        /* Grid de Métricas */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .metric-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 16px; border-left: 3px solid var(--border); }
+        .metric-item span { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; }
+        .metric-item strong { font-size: 14px; font-family: 'Roboto Mono', monospace; }
+
+        /* Capital / Fondos */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .section-header h3 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin: 0; letter-spacing: 1px; }
+
+        .fund-card { background: var(--card); border-radius: 16px; padding: 15px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .fund-info label { display: block; font-size: 12px; font-weight: bold; color: #fff; }
+        .fund-info small { color: var(--text-dim); font-size: 10px; }
+        .fund-value { font-family: 'Roboto Mono', monospace; color: var(--accent); font-weight: bold; }
+
+        /* Estilos Generales de Items */
+        .item-card { background: var(--card); border-radius: 16px; padding: 15px; margin-bottom: 12px; border: 1px solid var(--border); position: relative; }
+        .item-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        
+        /* Inputs y Botones */
+        .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin: 20px 0; }
+        input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; }
+        .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 10px; margin-top: 15px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+        
+        /* Navbar */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--accent); z-index: 1000; padding-bottom: 10px; }
+        .nav-item { text-align: center; color: var(--text-dim); font-size: 8px; text-transform: uppercase; font-weight: 800; flex: 1; cursor: pointer; }
+        .nav-item i { display: block; font-size: 22px; margin-bottom: 5px; }
         .nav-item.active { color: var(--accent); }
 
-        .btn-status { padding: 5px 10px; border-radius: 4px; border: none; font-size: 9px; font-weight: 800; color: white; }
-        .paid { background: var(--success); }
-        .pend { background: var(--danger); }
-        
-        .footer-brand { text-align: center; padding: 40px 20px; opacity: 0.5; font-size: 9px; letter-spacing: 2px; }
+        .btn-del { background: var(--danger); color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>GESTIÓN & CRECIMIENTO CO.</h1>
-        <div class="sub">SISTEMA FINANCIERO INTELIGENTE</div>
+        <div class="sub">EXECUTIVE DASHBOARD V6.0</div>
     </div>
 
     <div id="tab1" class="tab-content active-tab">
-        <div class="resumen-grid">
-            <div class="res-box res-full">
-                <span>ACTIVOS DISPONIBLES</span>
-                <strong id="res-cuentas">$ 0</strong>
+        <div class="exec-card">
+            <div class="main-balance">
+                <span>Diferencia Neta (Ingresos - Gastos)</span>
+                <h2 id="res-dif">$ 0</h2>
             </div>
-            <div class="res-box" style="border-color: var(--success)">
-                <span>INGRESOS</span>
-                <strong id="res-ing">$ 0</strong>
+
+            <div class="chart-container">
+                <div class="donut-chart" id="mainChart">
+                    <div class="donut-inner">
+                        <span>Balance</span>
+                        <strong id="chart-perc">0%</strong>
+                    </div>
+                </div>
             </div>
-            <div class="res-box" style="border-color: var(--danger)">
-                <span>EGRESOS</span>
-                <strong id="res-gas">$ 0</strong>
+
+            <div class="metrics-grid">
+                <div class="metric-item" style="border-color: var(--success)">
+                    <span>Total Ingresos</span>
+                    <strong id="res-ing" style="color: var(--success)">$ 0</strong>
+                </div>
+                <div class="metric-item" style="border-color: var(--danger)">
+                    <span>Total Egresos</span>
+                    <strong id="res-gas" style="color: var(--danger)">$ 0</strong>
+                </div>
+                <div class="metric-item" style="border-color: var(--warning)">
+                    <span>Reserva Ahorro</span>
+                    <strong id="res-aho" style="color: var(--warning)">$ 0</strong>
+                </div>
+                <div class="metric-item" style="border-color: #fff">
+                    <span>Efectivo Disponible</span>
+                    <strong id="res-cuentas">$ 0</strong>
+                </div>
             </div>
         </div>
 
-        <div class="section-title">Gestión de Capital Disponible</div>
+        <div class="section-header">
+            <h3>Gestión de Capital Disponible</h3>
+        </div>
         <div id="list-disp"></div>
         
         <div class="input-card">
-            <input type="text" id="d-n" placeholder="Nombre de la Cuenta">
+            <input type="text" id="d-n" placeholder="Nombre de la Cuenta (Ej: Nequi, Caja)">
             <input type="number" id="d-v" placeholder="Saldo Actual $">
-            <button class="btn-add" onclick="addDisp()">+ Registrar Saldo</button>
+            <button class="btn-add" onclick="addDisp()">+ Registrar Capital</button>
         </div>
-        
-        <div class="footer-brand">GESTIÓN & CRECIMIENTO CO.<br>De la estrategia a los resultados</div>
     </div>
 
     <div id="tab2" class="tab-content">
-        <div class="section-title">Control de Egresos y Gastos</div>
+        <div class="section-header"><h3>Control de Egresos</h3></div>
         <div id="list-gastos"></div>
         
         <div class="input-card">
             <input type="date" id="g-f">
-            <input type="text" id="g-n" placeholder="Concepto del Gasto">
+            <input type="text" id="g-n" placeholder="Concepto">
             <div style="display:flex; gap:10px">
                 <input type="number" id="g-p" placeholder="Ppto $">
                 <input type="number" id="g-r" placeholder="Real $">
             </div>
-            <button class="btn-add" onclick="addGasto()">+ Registrar Egreso</button>
+            <button class="btn-add" onclick="addGasto()">+ Registrar Gasto</button>
         </div>
     </div>
 
     <div id="tab3" class="tab-content">
-        <div class="section-title">Rendimiento Diario</div>
+        <div class="section-header"><h3>Registro Diario</h3></div>
         <div id="list-diario"></div>
         
         <div class="input-card">
             <input type="date" id="i-f">
             <div style="display:flex; gap:10px">
                 <input type="number" id="i-m" placeholder="Meta $">
-                <input type="number" id="i-i" placeholder="Ingreso $">
+                <input type="number" id="i-i" placeholder="Logrado $">
             </div>
-            <div style="display:flex; gap:10px">
-                <input type="number" id="i-a" placeholder="Ahorro $">
-                <input type="number" id="i-c" placeholder="Costos $">
-            </div>
-            <button class="btn-add" onclick="addDiario()">+ Cerrar Día</button>
+            <input type="number" id="i-a" placeholder="Ahorro Extra $">
+            <button class="btn-add" onclick="addDiario()">+ Cerrar Jornada</button>
         </div>
-        
-        <div style="margin-top: 20px;">
-            <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Descargar Reporte CSV</button>
-        </div>
+        <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Descargar CSV</button>
     </div>
 
     <div class="nav-bar">
-        <div class="nav-item active" onclick="showTab(1, this)">
-            <i>📊</i>
-            RESUMEN
-        </div>
-        <div class="nav-item" onclick="showTab(2, this)">
-            <i>💸</i>
-            EGRESOS
-        </div>
-        <div class="nav-item" onclick="showTab(3, this)">
-            <i>🚀</i>
-            DIARIO
-        </div>
+        <div class="nav-item active" onclick="showTab(1, this)"><i>📊</i>RESUMEN</div>
+        <div class="nav-item" onclick="showTab(2, this)"><i>💸</i>EGRESOS</div>
+        <div class="nav-item" onclick="showTab(3, this)"><i>🚀</i>DIARIO</div>
     </div>
 
     <script>
-        const KEY = 'DB_GC_TAB_SYSTEM';
+        const KEY = 'DB_GC_V6_MASTER';
         const fmt = n => '$' + Number(n).toLocaleString('es-CO');
 
         function showTab(num, el) {
@@ -174,7 +190,7 @@
         function save() {
             const data = {
                 disp: Array.from(document.querySelectorAll('.card-disp')).map(c => c.dataset),
-                gastos: Array.from(document.querySelectorAll('.card-gasto')).map(c => ({...c.dataset, est: c.querySelector('.btn-status').innerText})),
+                gastos: Array.from(document.querySelectorAll('.card-gasto')).map(c => c.dataset),
                 diario: Array.from(document.querySelectorAll('.card-diario')).map(c => c.dataset)
             };
             localStorage.setItem(KEY, JSON.stringify(data));
@@ -191,7 +207,7 @@
             }
         };
 
-        // --- FUNCIONES DE REGISTRO ---
+        // --- FUNCIONES DE RENDERIZADO ---
         function addDisp() {
             const n = document.getElementById('d-n').value, v = document.getElementById('d-v').value;
             if(!n || !v) return;
@@ -202,11 +218,11 @@
 
         function renderDisp(d) {
             const html = `
-            <div class="item-card card-disp" data-item="${d.item}" data-valor="${d.valor}">
-                <button class="del-btn" onclick="this.parentElement.remove();save();">×</button>
-                <div class="item-header"><div>${d.item}</div></div>
-                <div class="item-body">
-                    <div class="price-tag"><label>Disponible</label><span style="color:var(--accent)">${fmt(d.valor)}</span></div>
+            <div class="fund-card card-disp" data-item="${d.item}" data-valor="${d.valor}">
+                <div class="fund-info"><label>${d.item}</label><small>Activo</small></div>
+                <div style="display:flex; align-items:center; gap:15px">
+                    <div class="fund-value">${fmt(d.valor)}</div>
+                    <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button>
                 </div>
             </div>`;
             document.getElementById('list-disp').insertAdjacentHTML('beforeend', html);
@@ -215,70 +231,83 @@
         function addGasto() {
             const f = document.getElementById('g-f').value, n = document.getElementById('g-n').value, p = document.getElementById('g-p').value, r = document.getElementById('g-r').value || 0;
             if(!f || !n || !p) return;
-            renderGasto({fecha: f, item: n, ppto: p, real: r, est: 'PEND'});
+            renderGasto({fecha: f, item: n, ppto: p, real: r});
             document.getElementById('g-n').value = ''; document.getElementById('g-p').value = ''; document.getElementById('g-r').value = '';
             save();
         }
 
         function renderGasto(g) {
-            const cl = g.est === 'PAGO' ? 'paid' : 'pend';
             const html = `
             <div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
-                <button class="del-btn" onclick="this.parentElement.remove();save();">×</button>
-                <div class="item-header"><div>${g.item}</div><div style="font-size:10px">${g.fecha}</div></div>
-                <div class="item-body">
-                    <div class="price-tag"><label>Ppto</label><span>${fmt(g.ppto)}</span></div>
-                    <div class="price-tag"><label>Real</label><span>${fmt(g.real)}</span></div>
-                    <button class="btn-status ${cl}" onclick="toggleG(this)">${g.est}</button>
+                <div class="item-header"><div>${g.item}</div><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="item-row">
+                    <div class="price-tag"><label>Real</label><span style="color:var(--danger)">${fmt(g.real)}</span></div>
+                    <div class="price-tag" style="text-align:right"><label>Fecha</label><span>${g.fecha}</span></div>
                 </div>
             </div>`;
             document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
-        }
-
-        function toggleG(b) {
-            b.innerText = b.innerText === 'PEND' ? 'PAGO' : 'PEND';
-            b.className = `btn-status ${b.innerText === 'PAGO' ? 'paid' : 'pend'}`;
-            save();
         }
 
         function addDiario() {
             const f = document.getElementById('i-f').value, m = document.getElementById('i-m').value, i = document.getElementById('i-i').value, a = document.getElementById('i-a').value || 0;
             if(!f || !m || !i) return;
             renderDiario({fecha: f, meta: m, ing: i, aho: a});
+            document.getElementById('i-i').value = ''; document.getElementById('i-a').value = '';
             save();
         }
 
         function renderDiario(d) {
             const html = `
             <div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}">
-                <button class="del-btn" onclick="this.parentElement.remove();save();">×</button>
-                <div class="item-header"><div>Balance Diario</div><div style="font-size:10px">${d.fecha}</div></div>
-                <div class="item-body">
+                <div class="item-header"><div>Ingreso Diario</div><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="item-row">
                     <div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
-                    <div class="price-tag"><label>Ahorro</label><span>${fmt(d.aho)}</span></div>
+                    <div class="price-tag" style="text-align:right"><label>Ahorro</label><span>${fmt(d.aho)}</span></div>
                 </div>
             </div>`;
             document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
         }
 
         function calc() {
-            let ingMes = 0, gasMes = 0, totalDisp = 0;
-            document.querySelectorAll('.card-disp').forEach(c => totalDisp += Number(c.dataset.valor));
-            document.querySelectorAll('.card-gasto').forEach(c => gasMes += Number(c.dataset.real));
-            document.querySelectorAll('.card-diario').forEach(c => ingMes += Number(c.dataset.ing));
+            let ing = 0, gas = 0, aho = 0, cap = 0;
+            document.querySelectorAll('.card-disp').forEach(c => cap += Number(c.dataset.valor));
+            document.querySelectorAll('.card-gasto').forEach(c => gas += Number(c.dataset.real));
+            document.querySelectorAll('.card-diario').forEach(c => {
+                ing += Number(c.dataset.ing);
+                aho += Number(c.dataset.aho);
+            });
 
-            document.getElementById('res-cuentas').innerText = fmt(totalDisp);
-            document.getElementById('res-ing').innerText = fmt(ingMes);
-            document.getElementById('res-gas').innerText = fmt(gasMes);
+            const dif = ing - gas;
+            document.getElementById('res-cuentas').innerText = fmt(cap);
+            document.getElementById('res-ing').innerText = fmt(ing);
+            document.getElementById('res-gas').innerText = fmt(gas);
+            document.getElementById('res-aho').innerText = fmt(aho);
+            document.getElementById('res-dif').innerText = fmt(dif);
+            document.getElementById('res-dif').style.color = dif < 0 ? 'var(--danger)' : 'var(--success)';
+
+            // ACTUALIZAR GRÁFICO (Composición de Ingresos)
+            if(ing > 0) {
+                const pGas = Math.min((gas / ing) * 100, 100);
+                const pAho = Math.min((aho / ing) * 100, 100);
+                const pResto = Math.max(0, 100 - pGas - pAho);
+                
+                document.getElementById('mainChart').style.background = `conic-gradient(
+                    var(--danger) 0% ${pGas}%, 
+                    var(--warning) ${pGas}% ${pGas + pAho}%, 
+                    var(--success) ${pGas + pAho}% 100%
+                )`;
+                document.getElementById('chart-perc').innerText = Math.round(pResto) + "% Lib";
+            }
         }
 
         function exportar() {
-            const data = JSON.parse(localStorage.getItem(KEY));
-            let csv = "\ufeffREPORTE G&C\nSección;Item;Valor\n";
-            data.disp.forEach(d => csv += `Capital;${d.item};${d.valor}\n`);
-            data.gastos.forEach(g => csv += `Egreso;${g.item};${g.real}\n`);
+            const db = JSON.parse(localStorage.getItem(KEY));
+            let csv = "\ufeffREPORTE EJECUTIVO G&C\nSección;Item;Fecha;Valor\n";
+            db.disp.forEach(d => csv += `Capital;${d.item};-;${d.valor}\n`);
+            db.gastos.forEach(g => csv += `Egreso;${g.item};${g.fecha};${g.real}\n`);
+            db.diario.forEach(d => csv += `Ingreso;Jornada;${d.fecha};${d.ing}\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_GC.csv`; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `G&C_Reporte_Ejecutivo.csv`; a.click();
         }
     </script>
 </body>
