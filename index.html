@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>G&C Suite Executive V6.4</title>
+    <title>G&C Suite Executive V6.5</title>
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     
@@ -28,7 +28,6 @@
         .active-tab { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Dashboard */
         .exec-card { background: var(--card); border-radius: 24px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .main-balance { text-align: center; margin-bottom: 25px; }
         .main-balance span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -43,7 +42,6 @@
         .metric-item span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
         .metric-item strong { font-size: 13px; font-family: 'Roboto Mono', monospace; }
 
-        /* Listas */
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .section-header h3 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin: 0; }
 
@@ -53,18 +51,15 @@
         .price-tag label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
         .price-tag span { font-weight: bold; font-family: 'Roboto Mono', monospace; font-size: 13px; }
 
-        /* Barras de Progreso */
         .progress-container { margin: 12px 0; }
         .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
         .progress-bar-fill { height: 100%; transition: width 0.8s ease; }
 
-        /* Formuarios */
         .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin-top: 20px; }
         input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; font-size: 14px; }
         .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 10px; margin-top: 15px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
         .btn-del { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 4px 8px; font-size: 10px; cursor: pointer; }
 
-        /* Nav */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--accent); z-index: 1000; padding-bottom: 10px; }
         .nav-item { text-align: center; color: var(--text-dim); font-size: 8px; text-transform: uppercase; font-weight: 800; flex: 1; cursor: pointer; }
         .nav-item i { display: block; font-size: 22px; margin-bottom: 5px; }
@@ -75,13 +70,13 @@
 
     <div class="header">
         <h1>GESTIÓN & CRECIMIENTO CO.</h1>
-        <div class="sub">FLEET & PERFORMANCE V6.4</div>
+        <div class="sub">FLEET & PERFORMANCE V6.5</div>
     </div>
 
     <div id="tab1" class="tab-content active-tab">
         <div class="exec-card">
             <div class="main-balance">
-                <span>Diferencia Neta (Utilidad)</span>
+                <span>Utilidad (Ingresos - Gastos)</span>
                 <h2 id="res-dif">$ 0</h2>
             </div>
             <div class="chart-container">
@@ -94,7 +89,7 @@
                     <span>Ingresos</span><strong id="res-ing" style="color: var(--success)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: var(--danger)">
-                    <span>Egresos fijos</span><strong id="res-gas" style="color: var(--danger)">$ 0</strong>
+                    <span>Gastos Fijos</span><strong id="res-gas" style="color: var(--danger)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: var(--fuel)">
                     <span>⛽ Combustible</span><strong id="res-fuel" style="color: var(--fuel)">$ 0</strong>
@@ -152,7 +147,7 @@
     </div>
 
     <script>
-        const KEY = 'DB_GC_FLEET_FINAL_V64';
+        const KEY = 'DB_GC_FLEET_CLEAN_V65';
         const fmt = n => '$' + Number(n).toLocaleString('es-CO');
 
         function showTab(num, el) {
@@ -250,18 +245,27 @@
             let ing = 0, gas = 0, fuel = 0, cap = 0;
             document.querySelectorAll('.card-disp').forEach(c => cap += Number(c.dataset.valor));
             document.querySelectorAll('.card-gasto').forEach(c => gas += Number(c.dataset.real));
-            document.querySelectorAll('.card-diario').forEach(c => { ing += Number(c.dataset.ing); fuel += Number(c.dataset.fuel); });
-            const util = ing - (gas + fuel);
+            document.querySelectorAll('.card-diario').forEach(c => { 
+                ing += Number(c.dataset.ing); 
+                fuel += Number(c.dataset.fuel); 
+            });
+
+            // LOGICA LIMPIA: Utilidad = Ingresos - (Gastos Fijos + Combustible)
+            const totalGastos = gas + fuel;
+            const util = ing - totalGastos;
+
             document.getElementById('res-cuentas').innerText = fmt(cap);
             document.getElementById('res-ing').innerText = fmt(ing);
             document.getElementById('res-gas').innerText = fmt(gas);
             document.getElementById('res-fuel').innerText = fmt(fuel);
             document.getElementById('res-dif').innerText = fmt(util);
             document.getElementById('res-dif').style.color = util < 0 ? 'var(--danger)' : 'var(--success)';
+
             if(ing > 0) {
                 const pG = Math.min((gas/ing)*100, 100), pF = Math.min((fuel/ing)*100, 100);
-                document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pG}%, var(--fuel) ${pG}% ${pG+pF}%, var(--success) ${pG+pF}% 100%)`;
-                document.getElementById('chart-perc').innerText = Math.round(Math.max(0, 100-pG-pF)) + "% Lib";
+                const pUtil = Math.max(0, 100 - pG - pF);
+                document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pG}%, var(--fuel) ${pG} ${pG+pF}%, var(--success) ${pG+pF}% 100%)`;
+                document.getElementById('chart-perc').innerText = Math.round(pUtil) + "% Lib";
             }
         }
 
@@ -270,9 +274,13 @@
             let csv = "\ufeffREPORTE G&C\nSeccion;Concepto;Fecha;Valor\n";
             db.disp.forEach(d => csv += `Capital;${d.item};-;${d.valor}\n`);
             db.gastos.forEach(g => csv += `Egreso;${g.item};${g.fecha};${g.real}\n`);
-            db.diario.forEach(d => { csv += `Diario;Venta;${d.fecha};${d.ing}\nDiario;Fuel;${d.fecha};${d.fuel}\n`; });
+            db.diario.forEach(d => { 
+                csv += `Diario;Venta;${d.fecha};${d.ing}\n`; 
+                csv += `Diario;Fuel;${d.fecha};${d.fuel}\n`; 
+                csv += `Diario;Ahorro;${d.fecha};${d.aho}\n`; 
+            });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_V64.csv`; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_Limpio.csv`; a.click();
         }
     </script>
 </body>
