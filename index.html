@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>G&C Suite Executive V6.2</title>
+    <title>G&C Suite Executive V6.3</title>
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     
@@ -33,7 +33,7 @@
         .main-balance span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
         .main-balance h2 { font-size: 32px; margin: 10px 0; font-family: 'Roboto Mono', monospace; color: var(--accent); }
 
-        .chart-container { position: relative; width: 150px; height: 150px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
+        .chart-container { position: relative; width: 140px; height: 140px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
         .donut-chart { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#1e293b 0% 100%); display: flex; align-items: center; justify-content: center; transition: all 0.5s ease; }
         .donut-inner { width: 75%; height: 75%; background: var(--card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
@@ -51,6 +51,10 @@
         .price-tag label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
         .price-tag span { font-weight: bold; font-family: 'Roboto Mono', monospace; font-size: 13px; }
 
+        .progress-container { margin: 12px 0; }
+        .progress-bar-bg { width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; transition: width 0.8s ease; }
+
         .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin-top: 20px; }
         input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; font-size: 14px; }
         .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 10px; margin-top: 15px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
@@ -66,7 +70,7 @@
 
     <div class="header">
         <h1>GESTIÓN & CRECIMIENTO CO.</h1>
-        <div class="sub">FLEET & FINANCE MASTER V6.2</div>
+        <div class="sub">FLEET & PERFORMANCE V6.3</div>
     </div>
 
     <div id="tab1" class="tab-content active-tab">
@@ -121,21 +125,21 @@
     </div>
 
     <div id="tab3" class="tab-content">
-        <div class="section-header"><h3>Rendimiento de Jornada</h3></div>
+        <div class="section-header"><h3>Rendimiento y Metas Diarias</h3></div>
         <div id="list-diario"></div>
         <div class="input-card">
             <input type="date" id="i-f">
             <div style="display:flex; gap:10px">
-                <input type="number" id="i-m" placeholder="Meta $">
-                <input type="number" id="i-i" placeholder="Ingreso $">
+                <input type="number" id="i-m" placeholder="Meta Diaria $">
+                <input type="number" id="i-i" placeholder="Ingreso Logrado $">
             </div>
             <div style="display:flex; gap:10px">
                 <input type="number" id="i-a" placeholder="Ahorro Día $">
                 <input type="number" id="i-c" placeholder="Combustible $">
             </div>
-            <button class="btn-add" onclick="addDiario()">+ Cerrar Día</button>
+            <button class="btn-add" onclick="addDiario()">+ Registrar Cierre de Jornada</button>
         </div>
-        <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Exportar CSV</button>
+        <button class="btn-add" style="background: #334155; color: white;" onclick="exportar()">Exportar Reporte CSV</button>
     </div>
 
     <div class="nav-bar">
@@ -145,7 +149,7 @@
     </div>
 
     <script>
-        const KEY = 'DB_GC_FLEET_V6_2';
+        const KEY = 'DB_GC_PRO_MASTER_V6_3';
         const fmt = n => '$' + Number(n).toLocaleString('es-CO');
 
         function showTab(num, el) {
@@ -207,10 +211,9 @@
             const html = `<div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
                 <div class="item-header"><div><span style="color:#fff">${g.item}</span><br><small style="color:var(--text-dim)">${g.fecha}</small></div>
                 <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div style="margin:10px 0"><div style="display:flex; justify-content:space-between; font-size:9px; margin-bottom:4px">
-                <span style="color:var(--text-dim)">Ejecución</span><span style="color:${col}; font-weight:bold">${por.toFixed(0)}%</span></div>
-                <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden">
-                <div style="width:${por}%; height:100%; background:${col}; transition:width 0.6s"></div></div></div>
+                <div class="progress-container"><div style="display:flex; justify-content:space-between; font-size:9px; margin-bottom:4px">
+                <span style="color:var(--text-dim)">Uso de Ppto</span><span style="color:${col}; font-weight:bold">${por.toFixed(0)}%</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${por}%; background:${col}"></div></div></div>
                 <div class="item-row"><div class="price-tag"><label>Ppto</label><span>${fmt(p)}</span></div>
                 <div class="price-tag" style="text-align:right"><label>Real</label><span style="color:${r > p ? 'var(--danger)' : '#fff'}">${fmt(r)}</span></div></div></div>`;
             document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
@@ -225,10 +228,19 @@
         }
 
         function renderDiario(d) {
+            const meta = Number(d.meta), ing = Number(d.ing);
+            const porMeta = meta > 0 ? Math.min((ing / meta) * 100, 100) : 0;
+            let colMeta = 'var(--accent)'; if(porMeta >= 100) colMeta = 'var(--success)';
+
             const html = `<div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-fuel="${d.fuel}">
                 <div class="item-header"><div><span style="color:#fff">Jornada Laboral</span><br><small style="color:var(--text-dim)">${d.fecha}</small></div>
                 <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div class="item-row"><div class="price-tag"><label>Logrado</label><span style="color:var(--success)">${fmt(d.ing)}</span></div>
+                
+                <div class="progress-container"><div style="display:flex; justify-content:space-between; font-size:9px; margin-bottom:4px">
+                <span style="color:var(--text-dim)">Cumplimiento de Meta</span><span style="color:${colMeta}; font-weight:bold">${(ing/meta*100).toFixed(0)}%</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${porMeta}%; background:${colMeta}"></div></div></div>
+
+                <div class="item-row"><div class="price-tag"><label>Venta</label><span style="color:var(--success)">${fmt(ing)}</span></div>
                 <div class="price-tag" style="text-align:center"><label>⛽ Fuel</label><span style="color:var(--fuel)">${fmt(d.fuel)}</span></div>
                 <div class="price-tag" style="text-align:right"><label>Ahorro</label><span>${fmt(d.aho)}</span></div></div></div>`;
             document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
@@ -244,8 +256,8 @@
                 fuel += Number(c.dataset.fuel); 
             });
 
-            const totalEgresos = gas + fuel;
-            const util = ing - totalEgresos;
+            const totalEg = gas + fuel;
+            const util = ing - totalEg;
 
             document.getElementById('res-cuentas').innerText = fmt(cap);
             document.getElementById('res-ing').innerText = fmt(ing);
@@ -267,10 +279,13 @@
             let csv = "\ufeffREPORTE G&C\nSeccion;Concepto;Fecha;Valor\n";
             db.disp.forEach(d => csv += `Capital;${d.item};-;${d.valor}\n`);
             db.gastos.forEach(g => csv += `Egreso;${g.item};${g.fecha};${g.real}\n`);
-            db.diario.forEach(d => csv += `Diario;Venta;${d.fecha};${d.ing}\n`);
-            db.diario.forEach(d => csv += `Diario;Fuel;${d.fecha};${d.fuel}\n`);
+            db.diario.forEach(d => {
+                csv += `Diario;Venta;${d.fecha};${d.ing}\n`;
+                csv += `Diario;Fuel;${d.fecha};${d.fuel}\n`;
+                csv += `Diario;Ahorro;${d.fecha};${d.aho}\n`;
+            });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_Fleet.csv`; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_Completo.csv`; a.click();
         }
     </script>
 </body>
