@@ -42,6 +42,11 @@
         .metric-item span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
         .metric-item strong { font-size: 13px; font-family: 'Roboto Mono', monospace; }
 
+        /* Barras de Progreso */
+        .progress-container { margin: 12px 0; }
+        .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; transition: width 0.8s ease; }
+
         .item-card { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid var(--border); position: relative; }
         .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin-top: 20px; }
         input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; font-size: 14px; }
@@ -64,7 +69,7 @@
     <div id="tab1" class="tab-content active-tab">
         <div class="exec-card">
             <div class="main-balance">
-                <span>Utilidad (Ingresos - Gastos)</span>
+                <span>Utilidad (Ingresos - Gastos Fijos)</span>
                 <h2 id="res-dif">$ 0</h2>
             </div>
             <div class="chart-container">
@@ -86,7 +91,7 @@
                     <span>⛽ Combustible</span><strong id="res-fuel" style="color: var(--fuel)">$ 0</strong>
                 </div>
                 <div class="metric-item" style="border-color: #fff; grid-column: span 2;">
-                    <span>Efectivo Disponible en Cuentas</span><strong id="res-cuentas">$ 0</strong>
+                    <span>Efectivo Disponible</span><strong id="res-cuentas">$ 0</strong>
                 </div>
             </div>
         </div>
@@ -102,7 +107,7 @@
         <div id="list-gastos"></div>
         <div class="input-card">
             <input type="date" id="g-f">
-            <input type="text" id="g-n" placeholder="Concepto (Ej: Arriendo, Servicios)">
+            <input type="text" id="g-n" placeholder="Concepto (Ej: Arriendo)">
             <div style="display:flex; gap:10px">
                 <input type="number" id="g-p" placeholder="Ppto $">
                 <input type="number" id="g-r" placeholder="Real $">
@@ -188,9 +193,16 @@
         }
 
         function renderGasto(g) {
+            const p = Number(g.ppto), r = Number(g.real);
+            const por = p > 0 ? Math.min((r / p) * 100, 100) : 0;
+            let col = 'var(--success)'; if(por > 85) col = 'var(--warning)'; if(r > p) col = 'var(--danger)';
+            
             const html = `<div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
-                <div style="display:flex; justify-content:space-between"><span>${g.item}</span><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px"><span>Ppto: ${fmt(g.ppto)}</span><strong>Real: ${fmt(g.real)}</strong></div></div>`;
+                <div style="display:flex; justify-content:space-between"><span>${g.item} (${g.fecha})</span><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="progress-container">
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${por}%; background:${col}"></div></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:12px"><span>Ppto: ${fmt(p)}</span><strong>Real: ${fmt(r)}</strong></div></div>`;
             document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
         }
 
@@ -203,10 +215,16 @@
         }
 
         function renderDiario(d) {
+            const meta = Number(d.meta), ing = Number(d.ing);
+            const por = meta > 0 ? Math.min((ing / meta) * 100, 100) : 0;
+            
             const html = `<div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-fuel="${d.fuel}">
-                <div style="display:flex; justify-content:space-between"><span>Día ${d.fecha}</span><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:11px">
-                <span>Ing: ${fmt(d.ing)}</span><span>Fuel: ${fmt(d.fuel)}</span><span>Ahorro: ${fmt(d.aho)}</span></div></div>`;
+                <div style="display:flex; justify-content:space-between"><span>Fecha: ${d.fecha}</span><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="progress-container">
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${por}%; background:var(--accent)"></div></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:11px">
+                <span>Venta: ${fmt(ing)}</span><span>Fuel: ${fmt(d.fuel)}</span><span>Ahorro: ${fmt(d.aho)}</span></div></div>`;
             document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
         }
 
@@ -220,7 +238,6 @@
                 tAho += Number(c.dataset.aho);
             });
 
-            // REGLA: Utilidad = Ingresos - Gastos Fijos (Combustible y Ahorro aparte)
             const util = tIng - tGas;
 
             document.getElementById('res-ing').innerText = fmt(tIng);
