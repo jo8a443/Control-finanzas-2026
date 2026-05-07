@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>G&C Suite Executive V6.3</title>
+    <title>G&C Suite Executive V6.4</title>
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2845/2845862.png">
     
@@ -28,6 +28,7 @@
         .active-tab { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Dashboard */
         .exec-card { background: var(--card); border-radius: 24px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .main-balance { text-align: center; margin-bottom: 25px; }
         .main-balance span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -42,6 +43,7 @@
         .metric-item span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
         .metric-item strong { font-size: 13px; font-family: 'Roboto Mono', monospace; }
 
+        /* Listas */
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 25px 0 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .section-header h3 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin: 0; }
 
@@ -51,15 +53,18 @@
         .price-tag label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; }
         .price-tag span { font-weight: bold; font-family: 'Roboto Mono', monospace; font-size: 13px; }
 
+        /* Barras de Progreso */
         .progress-container { margin: 12px 0; }
-        .progress-bar-bg { width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
         .progress-bar-fill { height: 100%; transition: width 0.8s ease; }
 
+        /* Formuarios */
         .input-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px dashed var(--accent); margin-top: 20px; }
         input { width: 100%; height: 45px; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: #fff; padding: 0 15px; box-sizing: border-box; font-size: 14px; }
         .btn-add { background: var(--accent); color: #000; font-weight: 900; border: none; width: 100%; height: 45px; border-radius: 10px; margin-top: 15px; font-size: 11px; text-transform: uppercase; cursor: pointer; }
         .btn-del { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 4px 8px; font-size: 10px; cursor: pointer; }
 
+        /* Nav */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--accent); z-index: 1000; padding-bottom: 10px; }
         .nav-item { text-align: center; color: var(--text-dim); font-size: 8px; text-transform: uppercase; font-weight: 800; flex: 1; cursor: pointer; }
         .nav-item i { display: block; font-size: 22px; margin-bottom: 5px; }
@@ -70,7 +75,7 @@
 
     <div class="header">
         <h1>GESTIÓN & CRECIMIENTO CO.</h1>
-        <div class="sub">FLEET & PERFORMANCE V6.3</div>
+        <div class="sub">FLEET & PERFORMANCE V6.4</div>
     </div>
 
     <div id="tab1" class="tab-content active-tab">
@@ -81,9 +86,7 @@
             </div>
             <div class="chart-container">
                 <div class="donut-chart" id="mainChart">
-                    <div class="donut-inner">
-                        <strong id="chart-perc" style="font-size: 12px;">0% Lib</strong>
-                    </div>
+                    <div class="donut-inner"><strong id="chart-perc" style="font-size: 12px;">0% Lib</strong></div>
                 </div>
             </div>
             <div class="metrics-grid">
@@ -149,7 +152,7 @@
     </div>
 
     <script>
-        const KEY = 'DB_GC_PRO_MASTER_V6_3';
+        const KEY = 'DB_GC_FLEET_FINAL_V64';
         const fmt = n => '$' + Number(n).toLocaleString('es-CO');
 
         function showTab(num, el) {
@@ -231,15 +234,12 @@
             const meta = Number(d.meta), ing = Number(d.ing);
             const porMeta = meta > 0 ? Math.min((ing / meta) * 100, 100) : 0;
             let colMeta = 'var(--accent)'; if(porMeta >= 100) colMeta = 'var(--success)';
-
             const html = `<div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-fuel="${d.fuel}">
                 <div class="item-header"><div><span style="color:#fff">Jornada Laboral</span><br><small style="color:var(--text-dim)">${d.fecha}</small></div>
                 <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                
                 <div class="progress-container"><div style="display:flex; justify-content:space-between; font-size:9px; margin-bottom:4px">
-                <span style="color:var(--text-dim)">Cumplimiento de Meta</span><span style="color:${colMeta}; font-weight:bold">${(ing/meta*100).toFixed(0)}%</span></div>
+                <span style="color:var(--text-dim)">Cumplimiento</span><span style="color:${colMeta}; font-weight:bold">${(ing/meta*100).toFixed(0)}%</span></div>
                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${porMeta}%; background:${colMeta}"></div></div></div>
-
                 <div class="item-row"><div class="price-tag"><label>Venta</label><span style="color:var(--success)">${fmt(ing)}</span></div>
                 <div class="price-tag" style="text-align:center"><label>⛽ Fuel</label><span style="color:var(--fuel)">${fmt(d.fuel)}</span></div>
                 <div class="price-tag" style="text-align:right"><label>Ahorro</label><span>${fmt(d.aho)}</span></div></div></div>`;
@@ -247,30 +247,21 @@
         }
 
         function calc() {
-            let ing = 0, gas = 0, aho = 0, fuel = 0, cap = 0;
+            let ing = 0, gas = 0, fuel = 0, cap = 0;
             document.querySelectorAll('.card-disp').forEach(c => cap += Number(c.dataset.valor));
             document.querySelectorAll('.card-gasto').forEach(c => gas += Number(c.dataset.real));
-            document.querySelectorAll('.card-diario').forEach(c => { 
-                ing += Number(c.dataset.ing); 
-                aho += Number(c.dataset.aho); 
-                fuel += Number(c.dataset.fuel); 
-            });
-
-            const totalEg = gas + fuel;
-            const util = ing - totalEg;
-
+            document.querySelectorAll('.card-diario').forEach(c => { ing += Number(c.dataset.ing); fuel += Number(c.dataset.fuel); });
+            const util = ing - (gas + fuel);
             document.getElementById('res-cuentas').innerText = fmt(cap);
             document.getElementById('res-ing').innerText = fmt(ing);
             document.getElementById('res-gas').innerText = fmt(gas);
             document.getElementById('res-fuel').innerText = fmt(fuel);
             document.getElementById('res-dif').innerText = fmt(util);
             document.getElementById('res-dif').style.color = util < 0 ? 'var(--danger)' : 'var(--success)';
-
             if(ing > 0) {
-                const pGas = Math.min((gas/ing)*100, 100), pFuel = Math.min((fuel/ing)*100, 100);
-                const pLib = Math.max(0, 100 - pGas - pFuel);
-                document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pGas}%, var(--fuel) ${pGas}% ${pGas+pFuel}%, var(--success) ${pGas+pFuel}% 100%)`;
-                document.getElementById('chart-perc').innerText = Math.round(pLib) + "% Lib";
+                const pG = Math.min((gas/ing)*100, 100), pF = Math.min((fuel/ing)*100, 100);
+                document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pG}%, var(--fuel) ${pG}% ${pG+pF}%, var(--success) ${pG+pF}% 100%)`;
+                document.getElementById('chart-perc').innerText = Math.round(Math.max(0, 100-pG-pF)) + "% Lib";
             }
         }
 
@@ -279,13 +270,9 @@
             let csv = "\ufeffREPORTE G&C\nSeccion;Concepto;Fecha;Valor\n";
             db.disp.forEach(d => csv += `Capital;${d.item};-;${d.valor}\n`);
             db.gastos.forEach(g => csv += `Egreso;${g.item};${g.fecha};${g.real}\n`);
-            db.diario.forEach(d => {
-                csv += `Diario;Venta;${d.fecha};${d.ing}\n`;
-                csv += `Diario;Fuel;${d.fecha};${d.fuel}\n`;
-                csv += `Diario;Ahorro;${d.fecha};${d.aho}\n`;
-            });
+            db.diario.forEach(d => { csv += `Diario;Venta;${d.fecha};${d.ing}\nDiario;Fuel;${d.fecha};${d.fuel}\n`; });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_Completo.csv`; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Reporte_G&C_V64.csv`; a.click();
         }
     </script>
 </body>
