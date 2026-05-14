@@ -12,6 +12,7 @@
             --bg: #0b0f1a; --card: #161d2f; --accent: #38bdf8;
             --success: #10b981; --danger: #f43f5e; --warning: #fbbf24;
             --fuel: #ea580c; --text: #f8fafc; --text-dim: #94a3b8; --border: #2d3748;
+            --bank: #a855f7;
         }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; overflow-x: hidden; }
@@ -42,7 +43,6 @@
         .metric-item span { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
         .metric-item strong { font-size: 13px; font-family: 'Roboto Mono', monospace; }
 
-        /* Estilos de Barras */
         .progress-container { margin: 10px 0; }
         .progress-label { display: flex; justify-content: space-between; font-size: 9px; text-transform: uppercase; margin-bottom: 4px; color: var(--text-dim); }
         .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative; }
@@ -56,8 +56,10 @@
 
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--accent); z-index: 1000; padding-bottom: 10px; }
         .nav-item { text-align: center; color: var(--text-dim); font-size: 8px; text-transform: uppercase; font-weight: 800; flex: 1; cursor: pointer; }
-        .nav-item i { display: block; font-size: 22px; margin-bottom: 5px; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 5px; }
         .nav-item.active { color: var(--accent); }
+
+        .section-title { font-size: 12px; color: var(--accent); margin: 20px 0 10px; font-weight: 800; text-transform: uppercase; border-left: 3px solid var(--accent); padding-left: 10px; }
     </style>
 </head>
 <body>
@@ -67,6 +69,7 @@
         <div class="sub">FLEET & PERFORMANCE V6.5</div>
     </div>
 
+    <!-- TAB 1: RESUMEN -->
     <div id="tab1" class="tab-content active-tab">
         <div class="exec-card">
             <div class="main-balance">
@@ -104,6 +107,7 @@
         </div>
     </div>
 
+    <!-- TAB 2: GASTOS -->
     <div id="tab2" class="tab-content">
         <div id="list-gastos"></div>
         <div class="input-card">
@@ -117,6 +121,7 @@
         </div>
     </div>
 
+    <!-- TAB 3: DIARIO -->
     <div id="tab3" class="tab-content">
         <div id="list-diario"></div>
         <div class="input-card">
@@ -133,10 +138,48 @@
         </div>
     </div>
 
+    <!-- TAB 4: CRÉDITOS (NUEVA) -->
+    <div id="tab4" class="tab-content">
+        <div class="section-title">Préstamos Bancarios</div>
+        <div id="list-bancos"></div>
+        
+        <div class="input-card" style="border-color: var(--bank)">
+            <input type="text" id="b-nom" placeholder="Nombre del Banco">
+            <input type="text" id="b-num" placeholder="Número de Crédito">
+            <div style="display:flex; gap:10px">
+                <input type="number" id="b-ini" placeholder="Crédito Inicial $">
+                <input type="number" id="b-cuo" placeholder="Valor Cuota $">
+            </div>
+            <div style="display:flex; gap:10px">
+                <input type="number" id="b-total-c" placeholder="N° Cuotas">
+                <input type="date" id="b-fec">
+            </div>
+            <button class="btn-add" style="background: var(--bank); color:white" onclick="addBanco()">+ Registrar Préstamo</button>
+        </div>
+
+        <div class="section-title">Tarjetas de Crédito</div>
+        <div id="list-tarjetas"></div>
+
+        <div class="input-card" style="border-color: var(--warning)">
+            <input type="text" id="t-nom" placeholder="Nombre de la Tarjeta">
+            <input type="text" id="t-con" placeholder="Concepto de la compra">
+            <div style="display:flex; gap:10px">
+                <input type="number" id="t-cup" placeholder="Cupo inicial $">
+                <input type="number" id="t-val" placeholder="Valor compra $">
+            </div>
+            <div style="display:flex; gap:10px">
+                <input type="number" id="t-cuo" placeholder="Número de cuotas">
+                <input type="date" id="t-fec">
+            </div>
+            <button class="btn-add" style="background: var(--warning); color:black" onclick="addTarjeta()">+ Registrar Compra TC</button>
+        </div>
+    </div>
+
     <div class="nav-bar">
         <div class="nav-item active" onclick="showTab(1, this)"><i>📊</i>RESUMEN</div>
         <div class="nav-item" onclick="showTab(2, this)"><i>💸</i>EGRESOS</div>
         <div class="nav-item" onclick="showTab(3, this)"><i>🚀</i>DIARIO</div>
+        <div class="nav-item" onclick="showTab(4, this)"><i>💳</i>CRÉDITOS</div>
     </div>
 
     <script>
@@ -154,7 +197,9 @@
             const data = {
                 disp: Array.from(document.querySelectorAll('.card-disp')).map(c => c.dataset),
                 gastos: Array.from(document.querySelectorAll('.card-gasto')).map(c => c.dataset),
-                diario: Array.from(document.querySelectorAll('.card-diario')).map(c => c.dataset)
+                diario: Array.from(document.querySelectorAll('.card-diario')).map(c => c.dataset),
+                bancos: Array.from(document.querySelectorAll('.card-banco')).map(c => c.dataset),
+                tarjetas: Array.from(document.querySelectorAll('.card-tarjeta')).map(c => c.dataset)
             };
             localStorage.setItem(KEY, JSON.stringify(data));
             calc();
@@ -166,10 +211,13 @@
                 db.disp.forEach(d => renderDisp(d));
                 db.gastos.forEach(g => renderGasto(g));
                 db.diario.forEach(d => renderDiario(d));
+                if(db.bancos) db.bancos.forEach(b => renderBanco(b));
+                if(db.tarjetas) db.tarjetas.forEach(t => renderTarjeta(t));
                 calc();
             }
         };
 
+        // --- FUNCIONES EXISTENTES (SIN CAMBIOS) ---
         function addDisp() {
             const n = document.getElementById('d-n').value, v = document.getElementById('d-v').value;
             if(!n || !v) return;
@@ -177,14 +225,12 @@
             save();
             document.getElementById('d-n').value = ''; document.getElementById('d-v').value = '';
         }
-
         function renderDisp(d) {
             const html = `<div class="item-card card-disp" data-item="${d.item}" data-valor="${d.valor}" style="display:flex; justify-content:space-between; align-items:center">
                 <span>${d.item}</span><div style="display:flex; align-items:center; gap:10px"><strong>${fmt(d.valor)}</strong>
                 <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div></div>`;
             document.getElementById('list-disp').insertAdjacentHTML('beforeend', html);
         }
-
         function addGasto() {
             const f = document.getElementById('g-f').value, n = document.getElementById('g-n').value, p = document.getElementById('g-p').value, r = document.getElementById('g-r').value;
             if(!f || !n || !p || !r) return;
@@ -192,21 +238,16 @@
             save();
             document.getElementById('g-n').value = ''; document.getElementById('g-p').value = ''; document.getElementById('g-r').value = '';
         }
-
         function renderGasto(g) {
             const p = Number(g.ppto), r = Number(g.real);
             const por = p > 0 ? Math.min((r / p) * 100, 100) : 0;
             let col = 'var(--success)'; if(por > 85) col = 'var(--warning)'; if(r > p) col = 'var(--danger)';
-            
             const html = `<div class="item-card card-gasto" data-fecha="${g.fecha}" data-item="${g.item}" data-ppto="${g.ppto}" data-real="${g.real}">
                 <div style="display:flex; justify-content:space-between"><span>${g.item} (${g.fecha})</span><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
-                <div class="progress-container">
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${por}%; background:${col}"></div></div>
-                </div>
+                <div class="progress-container"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${por}%; background:${col}"></div></div></div>
                 <div style="display:flex; justify-content:space-between; font-size:12px"><span>Ppto: ${fmt(p)}</span><strong>Real: ${fmt(r)}</strong></div></div>`;
             document.getElementById('list-gastos').insertAdjacentHTML('beforeend', html);
         }
-
         function addDiario() {
             const f = document.getElementById('i-f').value, m = document.getElementById('i-m').value, i = document.getElementById('i-i').value, a = document.getElementById('i-a').value || 0, c = document.getElementById('i-c').value || 0;
             if(!f || !m || !i) return;
@@ -214,46 +255,81 @@
             save();
             document.getElementById('i-i').value = ''; document.getElementById('i-a').value = ''; document.getElementById('i-c').value = '';
         }
-
         function renderDiario(d) {
             const meta = Number(d.meta), ing = Number(d.ing), fuel = Number(d.fuel), aho = Number(d.aho);
-            
-            // Barra 1: Cumplimiento de Meta
             const porMeta = meta > 0 ? Math.min((ing / meta) * 100, 100) : 0;
-            
-            // Barra 2: Combustible y Ahorro sobre lo ingresado
             const porFuel = ing > 0 ? Math.min((fuel / ing) * 100, 100) : 0;
             const porAho = ing > 0 ? Math.min((aho / ing) * 100, 100) : 0;
-            
             const html = `<div class="item-card card-diario" data-fecha="${d.fecha}" data-meta="${d.meta}" data-ing="${d.ing}" data-aho="${d.aho}" data-fuel="${d.fuel}">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <strong style="color:var(--accent)">Jornada: ${d.fecha}</strong>
-                    <button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button>
-                </div>
-
-                <div class="progress-container">
-                    <div class="progress-label"><span>Cumplimiento Meta</span><span>${porMeta.toFixed(0)}%</span></div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width:${porMeta}%; background:linear-gradient(90deg, var(--accent), var(--success))"></div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:4px">
-                        <span>Ingreso: <b>${fmt(ing)}</b></span><span>Meta: ${fmt(meta)}</span>
-                    </div>
-                </div>
-
-                <div class="progress-container" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top:10px;">
-                    <div class="progress-label"><span>Distribución Ingreso (Fuel & Ahorro)</span></div>
-                    <div class="progress-bar-bg" style="display:flex;">
-                        <div style="width:${porFuel}%; background:var(--fuel); height:100%"></div>
-                        <div style="width:${porAho}%; background:var(--warning); height:100%"></div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:4px">
-                        <span style="color:var(--fuel)">⛽ Fuel: ${fmt(fuel)}</span>
-                        <span style="color:var(--warning)">💰 Ahorro: ${fmt(aho)}</span>
-                    </div>
-                </div>
-            </div>`;
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><strong style="color:var(--accent)">Jornada: ${d.fecha}</strong><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div class="progress-container"><div class="progress-label"><span>Cumplimiento Meta</span><span>${porMeta.toFixed(0)}%</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${porMeta}%; background:linear-gradient(90deg, var(--accent), var(--success))"></div></div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:4px"><span>Ingreso: <b>${fmt(ing)}</b></span><span>Meta: ${fmt(meta)}</span></div></div>
+                <div class="progress-container" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top:10px;"><div class="progress-label"><span>Distribución Ingreso</span></div><div class="progress-bar-bg" style="display:flex;"><div style="width:${porFuel}%; background:var(--fuel); height:100%"></div><div style="width:${porAho}%; background:var(--warning); height:100%"></div></div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:4px"><span style="color:var(--fuel)">⛽ Fuel: ${fmt(fuel)}</span><span style="color:var(--warning)">💰 Ahorro: ${fmt(aho)}</span></div></div></div>`;
             document.getElementById('list-diario').insertAdjacentHTML('beforeend', html);
+        }
+
+        // --- NUEVAS FUNCIONES PESTAÑA 4 ---
+
+        function addBanco() {
+            const obj = {
+                banco: document.getElementById('b-nom').value,
+                num: document.getElementById('b-num').value,
+                inicial: document.getElementById('b-ini').value,
+                cuota: document.getElementById('b-cuo').value,
+                ncuotas: document.getElementById('b-total-c').value,
+                fecha: document.getElementById('b-fec').value
+            };
+            if(!obj.banco || !obj.inicial) return;
+            renderBanco(obj);
+            save();
+            ['b-nom', 'b-num', 'b-ini', 'b-cuo', 'b-total-c', 'b-fec'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function renderBanco(b) {
+            const html = `<div class="item-card card-banco" data-banco="${b.banco}" data-num="${b.num}" data-inicial="${b.inicial}" data-cuota="${b.cuota}" data-ncuotas="${b.ncuotas}" data-fecha="${b.fecha}">
+                <div style="display:flex; justify-content:space-between"><strong style="color:var(--bank)">${b.banco}</strong><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div style="font-size:11px; margin-top:5px; color:var(--text-dim)">Crédito N°: ${b.num || 'N/A'}</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; font-size:12px">
+                    <div><span>Inicia:</span><br><strong>${fmt(b.inicial)}</strong></div>
+                    <div><span>Cuota:</span><br><strong>${fmt(b.cuota)}</strong></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:11px; border-top:1px solid var(--border); padding-top:5px">
+                    <span>${b.ncuotas} Meses</span><span>Pago: ${b.fecha}</span>
+                </div></div>`;
+            document.getElementById('list-bancos').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addTarjeta() {
+            const obj = {
+                nom: document.getElementById('t-nom').value,
+                con: document.getElementById('t-con').value,
+                cupo: document.getElementById('t-cup').value,
+                val: document.getElementById('t-val').value,
+                cuo: document.getElementById('t-cuo').value,
+                fec: document.getElementById('t-fec').value
+            };
+            if(!obj.nom || !obj.val) return;
+            renderTarjeta(obj);
+            save();
+            ['t-nom', 't-con', 't-cup', 't-val', 't-cuo', 't-fec'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function renderTarjeta(t) {
+            const html = `<div class="item-card card-tarjeta" data-nom="${t.nom}" data-con="${t.con}" data-cupo="${t.cupo}" data-val="${t.val}" data-cuo="${t.cuo}" data-fec="${t.fec}">
+                <div style="display:flex; justify-content:space-between"><strong style="color:var(--warning)">${t.nom}</strong><button class="btn-del" onclick="this.parentElement.parentElement.remove();save();">×</button></div>
+                <div style="font-size:11px; margin:5px 0; font-style:italic">${t.con}</div>
+                <div class="progress-container">
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${(t.val/t.cupo)*100}%; background:var(--warning)"></div></div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px">
+                    <div><span>Compra:</span><br><strong>${fmt(t.val)}</strong></div>
+                    <div><span>Cupo:</span><br><strong>${fmt(t.cupo)}</strong></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:11px">
+                    <span>${t.cuo} Cuotas</span><span>Límite: ${t.fec}</span>
+                </div></div>`;
+            document.getElementById('list-tarjetas').insertAdjacentHTML('beforeend', html);
         }
 
         function calc() {
@@ -265,16 +341,13 @@
                 tFuel += Number(c.dataset.fuel); 
                 tAho += Number(c.dataset.aho);
             });
-
             const util = tIng - tGas;
-
             document.getElementById('res-ing').innerText = fmt(tIng);
             document.getElementById('res-gas').innerText = fmt(tGas);
             document.getElementById('res-aho').innerText = fmt(tAho);
             document.getElementById('res-fuel').innerText = fmt(tFuel);
             document.getElementById('res-dif').innerText = fmt(util);
             document.getElementById('res-cuentas').innerText = fmt(tCap);
-
             if(tIng > 0) {
                 const pG = Math.min((tGas/tIng)*100, 100);
                 document.getElementById('mainChart').style.background = `conic-gradient(var(--danger) 0% ${pG}%, var(--success) ${pG}% 100%)`;
